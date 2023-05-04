@@ -21,8 +21,14 @@ def get_ipa_word(word):
     
     if response.status_code == 200:
         #print(response.text)
-        modified_target = response.text.split("<td class=td2 > ")[1].split("\r\n")[0]
-        ipa_of_target = html.unescape(response.text.split("<td class=td2 >")[3].split("\r\n")[0].split("/")[0])
+
+        try:
+            modified_target = response.text.split("<td class=td2 > ")[1].split("\r\n")[0]
+            ipa_of_target = html.unescape(response.text.split("<td class=td2 >")[3].split("\r\n")[0].split("/")[0])
+        except:
+            print("word is {}".format(word))
+            print(response.text)
+            return None
     
         if target == modified_target:
             #print(modified_target)
@@ -50,11 +56,11 @@ def get_ipa_sentence(sentence):
 
     return result
 
-sentence = "안녕하세요 저는 김태현입니다"
-print(get_ipa_sentence(sentence))
+#sentence = "안녕하세요 저는 김태현입니다"
+#print(get_ipa_sentence(sentence))
 
-sentence = "예쁜 사과"
-print(get_ipa_sentence(sentence))
+#sentence = "예쁜 사과"
+#print(get_ipa_sentence(sentence))
 
-sentence = "맛있는 고구마"
-print(get_ipa_sentence(sentence))
+#sentence = "맛있는 고구마"
+#print(get_ipa_sentence(sentence))
