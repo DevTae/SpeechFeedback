@@ -5,26 +5,56 @@
 import requests
 import html
 
-url = "http://pronunciation.cs.pusan.ac.kr/pronunc2.asp?text1="
-url2 = "&submit1=%C8%AE%C0%CE%C7%CF%B1%E2"
-target = "있어" # 단어 단위로 입력될 예정
-target_encoded = target.encode("euc-kr")
-target_url = ""
+# word 에 대한 ipa 를 가져온 뒤 반환해줌. 실패 시, None 반환
+def get_ipa_word(word):
+    url = "http://pronunciation.cs.pusan.ac.kr/pronunc2.asp?text1="
+    url2 = "&submit1=%C8%AE%C0%CE%C7%CF%B1%E2"
+    target = word
+    target_encoded = target.encode("euc-kr")
+    target_url = ""
+    
+    for byte in target_encoded:
+        target_url += '%{0:0>2X}'.format(byte)
+    
+    response = requests.get(url + target_url + url2)
+    response.encoding = "euc-kr" # apparent_encoding 사용 가능
+    
+    if response.status_code == 200:
+        #print(response.text)
+        modified_target = response.text.split("<td class=td2 > ")[1].split("\r\n")[0]
+        ipa_of_target = html.unescape(response.text.split("<td class=td2 >")[3].split("\r\n")[0].split("/")[0])
+    
+        if target == modified_target:
+            #print(modified_target)
+            #print(ipa_of_target)
+            #f = open("broadcast_00000001.txt", 'w', encoding='utf8')
+            #f.write(ipa_of_target)
+            #f.close()
+            return ipa_of_target
+        
+    return None
 
-for byte in target_encoded:
-    target_url += '%{0:0>2X}'.format(byte)
+# sentence 에 대한 ipa 를 가져온 뒤 반환해줌. 실패 시, None 반환
+def get_ipa_sentence(sentence):
+    words = sentence.split(" ")
+    result = ""
 
-response = requests.get(url + target_url + url2)
-response.encoding = "euc-kr" # apparent_encoding 사용 가능
+    for word in words:
+        ipa_of_word = get_ipa_word(word)
+        if ipa_of_word is not None:
+            if result != "":
+                result += " "
+            result += ipa_of_word
+        else:
+            return None
 
-if response.status_code == 200:
-    #print(response.text)
-    modified_target = response.text.split("<td class=td2 > ")[1].split("\r\n")[0]
-    ipa_of_target = html.unescape(response.text.split("<td class=td2 >")[3].split("\r\n")[0].split("/")[0])
+    return result
 
-    if target == modified_target:
-        print(modified_target)
-        print(ipa_of_target)
-        f = open("broadcast_00000001.txt", 'w', encoding='utf8')
-        f.write(ipa_of_target)
-        f.close()
+sentence = "안녕하세요 저는 김태현입니다"
+print(get_ipa_sentence(sentence))
+
+sentence = "예쁜 사과"
+print(get_ipa_sentence(sentence))
+
+sentence = "맛있는 고구마"
+print(get_ipa_sentence(sentence))
