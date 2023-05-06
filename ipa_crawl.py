@@ -8,6 +8,7 @@ import time
 
 # word 에 대한 ipa 를 가져온 뒤 반환해줌. 실패 시, None 반환
 def get_ipa_word(word):
+    session = requests.session()
     url = "http://pronunciation.cs.pusan.ac.kr/pronunc2.asp?text1="
     url2 = "&submit1=%C8%AE%C0%CE%C7%CF%B1%E2"
     target = word
@@ -19,7 +20,7 @@ def get_ipa_word(word):
    
     while True:
         try:
-            response = requests.get(url + target_url + url2)
+            response = session.get(url + target_url + url2)
             response.encoding = "euc-kr" # apparent_encoding 사용 가능
             
             if response.status_code == 200:
@@ -44,11 +45,15 @@ def get_ipa_word(word):
                 print("[continue] url error")
                 return None
             else:
+                print("[exception] exception in status code")
+                print(response.text)
                 raise Exception
 
-        except: # 그외의 모든 예외에 대하여 sleep 처리
+        except Exception as e: # 그외의 모든 예외에 대하여 sleep 처리
             print("[sleep] exception handling occured! sleep 10 sec")
+            print(e)
             time.sleep(10)
+            session = requests.session()
 
 # sentence 에 대한 ipa 를 가져온 뒤 반환해줌. 실패 시, None 반환
 def get_ipa_sentence(sentence):
