@@ -1,6 +1,5 @@
 # Developed by DevTae@2023
 # Using the bracket_filter and special_filter function from sooftware/KoSpeech
-# 진행상황 이어가는 기능은 현재 구현하지 않았습니다.
 import os
 import re
 import ipa_crawl as ipa
@@ -73,35 +72,48 @@ def start():
     BASE_PATH = os.getcwd()
     for i, path in enumerate(get_all_path(), start=1):
         f = open(path, "r", encoding="utf8")
-        new_f = open(path.replace(".txt", "_ipa.txt"), "w", encoding="utf8")
+        ipa_f = open(path.replace(".txt", "_ipa.txt"), "a", encoding="utf8")
 
         for j, line in enumerate(f.readlines(), start=1):
             datas = line.split('|')
             # 서울/경기 이외에는 생략 (표준어 위주 학습)
             if not datas[6].strip() != "1":
                 continue;
+
             txt_file_name = datas[0].strip().replace(".wav", ".txt")
+            ipa_file_name = txt_file_name.replace(".txt", "_ipa.txt")
+
+            # 이미 불러온 데이터라면 생략
+            if os.path.isfile(BASE_PATH + ipa_file_name):
+                print("[continue] {} already exists".format(ipa_file_name))
+                continue
+
+            # 만약 라벨링 파일이 없다면 생략
+            if not os.path.isfile(BASE_PATH + txt_file_name):
+                print("[continue] {} is not found".format(txt_file_name))
+                continue
+
             label_f = open(BASE_PATH + txt_file_name, "r", encoding="utf8")
-            ipa_label_f = open(BASE_PATH + txt_file_name.replace(".txt", "_ipa.txt"), "w", encoding="utf8")
 
             filtered = bracket_filter(special_filter(label_f.read()))
             if filtered == "": # 변환할 텍스트가 없을 시 ipa 변환 취소
-                continue
-
-            converted = ipa.get_ipa_sentence(filtered)
-            if converted is None:
                 label_f.close()
-                ipa_label_f.close()
-                os.remove(ipa_label_f.name) # 작성된 것이 없을 때는 ipa 파일 삭제 진행
+                continue
+            
+            converted = ipa.get_ipa_sentence(filtered)
+            if converted is None: # 변환된 텍스트가 없을 시 ipa 변환 취소
+                label_f.close()
                 continue;
 
+            ipa_label_f = open(BASE_PATH + ipa_file_name, "w", encoding="utf8")
             ipa_label_f.write(converted)
-            label_f.close()
             ipa_label_f.close()
-            new_f.write(line)
-            print("[done] ({}, {}) {}".format(i, j, txt_file_name.strip().replace(".txt", "_ipa.txt")))
+            label_f.close()
+            ipa_f.write(line)
+            print("[done] ({}, {}) {}".format(i, j, ipa_file_name))
 
         f.close()
-        new_f.close()
+        ipa_f.close()
 
 start()
+

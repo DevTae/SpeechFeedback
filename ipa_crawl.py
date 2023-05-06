@@ -4,6 +4,7 @@
 
 import requests
 import html
+import time
 
 # word 에 대한 ipa 를 가져온 뒤 반환해줌. 실패 시, None 반환
 def get_ipa_word(word):
@@ -15,35 +16,44 @@ def get_ipa_word(word):
     
     for byte in target_encoded:
         target_url += '%{0:0>2X}'.format(byte)
-    
-    response = requests.get(url + target_url + url2)
-    response.encoding = "euc-kr" # apparent_encoding 사용 가능
-    
-    if response.status_code == 200:
-        #print(response.text)
-
+   
+    while True:
         try:
-            modified_target = response.text.split("<td class=td2 > ")[1].split("\r\n")[0]
-            ipa_of_target = html.unescape(response.text.split("<td class=td2 >")[3].split("\r\n")[0].split("/")[0])
-        except:
-            print("word is {}".format(word))
-            print(response.text)
-            return None
-    
-        if target == modified_target:
-            #print(modified_target)
-            #print(ipa_of_target)
-            #f = open("broadcast_00000001.txt", 'w', encoding='utf8')
-            #f.write(ipa_of_target)
-            #f.close()
-            return ipa_of_target
-        
-    return None
+            response = requests.get(url + target_url + url2)
+            response.encoding = "euc-kr" # apparent_encoding 사용 가능
+            
+            if response.status_code == 200:
+                try:
+                    modified_target = response.text.split("<td class=td2 > ")[1].split("\r\n")[0]
+                    ipa_of_target = html.unescape(response.text.split("<td class=td2 >")[3].split("\r\n")[0].split("/")[0])
+                except: # 변환 실패한 경우
+                    print("[continue] word error. word is {}".format(word))
+                    return None
+            
+                if target == modified_target:
+                    #print(modified_target)
+                    #print(ipa_of_target)
+                    #f = open("broadcast_00000001.txt", 'w', encoding='utf8')
+                    #f.write(ipa_of_target)
+                    #f.close()
+                    return ipa_of_target
+                else: # 변환 결과가 다른 경우
+                    print("[continue] words are not equal")
+                    return None
+            elif "An error occurred on the server when processing the URL" in response.text: # 특정 단어 URL에 대한 오류 발생 경우
+                print("[continue] url error")
+                return None
+            else:
+                raise Exception
+
+        except: # 그외의 모든 예외에 대하여 sleep 처리
+            print("[sleep] exception handling occured! sleep 10 sec")
+            time.sleep(10)
 
 # sentence 에 대한 ipa 를 가져온 뒤 반환해줌. 실패 시, None 반환
 def get_ipa_sentence(sentence):
     words = sentence.split(" ")
-    result = ""
+    result = str()
 
     for word in words:
         ipa_of_word = get_ipa_word(word)
@@ -64,3 +74,4 @@ def get_ipa_sentence(sentence):
 
 #sentence = "맛있는 고구마"
 #print(get_ipa_sentence(sentence))
+
