@@ -86,43 +86,44 @@ def sentence_filter(raw_sentence, mode, replace=None):
     return special_filter(bracket_filter(raw_sentence, mode), mode, replace)
 
 
-// Modified by DevTae
-// To implement the preprocess function of 한국인 대화 음성 dataset
+# Modified by DevTae
+# To implement the preprocess function of 한국인 대화 음성 dataset 
 def preprocess(dataset_path, mode='phonetic'):
     print('preprocess started..')
 
     audio_paths = list()
     transcripts = list()
 
-        BASE_PATH = dataset_path # {dataset_path}/1.Training/1.라벨링데이터/...
-        META_PATH = "/1.Training/1.라벨링데이터/{THEME_FOLDER}/{THEME_LABEL}_{NUM}/{THEME_LABEL}_{NUM}_metadata_ipa.txt"
-        THEME_INFO = { "1.방송" : [ "broadcast", 5 ],
-                                   "2.취미" : [ "hobby", 1 ],
-                                   "3.일상안부" : [ "dialog", 4 ],
-                                   "4.생활" : [ "life", 10 ],
-                                   "5.날씨" : [ "weather", 3 ],
-                                   "6.경제" : [ "economy", 4 ],
-                                   "7.놀이" : [ "play", 2],
-                                   "8.쇼핑" : [ "shopping", 2] }
+    BASE_PATH = dataset_path
+    META_PATH = "/1.Training/1.라벨링데이터/{THEME_FOLDER}/{THEME_LABEL}_{NUM}/{THEME_LABEL}_{NUM}_metadata_ipa.txt"
+    THEME_INFO = { "1.방송" : [ "broadcast", 5 ],
+		           "2.취미" : [ "hobby", 1 ],
+				   "3.일상안부" : [ "dialog", 4 ],
+				   "4.생활" : [ "life", 10 ],
+				   "5.날씨" : [ "weather", 3 ],
+				   "6.경제" : [ "economy", 4 ],
+				   "7.놀이" : [ "play", 2],
+				   "8.쇼핑" : [ "shopping", 2] }
 
-        paths = []
-        for key, value in THEME_INFO.items():
-                for i in range(1, value[1] + 1, 1):
-                        metafile = BASE_PATH + META_PATH.replace("{THEME_FOLDER}", key).replace("{THEME_LABEL}", value[0]).replace("{NUM}", "{0:0>2d}".format(i))
-                        paths.append(metafile)
+    paths = []
+
+    for key, value in THEME_INFO.items():
+	    for i in range(1, value[1] + 1, 1):
+		    metafile = BASE_PATH + META_PATH.replace("{THEME_FOLDER}", key).replace("{THEME_LABEL}", value[0]).replace("{NUM}", "{0:0>2d}".format(i))
+		    paths.append(metafile)
 
     for i, path in enumerate(paths, start=1):
-                if not os.path.isfile(path):
-                        continue
+	    if not os.path.isfile(path):
+		    continue
 
-        with open(path, "r", encoding='utf8') as f:
-                        for j, line in enumerate(f.readlines(), start=1):
-                                datas = line.split('|')
-                                audio_path = os.path.join.(BASE_PATH, datas[0].strip())
-                                sentence = str()
-                                with open(audio_path.replace(".wav", "_ipa.txt"), "r", encoding="utf8") as sentence_f:
-                                        sentence = sentence_f.read()
-                                audio_paths.append(audio_path)
-                                transcripts.append(sentence)
+	    with open(path, "r", encoding='utf8') as f:
+		    for j, line in enumerate(f.readlines(), start=1):
+			    datas = line.split('|')
+			    audio_path = BASE_PATH + datas[0].strip()
+			    sentence = str()
+			    with open(audio_path.replace(".wav", "_ipa.txt"), "r", encoding="utf8") as sentence_f:
+				    sentence = sentence_f.read()
+			    audio_paths.append(audio_path)
+			    transcripts.append(sentence)
 
     return audio_paths, transcripts
