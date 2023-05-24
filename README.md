@@ -6,6 +6,8 @@ IPA 변환을 통하여 발음 그대로 인식하도록 하고 그에 대한 �
 
 데이터셋 : [AIHub 한국인 대화음성](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=130)
 
+KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech)
+
 <br/>
 
 ### Docker Image
