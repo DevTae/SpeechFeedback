@@ -20,6 +20,8 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 2. `sudo docker attach devtae`
 
+- Python Data Loader 무한 로딩 현상 발생 시, Python 3.8 버전으로 업그레이드해야 한다.
+
 <br/>
 
 ### How to done Preprocessing (IPA and Character Dictionary)
