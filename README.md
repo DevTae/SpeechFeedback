@@ -14,7 +14,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech)
 
 KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
-1. `sudo docker run -it --gpus all --name devtae -v {하위 디렉토리}/Training/data/remote/PROJECT/AI학습데이터/KoreanSpeech/data:/workspace/data devtae/kospeech`
+1. `sudo docker run -it --gpus all --name devtae -v {하위 디렉토리}/한국인\ 대화\ 음성/Training/data/remote/PROJECT/AI학습데이터/KoreanSpeech/data:/workspace/data devtae/kospeech`
 
 2. `sudo docker attach devtae`
 
