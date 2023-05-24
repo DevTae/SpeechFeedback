@@ -42,7 +42,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 2. `KoSpeech/kospeech/data/data_loader.py` 에서 train, validation 데이터 수를 설정한다.
 
-3. main.py, eval.py, inference.py 에 대하여 **단어 사전 경로** `/workspace/data/vocab` 를 수정해준다.
+3. main.py, eval.py, inference.py 에 대하여 단어 사전 경로를 `/workspace/data/vocab/aihub_labels.csv` 로 수정해준다.
 
 4. `KoSpeech/configs/train/ds2_train.yaml` 에서 `transcripts_path: '/workspace/kospeech/dataset/kspon/transcripts.txt'` 로 설정한다.
 
