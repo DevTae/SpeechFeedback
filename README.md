@@ -20,8 +20,6 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 2. `sudo docker attach devtae`
 
-- Python Data Loader 무한 로딩 현상 발생 시, Python 3.8 버전으로 업그레이드해야 한다.
-
 <br/>
 
 ### How to done Preprocessing (IPA and Character Dictionary)
@@ -49,4 +47,3 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 4. `KoSpeech/configs/train/ds2_train.yaml` 에서 `transcripts_path: '/workspace/kospeech/dataset/kspon/transcripts.txt'` 로 설정한다.
 
 5. 최종적으로, `python ./bin/main.py model=ds2 train=ds2_train train.dataset_path=/workspace/data` 를 실행한다.
-
