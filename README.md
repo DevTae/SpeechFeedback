@@ -47,3 +47,25 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 4. `KoSpeech/configs/train/ds2_train.yaml` 에서 `transcripts_path: '/workspace/kospeech/dataset/kspon/transcripts.txt'` 로 설정한다.
 
 5. 최종적으로, `python ./bin/main.py model=ds2 train=ds2_train train.dataset_path=/workspace/data` 를 실행한다.
+
+<br/>
+
+### DataLoader Threading 무한대기 문제 해결
+
+1. Python 3.8.5 다운로드 및 설치 진행 (원인은 버전 문제로 예상됨)
+
+2. update-alternatives 설정 (python 및 pip)
+
+3. `pip install torch torchvision torchaudio` 및 `pip install -e .` 진행
+
+<br/>
+
+### librosa.load 오류 발생 시
+
+`ModuleNotFoundError: No module named '_soundfile_data'`
+
+`OSError: sndfile library not found using ctypes.util.find_library`
+
+`OSError: cannot load library 'libsndfile.so': libsndfile.so: cannot open shared object file: No such file or directory`
+
+→ `apt install libsndfile1` 설치 진행
