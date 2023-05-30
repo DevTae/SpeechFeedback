@@ -2,6 +2,7 @@
 # For classifying and analyzing the audio datas, checking the data's duration per second is needed.
 
 import librosa
+import numpy as np
 
 path = "/workspace/kospeech/dataset/kspon/transcripts.txt"
 
