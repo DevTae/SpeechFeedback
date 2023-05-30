@@ -22,7 +22,7 @@ with open(path, "r", encoding="utf8") as r:
       ratio = audio_duration / transcript_length
       ratios.append(ratio)
       print("ratio :", ratio)
-    catch:
+    except:
       continue
       
   print("max is", max(ratio))
