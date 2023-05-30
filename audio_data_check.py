@@ -25,8 +25,11 @@ with open(path, "r", encoding="utf8") as r:
     except:
       continue
       
-  print("max is", max(ratio))
-  print("min is", min(ratio))
-  print("avg is", sum(ratio)/len(ratio))
+  print("max is", max(ratio)) # max is 23.21
+  print("min is", min(ratio)) # min is 0.0
+  print("avg is", sum(ratio)/len(ratio)) # 0.1628 ...
   print("np.percentile is")
   print(np.percentile(ratio, q=[0, 25, 50, 75, 100]))
+  # np.percentile is
+  # [ 0.0000 0.1047 0.1156 0.1242 0.1333
+  #   0.1431 0.1550 0.1707 0.2316 23.21 ]
