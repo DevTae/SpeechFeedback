@@ -27,3 +27,5 @@ with open(path, "r", encoding="utf8") as r:
   print("max is", max(ratio))
   print("min is", min(ratio))
   print("avg is", sum(ratio)/len(ratio))
+  print("np.percentile is")
+  print(np.percentile(ratio, q=[0, 25, 50, 75, 100]))
