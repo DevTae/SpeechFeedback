@@ -53,41 +53,23 @@ def bracket_filter(sentence, mode='phonetic'):
 
     return new_sentence
 
-
+# Edited by DevTae
 def special_filter(sentence, mode='phonetic', replace=None):
-    SENTENCE_MARK = ['?', '!', '.']
-    NOISE = ['o', 'n', 'u', 'b', 'l']
-    EXCEPT = ['/', '+', '*', '-', '@', '$', '^', '&', '[', ']', '=', ':', ';', ',']
-
     new_sentence = str()
     for idx, ch in enumerate(sentence):
-        if ch not in SENTENCE_MARK:
-            if idx + 1 < len(sentence) and ch in NOISE and sentence[idx + 1] == '/':
-                continue
+        if re.search(r"[ㄱ-ㅎ가-힣ㅏ-ㅣ]", ch) is None:
+            if not (ch == '!' or ch == '?' or ch == '.' or ch == ',' or ch == ' '):
+                return None
+        new_sentence += ch
 
-        if ch == '#':
-            new_sentence += '샾'
-
-        elif ch == '%':
-            if mode == 'phonetic':
-                new_sentence += replace
-            elif mode == 'spelling':
-                new_sentence += '%'
-
-        elif ch not in EXCEPT:
-            new_sentence += ch
-
-    pattern = re.compile(r'\s\s+')
+    pattern = re.compile(r'\s\s+') # 스페이스바 두 번 이상일 때
     new_sentence = re.sub(pattern, ' ', new_sentence.strip())
     return new_sentence
-
 
 def sentence_filter(raw_sentence, mode, replace=None):
     return special_filter(bracket_filter(raw_sentence, mode), mode, replace)
 
-def ipa_final_filter(ipa_sentence):
-    return ipa_sentence.replace("(", "").replace(")", "").replace("<font color=#FF0000>", "").replace("<", "")
-
+# Edited by DevTae
 def preprocess(dataset_path, mode='phonetic'):
     print('preprocess started..')
 
@@ -95,7 +77,7 @@ def preprocess(dataset_path, mode='phonetic'):
     transcripts = list()
 
     BASE_PATH = dataset_path
-    META_PATH = "/1.Training/1.라벨링데이터/{THEME_FOLDER}/{THEME_LABEL}_{NUM}/{THEME_LABEL}_{NUM}_metadata_ipa.txt"
+    META_PATH = "/1.Training/1.라벨링데이터/{THEME_FOLDER}/{THEME_LABEL}_{NUM}/{THEME_LABEL}_{NUM}_metadata.txt" # ipa 일때 .txt -> _ipa.txt 변경
     THEME_INFO = { "1.방송" : [ "broadcast", 5 ],
                    "2.취미" : [ "hobby", 1 ],
                    "3.일상안부" : [ "dialog", 4 ],
@@ -121,8 +103,8 @@ def preprocess(dataset_path, mode='phonetic'):
                 datas = line.split('|')
                 audio_path = BASE_PATH + datas[0].strip()
                 sentence = str()
-                with open(audio_path.replace(".wav", "_ipa.txt"), "r", encoding="utf8") as sentence_f:
-                    sentence = sentence_f.read()
+                with open(audio_path.replace(".wav", ".txt"), "r", encoding="utf8") as sentence_f: # ipa 일때 .txt -> _ipa.txt 변경
+                    sentence = sentence_filter(sentence_f.read(), mode=mode) # ipa 일때 ipa 변환 함수 호출 추가
                 audio_paths.append(audio_path)
-                transcripts.append(ipa_final_filter(sentence))
+                transcripts.append(sentence)
     return audio_paths, transcripts
