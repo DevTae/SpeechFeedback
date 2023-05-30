@@ -48,3 +48,16 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 5. 최종적으로, `python ./bin/main.py model=ds2 train=ds2_train train.dataset_path=/workspace/data` 를 실행한다.
 
+<br/>
+
+### How to solve the problem that occurs nan value of loss
+
+- 다음의 코드 `/workspace/kospeech/kospeech/trainer/supervised_trainer.py` 에서 loss 값 계산 전에 nan 을 보정해주는 함수를 추가해준다.
+
+#### Before
+
+`loss = self.criterion(outputs.transpose(0, 1), targets[:, 1:], output_lengths, target_lengths)`
+
+#### After
+
+`loss = self.criterion(torch.nan_to_num(outputs).transpose(0, 1), targets[:, 1:], output_lengths, target_lengths) # Pytorch 1.8.0 부터 가능`
