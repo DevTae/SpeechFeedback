@@ -42,28 +42,18 @@ def bracket_filter(sentence):
             new_sentence += ch
     return new_sentence
 
+# Edited by DevTae
 # filter the special character
 # from sooftware/KoSpeech
-def special_filter(sentence):
-    SENTENCE_MARK = ['?', '!']
-    NOISE = ['o', 'n', 'u', 'b', 'l']
-    EXCEPT = ['/', '+', '*', '-', '@', '$', '^', '&', '[', ']', '=', ':', ';', '.', ',']
-    EXCEPT += SENTENCE_MARK
-
+def special_filter(sentence, mode='phonetic', replace=None):
     new_sentence = str()
     for idx, ch in enumerate(sentence):
-        if ch not in SENTENCE_MARK:
-            # o/, n/ 등 처리
-            if idx + 1 < len(sentence) and ch in NOISE and sentence[idx+1] == '/':
-                continue
+        if re.search(r"[ㄱ-ㅎ가-힣ㅏ-ㅣ]", ch) is None:
+            if not (ch == '!' or ch == '?' or ch == '.' or ch == ',' or ch == ' '):
+                return None
+        new_sentence += ch
 
-        if ch == '#':
-            new_sentence += '샾'
-
-        elif ch not in EXCEPT:
-            new_sentence += ch
-
-    pattern = re.compile(r'\s\s+')
+    pattern = re.compile(r'\s\s+') # 스페이스바 두 번 이상일 때
     new_sentence = re.sub(pattern, ' ', new_sentence.strip())
     return new_sentence
 
@@ -95,8 +85,8 @@ def start():
 
             label_f = open(BASE_PATH + txt_file_name, "r", encoding="utf8")
 
-            filtered = bracket_filter(special_filter(label_f.read()))
-            if filtered == "": # 변환할 텍스트가 없을 시 ipa 변환 취소
+            filtered = special_filter(bracket_filter(label_f.read()))
+            if filtered == "" or filtered None: # 변환할 텍스트가 없거나 None 일 때 ipa 변환 취소
                 label_f.close()
                 continue
             
