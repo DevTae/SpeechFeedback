@@ -14,7 +14,7 @@
 
 import os
 import re
-
+import librosa
 
 def bracket_filter(sentence, mode='phonetic'):
     new_sentence = str()
@@ -103,8 +103,19 @@ def preprocess(dataset_path, mode='phonetic'):
                 datas = line.split('|')
                 audio_path = BASE_PATH + datas[0].strip()
                 sentence = str()
-                with open(audio_path.replace(".wav", ".txt"), "r", encoding="utf8") as sentence_f: # ipa 일때 .txt -> _ipa.txt 변경
-                    sentence = sentence_filter(sentence_f.read(), mode=mode) # ipa 일때 ipa 변환 함수 호출 추가
-                audio_paths.append(audio_path)
-                transcripts.append(sentence)
+                try:
+                    with open(audio_path.replace(".wav", ".txt"), "r", encoding="utf8") as sentence_f: # ipa 일때 .txt -> _ipa.txt 변경
+                        sentence = sentence_filter(sentence_f.read(), mode=mode) # ipa 일때 ipa 변환 함수 호출 추가
+                
+                    # 시간 대비 데이터 밀집도 기준 outlier 데이터들에 대하여 except 처리 진행 (audio_check_data.py 참고)
+                    audio_duration = librosa.get_duration(librosa.load(audio_path, sr)[0], sr=16000)
+                    transcript_length = len(sentence)
+                    ratio = audio_duration / transcript_length
+                    if ratio > 0.2316 or ratio < 0.1047:
+                        continue
+                        
+                    audio_paths.append(audio_path)
+                    transcripts.append(sentence)
+                except:
+                    continue
     return audio_paths, transcripts
