@@ -12,6 +12,19 @@ IPA 변환기 : [표준발음 변환기](http://pronunciation.cs.pusan.ac.kr/)
 
 <br/>
 
+### Contents
+1. [Docker Image](#docker-image)
+2. [How to done Preprocessing (IPA and Character Dictionary)](#how-to-done-preprocessing-ipa-and-character-dictionary)
+3. [How to train `Deep Speech 2` model](#how-to-train-deep-speech-2-model)
+4. [How to evaluate `Deep Speech 2` model](#how-to-evaluate-deep-speech-2-model)
+5. [How to inference the audio file using `Deep Speech 2` model](#how-to-inference-the-audio-file-using-deep-speech-2-model)
+
+<br/>
+
+-----
+
+<br/>
+
 ### Docker Image
 
 KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
