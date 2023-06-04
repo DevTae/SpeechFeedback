@@ -16,6 +16,7 @@ IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa
 <br/>
 
 ### Contents
+0. [Performance After Using IPA](#performance-after-using-ipa)
 1. [Docker Image](#docker-image)
 2. [How to done Preprocessing (IPA and Character Dictionary)](#how-to-done-preprocessing-ipa-and-character-dictionary)
 3. [How to train `Deep Speech 2` model](#how-to-train-deep-speech-2-model)
@@ -28,11 +29,20 @@ IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa
 
 <br/>
 
+### Performance After Using IPA
+
+![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/5fb8dd51-dbc6-44ee-aedd-43be06d51e28)
+
+- 단어사전 경우의 수를 phonetic 기준, **2000 → 34 개**로 축소할 수 있었다.
+
+<br/>
+
 ### Docker Image
 
 KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 1. `sudo docker run -it --gpus all --name devtae -v {하위 디렉토리}/한국인\ 대화\ 음성/Training/data/remote/PROJECT/AI학습데이터/KoreanSpeech/data:/workspace/data devtae/kospeech`
+    - 공유 디렉토리 기능을 사용하여, `{하위 디렉토리}/한국인\ 대화\ 음성/Training/data/remote/PROJECT/AI학습데이터/KoreanSpeech/data` 폴더에 있는 파일들이 `/workspace/data` 과 연동된다.
 
 2. `sudo docker attach devtae`
 
@@ -40,7 +50,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 ### How to done Preprocessing (IPA and Character Dictionary)
 
-1. ipa_crawl.py 과 ipa_preprocess.py *(부산대학교 인공지능연구소의 허락을 받아야 실행할 수 있음 (중요))* 를 `한국인\ 대화\ 음성/Training/data/remote/PROJECT/AI학습데이터/KoreanSpeech/data` 에 넣는다.
+1. ipa_crawl.py 과 ipa_preprocess.py *(부산대학교 인공지능연구소의 허락을 받아야 실행할 수 있음 (중요))* 를 `/workspace/data` 에 넣는다.
 
     - 만약 converter_ipa.py 를 사용하고자 한다면, `converter_ipa.py` 파일과 `csv` 폴더를 `/workspace/kospeech/dataset/kspon` 에 옮겨놓고 `preprocess.py` 의 transcripts.append 부분에 applyRulesToHangulTotal 함수가 적용될 수 있도록 수정합니다. 이후 `3 번`으로 넘어가면 됩니다.
 
