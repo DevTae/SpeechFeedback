@@ -15,6 +15,7 @@
 import os
 import re
 import librosa
+import ipa_converter # 만약 ipa_converter 이용 시, /workspace/kospeech/dataset/kspon 폴더에 csv/* 와 ipa_converter.py 를 옮겨야 한다.
 
 def bracket_filter(sentence, mode='phonetic'):
     new_sentence = str()
@@ -116,6 +117,7 @@ def preprocess(dataset_path, mode='phonetic'):
                         
                     audio_paths.append(audio_path)
                     transcripts.append(sentence)
+                    # transcripts.append(ipa_converter.applyRulesToHangulTotal(sentence)) # ipa_convert 이용 시 이것으로 변경.
                 except:
                     continue
     return audio_paths, transcripts
