@@ -61,6 +61,8 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 1. `KoSpeech/configs/audio/fbank.yaml` *(melspectrogram.yaml, mfcc.yaml, spectrogram.yaml)* 에서 음원 확장명(.pcm or .wav)을 수정한다.
 
 2. `KoSpeech/kospeech/data/data_loader.py` 에서 train, validation 데이터 수를 설정한다. (transcripts.txt 파일에서의 데이터 수)
+    - 만약 train : test : eval 비율을 설정하고자 할 때는, train+test 만큼 transcripts.txt 에 있도록 하고, 나머지 eval 만큼 transcripts_eval.txt 에 있도록 한다.
+    - train 과 test 데이터 개수는 data_loader.py 에서 설정한다.
 
 3. main.py, eval.py, inference.py 에 대하여 단어 사전 경로를 `/workspace/data/vocab/aihub_labels.csv` 로 수정해준다.
 
