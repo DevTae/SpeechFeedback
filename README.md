@@ -94,6 +94,8 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 `loss = self.criterion(torch.nan_to_num(outputs).transpose(0, 1), targets[:, 1:], output_lengths, target_lengths) # Pytorch 1.8.0 부터 가능`
 
+- 또한, 해당 파일(supervised_trainer.py)에서 cp949 인코딩 방식 때문에 오류가 발생한다면 utf8 로 바꾸어야 한다.
+
 <br/>
 
 ### How to evaluate `Deep Speech 2` model
