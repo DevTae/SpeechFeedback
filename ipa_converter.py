@@ -295,7 +295,6 @@ def applyRulesToHangul(data, entry="entry", rules="pacstnhvr", convention="ipa")
                 else:
                     # check if /ㅎ/ comes in between two vowels
                     check_h_deletion = split_cv[i-1:i+1]
-                    print(check_h_deletion)
                     if check_h_deletion == h_deletion_criteria:
                         split_cv = split_cv[0:i] + split_cv[i+1:]
                         phoneme = phoneme[0:i] + phoneme[i+1:]
