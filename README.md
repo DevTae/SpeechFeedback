@@ -52,7 +52,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 5. 그 결과, `main.py` 가 있던 디렉토리에 `transcripts.txt` 가 생기고, 단어 사전은 설정된 `VOCAB_DEST` *(/workspace/data/vocab)* 폴더에 저장된다.
 
-- 해당 레포에 있는 코드는 `1.Training` 에 대한 데이터를 모두 전처리하는 것이며, `2.Validation` 데이터를 이용하지 않는다. 따라서 별 다른 수정 없이 사용한다면, `1.Training` 에서 원하는 데이터들을 바탕으로 transcripts 를 형성시키고, 그 중에서도 일부를 떼어내 따로 evaluation 용 `transcripts_eval.txt` 파일을 만들어 사용하면 된다.
+- 해당 레포에 있는 코드는 `1.Training` 에 대한 데이터를 모두 전처리하는 것이며, `2.Validation` 데이터를 이용하지 않는다. 따라서 별 다른 수정 없이 사용한다면, `1.Training` 에서 원하는 데이터들을 바탕으로 transcripts 를 형성시키고, 그 중에서도 일부를 떼어내 따로 evaluation 용 `transcripts_test.txt` 파일을 만들어 사용하면 된다.
 
 <br/>
 
@@ -61,8 +61,8 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 1. `KoSpeech/configs/audio/fbank.yaml` *(melspectrogram.yaml, mfcc.yaml, spectrogram.yaml)* 에서 음원 확장명(.pcm or .wav)을 수정한다.
 
 2. `KoSpeech/kospeech/data/data_loader.py` 에서 train, validation 데이터 수를 설정한다. (transcripts.txt 파일에서의 데이터 수)
-    - 만약 train : test : eval 비율을 설정하고자 할 때는, train+test 만큼 transcripts.txt 에 있도록 하고, 나머지 eval 만큼 transcripts_eval.txt 에 있도록 한다.
-    - train 과 test 데이터 개수는 data_loader.py 에서 설정한다.
+    - 만약 train : validation : test 비율을 설정하고자 할 때는, train+validation 만큼 transcripts.txt 에 있도록 하고, 나머지 test 만큼 transcripts_test.txt 에 있도록 한다.
+    - train 과 validation 데이터 개수는 data_loader.py 에서 설정한다.
 
 3. main.py, eval.py, inference.py 에 대하여 단어 사전 경로를 `/workspace/data/vocab/aihub_labels.csv` 로 수정해준다.
 
@@ -90,7 +90,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 - 아래 코드를 바탕으로 평가를 진행한다.
 
-- `python ./bin/eval.py eval.dataset_path=/workspace/data eval.transcripts_path=/workspace/kospeech/dataset/kspon/transcripts_eval.txt eval.model_path=/workspace/kospeech/outputs/{date}/{time}/model.pt`
+- `python ./bin/eval.py eval.dataset_path=/workspace/data eval.transcripts_path=/workspace/kospeech/dataset/kspon/transcripts_test.txt eval.model_path=/workspace/kospeech/outputs/{date}/{time}/model.pt`
 
 <br/>
 
