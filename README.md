@@ -33,7 +33,7 @@ IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa
 
 ![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/5fb8dd51-dbc6-44ee-aedd-43be06d51e28)
 
-- 단어사전 경우의 수를 phonetic 기준, **2000 → 34 개**로 축소할 수 있었다.
+- 단어사전 경우의 수를 **2000 → 34 개**로 축소할 수 있었다.
 
 <br/>
 
