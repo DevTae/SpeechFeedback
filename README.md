@@ -10,6 +10,9 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech)
 
 IPA 변환기 : [표준발음 변환기](http://pronunciation.cs.pusan.ac.kr/)
 
+IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa)
+ - ipa_converter.py 및 csv 폴더로 변환하였습니다.
+
 <br/>
 
 ### Contents
@@ -38,6 +41,8 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 ### How to done Preprocessing (IPA and Character Dictionary)
 
 1. ipa_crawl.py 과 ipa_preprocess.py *(부산대학교 인공지능연구소의 허락을 받아야 실행할 수 있음 (중요))* 를 `한국인\ 대화\ 음성/Training/data/remote/PROJECT/AI학습데이터/KoreanSpeech/data` 에 넣는다.
+
+    - 만약 converter_ipa.py 를 사용하고자 한다면, `converter_ipa.py` 파일과 `csv` 폴더를 `/workspace/kospeech/dataset/kspon` 에 옮겨놓고 `preprocess.py` 의 transcripts.append 부분에 applyRulesToHangulTotal 함수가 적용될 수 있도록 수정합니다. 이후 `3 번`으로 넘어가면 됩니다.
 
 2. `python3 ipa_preprocess.py` 를 실행하여 데이터에 대한 IPA 변환을 진행한다.
 
