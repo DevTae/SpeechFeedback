@@ -15,7 +15,7 @@
 import os
 import re
 import librosa
-import ipa_converter # 만약 ipa_converter 이용 시, /workspace/kospeech/dataset/kspon 폴더에 csv/* 와 ipa_converter.py 를 옮겨야 한다.
+#import ipa_converter # 만약 ipa_converter 이용 시, /workspace/kospeech/dataset/kspon 폴더에 csv/* 와 ipa_converter.py 를 옮겨야 한다.
 
 def bracket_filter(sentence, mode='phonetic'):
     new_sentence = str()
