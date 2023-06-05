@@ -46,6 +46,8 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 2. `sudo docker attach devtae`
 
+또는 [sooftware/kospeech](https://github.com/sooftware/kospeech) 를 Clone 하여 사용할 것.
+
 <br/>
 
 ### How to done Preprocessing (IPA and Character Dictionary)
