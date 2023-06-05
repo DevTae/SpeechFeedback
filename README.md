@@ -45,15 +45,15 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - num_epochs : 20
   - batch_size : 32
   - optimizer : adamp
-  - init_lr : 1e-07
-  - final_lr : 1e-07
-  - peak_lr : 1e-05
+  - init_lr : 1e-08
+  - final_lr : 1e-08
+  - peak_lr : 1e-06
   - init_lr_scale : 0.01
   - final_lr_scale : 0.05
     - learning rate 의 경우, 데이터와 상황에 따라 다르게 설정될 수 있음.
   - max_grad_norm : 20
   - warmup_steps : 1000 # 1 epoch step 의 약 10% 가량으로 설정하였음
-  - weight_decay : 1e-06
+  - weight_decay : 1e-07
   - hidden_dim : 512
   - dropout : 0.1
   - num_encoder_layers : 7
