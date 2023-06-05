@@ -54,11 +54,11 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 1. ipa_crawl.py 과 ipa_preprocess.py *(부산대학교 인공지능연구소의 허락을 받아야 실행할 수 있음 (중요))* 를 `/workspace/data` 에 넣는다.
 
-    - 만약 converter_ipa.py 를 사용하고자 한다면, `converter_ipa.py` 파일과 `csv` 폴더를 `/workspace/kospeech/dataset/kspon` 에 옮겨놓고 `preprocess.py` 의 transcripts.append 부분에 applyRulesToHangulTotal 함수가 적용될 수 있도록 수정합니다. 이후 `3 번`으로 넘어가면 됩니다.
+    - 만약 converter_ipa.py 를 사용하고자 한다면, `converter_ipa.py` 파일과 `csv` 폴더를 `/workspace/kospeech/dataset/kspon` 에 옮겨놓고 `preprocess.py` 의 transcripts.append 부분에 applyRulesToHangulTotal 함수가 적용될 수 있도록 주석을 해제하여 수정합니다. 이후 `3 번`으로 넘어가면 됩니다.
 
 2. `python3 ipa_preprocess.py` 를 실행하여 데이터에 대한 IPA 변환을 진행한다.
 
-3. IPA 변환이 끝난 후, `KoSpeech/dataset/kspon/preprocess.sh` **(해당 repo 에서 복사 및 붙여넣기 진행)** 에서의 `DATASET_PATH` 에 `/workspace/data` 를 입력하고 `VOCAB_DEST` 에는 `/workspace/data/vocab` 를 입력한다.
+3. `KoSpeech/dataset/kspon/preprocess.sh` **(해당 repo 에서 복사 및 붙여넣기 진행)** 에서의 `DATASET_PATH` 에 `/workspace/data` 를 입력하고 `VOCAB_DEST` 에는 `/workspace/data/vocab` 를 입력한다.
 
 4. `bash preprocess.sh` 를 통해 전처리를 완료한다.
 
