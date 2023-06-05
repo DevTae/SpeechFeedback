@@ -2,26 +2,20 @@
 
 End-to-End ASR (Automatic Speech Recognition) Feedback System
 
-IPA 변환을 통하여 발음 그대로 인식하도록 하고 그에 대한 발음 피드백을 진행할 수 있도록 하는 것이 목표이다.
+**IPA 변환**을 통하여 발음 그대로 인식하도록 하고 그에 대한 **발음 피드백**을 진행할 수 있도록 하는 것이 목표이다.
 
-데이터셋 : [AIHub 한국인 대화음성](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=130)
-
-KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech)
-
-IPA 변환기 : [표준발음 변환기](http://pronunciation.cs.pusan.ac.kr/)
-
-IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa)
- - ipa_converter.py 및 csv 폴더로 변환하였습니다.
+KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) 을 활용하여 프로젝트를 진행했다.
 
 <br/>
 
 ### Contents
-0. [Performance After Using IPA](#performance-after-using-ipa)
+0. [Setting](#setting)
 1. [Docker Image](#docker-image)
 2. [How to done Preprocessing (IPA and Character Dictionary)](#how-to-done-preprocessing-ipa-and-character-dictionary)
 3. [How to train `Deep Speech 2` model](#how-to-train-deep-speech-2-model)
 4. [How to evaluate `Deep Speech 2` model](#how-to-evaluate-deep-speech-2-model)
 5. [How to inference the audio file using `Deep Speech 2` model](#how-to-inference-the-audio-file-using-deep-speech-2-model)
+6. [Performance After Using IPA](#performance-after-using-ipa)
 
 <br/>
 
@@ -29,11 +23,30 @@ IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa
 
 <br/>
 
-### Performance After Using IPA
+### Setting
 
-![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/5fb8dd51-dbc6-44ee-aedd-43be06d51e28)
+- 실험 환경
+  - Docker Image : [devtae/kospeech](https://hub.docker.com/r/devtae/kospeech)
+  - OS : Linux 5.4.0-148-generic x86_64
+  - CPU : 12th Gen Intel(R) Core(TM) i9-12900K
+  - GPU : (NVIDIA GeForce RTX 4090 24GB) X 2
+  - CUDA version : 12.0
+  - PyTorch version : 1.9.0+cu111
 
-- 단어사전 경우의 수를 **2000 → 34 개**로 축소할 수 있었다.
+- 음성 데이터 수집 및 전처리
+  - 데이터셋 : [AIHub 한국인 대화음성](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=130)
+  - IPA 변환기 : [표준발음 변환기](http://pronunciation.cs.pusan.ac.kr/)
+  - IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa)
+    - ipa_converter.py 및 csv 폴더로 변환 완료
+  - ipa_converter.py 및 preprocess.py 이용하여 전처리 진행
+  - Train : Validation : Test = 270000 : 30000 : 32264
+
+- 하이퍼 파라미터 튜닝 (수정사항만 작성하였음)
+  - num_epochs : 20
+  - optimizer : adamp
+  - hidden_dim : 512
+  - dropout : 0.1
+  - rnn_type : lstm
 
 <br/>
 
@@ -82,21 +95,9 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 5. 최종적으로, `python ./bin/main.py model=ds2 train=ds2_train train.dataset_path=/workspace/data` 를 실행한다.
 
-<br/>
+- 다음 파일(supervised_trainer.py)에서 cp949 인코딩 방식 때문에 오류가 발생한다면 utf8 로 바꾸어야 한다.
 
-### How to solve the problem that occurs nan value of loss during training
-
-- 다음의 코드 `/workspace/kospeech/kospeech/trainer/supervised_trainer.py` 에서 loss 값 계산 전에 nan 을 보정해주는 함수를 추가해준다.
-
-#### Before
-
-`loss = self.criterion(outputs.transpose(0, 1), targets[:, 1:], output_lengths, target_lengths)`
-
-#### After
-
-`loss = self.criterion(torch.nan_to_num(outputs).transpose(0, 1), targets[:, 1:], output_lengths, target_lengths) # Pytorch 1.8.0 부터 가능`
-
-- 또한, 해당 파일(supervised_trainer.py)에서 cp949 인코딩 방식 때문에 오류가 발생한다면 utf8 로 바꾸어야 한다.
+- 만약, CTC Loss 계산식에서 nan 이 뜨는 것을 방지하고 싶다면 **하이퍼 파라미터 수정**을 하거나 `torch.nan_to_num(outputs)` 함수를 이용한다.
 
 <br/>
 
@@ -113,4 +114,12 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 - 아래 코드를 바탕으로 해당 오디오 파일에 대하여 추론을 한다.
 
 - `python3 ./bin/inference.py --model_path /workspace/kospeech/outputs/{date}/{time}/model.pt --audio_path /workspace/data/1.Training/2.원천데이터/1.방송/broadcast_01/001/broadcast_00000001.wav --device "cpu"`
+
+<br/>
+
+### Performance After Using IPA
+
+![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/5fb8dd51-dbc6-44ee-aedd-43be06d51e28)
+
+- 단어사전 경우의 수를 **2000 → 34 개**로 축소할 수 있었다.
 
