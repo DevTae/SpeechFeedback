@@ -4,12 +4,12 @@ End-to-End ASR (Automatic Speech Recognition) Feedback System
 
 **IPA 변환**을 통하여 발음 그대로 인식하도록 하고 그에 대한 **발음 피드백**을 진행할 수 있도록 하는 것이 목표이다.
 
-KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) 을 활용하여 프로젝트를 진행했다.
+KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) 을 활용하여 프로젝트를 진행하였다.
 
 <br/>
 
 ### Contents
-0. [Setting](#setting)
+0. [Environment Setting](#environment-setting)
 1. [Docker Image](#docker-image)
 2. [How to done Preprocessing (IPA and Character Dictionary)](#how-to-done-preprocessing-ipa-and-character-dictionary)
 3. [How to train `Deep Speech 2` model](#how-to-train-deep-speech-2-model)
@@ -23,7 +23,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
 
 <br/>
 
-### Setting
+### Environment Setting
 
 - 실험 환경
   - Docker Image : [devtae/kospeech](https://hub.docker.com/r/devtae/kospeech)
@@ -41,12 +41,23 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - ipa_converter.py 및 preprocess.py 이용하여 전처리 진행
   - Train : Validation : Test = 270000 : 30000 : 32264
 
-- 하이퍼 파라미터 튜닝 (수정사항만 작성하였음)
+- 하이퍼 파라미터 튜닝
   - num_epochs : 20
+  - batch_size : 32
   - optimizer : adamp
+  - init_lr : 1e-06
+  - final_lr : 1e-06
+  - peak_lr : 1e-04
+  - init_lr_scale : 0.01
+  - final_lr_scale : 0.10
+  - max_grad_norm : 5
+  - warmup_steps : 1000 # 1 epoch 전체 step 의 약 10% 부근으로 설정하였음
+  - weight_decay : 1e-06
   - hidden_dim : 512
   - dropout : 0.1
+  - num_encoder_layers : 7
   - rnn_type : lstm
+  - max_len : 100 # 데이터에 따라 다르게 설정 가능
 
 <br/>
 
