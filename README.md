@@ -49,10 +49,10 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - final_lr : 1e-06
   - peak_lr : 1e-04
   - init_lr_scale : 0.01
-  - final_lr_scale : 0.10
-  - max_grad_norm : 5
-  - warmup_steps : 1000 # 1 epoch 전체 step 의 약 10% 부근으로 설정하였음
-  - weight_decay : 1e-06
+  - final_lr_scale : 0.05
+  - max_grad_norm : 400
+  - warmup_steps : 400
+  - weight_decay : 1e-05
   - hidden_dim : 512
   - dropout : 0.1
   - num_encoder_layers : 7
