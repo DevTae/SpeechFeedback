@@ -108,7 +108,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 - 다음 파일(supervised_trainer.py)에서 cp949 인코딩 방식 때문에 오류가 발생한다면 utf8 로 바꾸어야 한다.
 
-- 만약, CTC Loss 계산식에서 nan 이 뜨는 것을 방지하고 싶다면 **하이퍼 파라미터 수정**을 하거나 `torch.nan_to_num(outputs)` 함수를 이용한다.
+- 만약, CTC Loss 계산식에서 nan 이 뜨는 것을 방지하고 싶다면 **데이터 보정** 및 **하이퍼 파라미터 수정**을 하거나 `torch.nan_to_num(outputs)` 함수를 이용한다.
 
 <br/>
 
