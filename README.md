@@ -55,16 +55,16 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
     - 평가 지표(CER)가 개선하는데에 필요한 데이터 개수가 logarithmic 하게 늘지 않고, linear 하게 늘어나는 상황이 적절한 learning rate 인 것으로 보임.
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴.
     - 낮은 batch_size 와 낮은 learning rate 의 조합이 좋음.
-  - max_grad_norm : 20
-  - warmup_steps : 1000
-    - 1 epoch step 의 약 10% 가량으로 설정하였음
-  - weight_decay : 1e-04
-  - hidden_dim : 512
+  - max_grad_norm : 400
+  - warmup_steps : 400
+  - weight_decay : 1e-05
+  - hidden_dim : 1024
   - dropout : 0.1
   - num_encoder_layers : 7
   - rnn_type : lstm
   - max_len : 100
     - 데이터에 따라 다르게 설정 가능
+  - spec_augment : false
 
 <br/>
 
