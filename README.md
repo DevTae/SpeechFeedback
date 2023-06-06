@@ -52,7 +52,6 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - init_lr_scale : 0.01
   - final_lr_scale : 0.05
     - learning rate 설정의 경우, 데이터와 상황에 따라 다르게 설정될 수 있음.
-    - 평가 지표(CER)가 개선하는데에 필요한 데이터 개수가 logarithmic 하게 늘지 않고, linear 하게 늘어나는 상황이 적절한 learning rate 인 것으로 보임.
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴.
     - 낮은 batch_size 와 낮은 learning rate 의 조합이 좋음.
   - max_grad_norm : 400
