@@ -44,8 +44,8 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
 - 하이퍼 파라미터 튜닝
   - num_epochs : **20**
   - batch_size : 32
-  - optimizer : **radam**
-    - Rectified Adam 적용
+  - optimizer : **adamp**
+    - [clovaai/AdamP](https://github.com/clovaai/adamp)
   - init_lr : 1e-06
   - final_lr : 1e-06
   - peak_lr : 1e-04
