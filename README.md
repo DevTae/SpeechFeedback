@@ -44,7 +44,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
 - 하이퍼 파라미터 튜닝
   - num_epochs : 20
   - batch_size : 32
-  - optimizer : adam
+  - optimizer : **radam**
   - init_lr : 1e-06
   - final_lr : 1e-06
   - peak_lr : 1e-04
@@ -58,8 +58,8 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - weight_decay : 1e-05
   - hidden_dim : 1024
   - dropout : 0.3
-  - num_encoder_layers : 3
-  - rnn_type : gru
+  - num_encoder_layers : **5**
+  - rnn_type : **lstm**
   - max_len : 400
     - 데이터 출력층에 따라 다르게 설정 가능
   - spec_augment : **false**
