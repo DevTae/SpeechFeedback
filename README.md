@@ -44,7 +44,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
 - 하이퍼 파라미터 튜닝
   - num_epochs : 20
   - batch_size : 32
-  - optimizer : adamp
+  - optimizer : **adamp**
     - [clovaai/AdamP](https://github.com/clovaai/adamp)
   - init_lr : 1e-06
   - final_lr : 1e-06
@@ -57,14 +57,16 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
     - 낮은 batch_size 와 낮은 learning rate 의 조합이 좋음.
   - max_grad_norm : 400
   - warmup_steps : 400
+    - 1 epoch step 의 약 5~10% 로 설정하였음
   - weight_decay : 1e-05
   - hidden_dim : 1024
-  - dropout : 0.1
+  - dropout : 0.3
   - num_encoder_layers : 7
   - rnn_type : lstm
-  - max_len : 100
-    - 데이터에 따라 다르게 설정 가능
-  - spec_augment : false
+  - max_len : **100**
+    - 데이터 출력층에 따라 다르게 설정 가능
+  - spec_augment : **false**
+    - 빠른 러닝을 위하여 비활성화하였음
 
 <br/>
 
