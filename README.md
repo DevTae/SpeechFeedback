@@ -39,34 +39,35 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa)
     - ipa_converter.py 및 csv 폴더로 변환 완료
   - ipa_converter.py 및 preprocess.py 이용하여 전처리 진행
-  - Train : Validation : Test = 270000 : 30000 : 32264
+  - Mock-up test 를 위하여 Train : Validation = 9000 : 1000 으로 진행
+  - 실제 모델 학습을 위하여 Train : Validation : Test = 270000 : 30000 : 32264 으로 진행
 
 - 하이퍼 파라미터 튜닝
-  - num_epochs : **20**
+  - num_epochs : **50**
   - batch_size : 32
   - optimizer : **adamp**
     - [clovaai/AdamP](https://github.com/clovaai/adamp)
   - init_lr : 1e-06
   - final_lr : 1e-06
   - peak_lr : 1e-04
-  - init_lr_scale : 0.01
-  - final_lr_scale : 0.05
     - learning rate 설정의 경우, 데이터와 상황에 따라 다르게 설정될 수 있음
     - 낮은 batch_size (=32) 와 낮은 learning rate (=1e-04) 의 조합
     - 1 epoch 결과로 CRR 가 20% 이상 나오게 하는 것이 목표
+  - init_lr_scale : 0.01
+  - final_lr_scale : 0.05
   - max_grad_norm : 400
-  - warmup_steps : **8000**
+  - warmup_steps : **(1 epoch step size 만큼 (ex. 280, 8000, ..))**
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴
-    - 빠르게 warming-up 하게 된다면 local optima 에 갇힐 수 있음
+    - 너무 빠르게 warming-up (Tri-Stage Learning Rate Scheduler 사용) 하게 된다면 local optima 에 갇힐 수 있음
     - 따라서, 현재 1 epoch step size 만큼 warming-up step 진행하도록 설정
   - weight_decay : 1e-05
   - hidden_dim : 1024
-  - dropout : 0.3
-  - num_encoder_layers : **7**
-    - LSTM 모델의 레이어 개수에 따라 성능 차이가 많이 나는 것을 확인
-  - rnn_type : **lstm**
-  - max_len : **100**
-    - 데이터 출력층에 따라 다르게 설정 가능
+  - dropout : 0.1
+  - num_encoder_layers : **5**
+    - RNN 레이어 개수에 따라 성능 차이가 많이 나는 것을 확인
+  - rnn_type : gru
+  - max_len : **200**
+    - 데이터 출력층에 따라 다르게 설정 가능 (평균 길이 2배 가량)
   - spec_augment : **false**
     - 빠른 학습을 위하여 비활성화
 
