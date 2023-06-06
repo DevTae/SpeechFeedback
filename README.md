@@ -39,11 +39,11 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa)
     - ipa_converter.py 및 csv 폴더로 변환 완료
   - ipa_converter.py 및 preprocess.py 이용하여 전처리 진행
-  - Mock-up test 를 위하여 Train : Validation = 9000 : 1000 으로 진행
-  - 실제 모델 학습을 위하여 Train : Validation : Test = 270000 : 30000 : 32264 으로 진행
+  - 우선, Mock-up test 를 위하여 `Train : Validation : Test = 9000 : 1000 : (32264)` 으로 진행
+  - 이후, 실제 모델 학습을 위하여 `Train : Validation : Test = 270000 : 30000 : 32264` 으로 진행
 
 - 하이퍼 파라미터 튜닝
-  - num_epochs : **50**
+  - num_epochs : **70**
   - batch_size : 32
   - optimizer : **adamp**
     - [clovaai/AdamP](https://github.com/clovaai/adamp)
@@ -62,10 +62,10 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
     - 따라서, 현재 1 epoch step size 만큼 warming-up step 진행하도록 설정
   - weight_decay : 1e-05
   - hidden_dim : 1024
-  - dropout : 0.1
-  - num_encoder_layers : **5**
+  - dropout : **0.3**
+  - num_encoder_layers : **7**
     - RNN 레이어 개수에 따라 성능 차이가 많이 나는 것을 확인
-  - rnn_type : gru
+  - rnn_type : **lstm**
   - max_len : **200**
     - 데이터 출력층에 따라 다르게 설정 가능 (평균 길이 2배 가량)
   - spec_augment : **false**
