@@ -52,7 +52,6 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - peak_lr : 1e-04
     - learning rate 설정의 경우, 데이터와 상황에 따라 다르게 설정될 수 있음
     - 낮은 batch_size (=32) 와 낮은 learning rate (=1e-04) 의 조합
-    - 1 epoch 결과로 CRR 가 20% 이상 나오게 하는 것이 목표
   - init_lr_scale : 0.01
   - final_lr_scale : 0.05
   - max_grad_norm : 400
