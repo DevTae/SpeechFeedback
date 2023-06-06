@@ -58,7 +58,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - weight_decay : 1e-05
   - hidden_dim : 1024
   - dropout : 0.3
-  - num_encoder_layers : **7**
+  - num_encoder_layers : 3
   - rnn_type : **lstm**
   - max_len : 400
     - 데이터 출력층에 따라 다르게 설정 가능
