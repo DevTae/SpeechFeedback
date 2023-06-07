@@ -15,6 +15,8 @@
 import os
 import re
 import librosa
+
+import sys
 #import ipa_converter # 만약 ipa_converter 이용 시, /workspace/kospeech/dataset/kspon 폴더에 csv/* 와 ipa_converter.py 를 옮겨야 한다.
 
 def bracket_filter(sentence, mode='phonetic'):
@@ -54,23 +56,24 @@ def bracket_filter(sentence, mode='phonetic'):
 
     return new_sentence
 
-# Edited by DevTae
+
 def special_filter(sentence, mode='phonetic', replace=None):
     new_sentence = str()
-    for idx, ch in enumerate(sentence):
+    for idx, ch in enumerate(sentence.replace("\n", " ")):
         if re.search(r"[ㄱ-ㅎ가-힣ㅏ-ㅣ]", ch) is None:
             if not (ch == '!' or ch == '?' or ch == '.' or ch == ',' or ch == ' '):
-                return None
+                continue
         new_sentence += ch
 
     pattern = re.compile(r'\s\s+') # 스페이스바 두 번 이상일 때
     new_sentence = re.sub(pattern, ' ', new_sentence.strip())
     return new_sentence
 
+
 def sentence_filter(raw_sentence, mode, replace=None):
     return special_filter(bracket_filter(raw_sentence, mode), mode, replace)
 
-# Edited by DevTae
+
 def preprocess(dataset_path, mode='phonetic'):
     print('preprocess started..')
 
@@ -78,46 +81,37 @@ def preprocess(dataset_path, mode='phonetic'):
     transcripts = list()
 
     BASE_PATH = dataset_path
-    META_PATH = "/1.Training/1.라벨링데이터/{THEME_FOLDER}/{THEME_LABEL}_{NUM}/{THEME_LABEL}_{NUM}_metadata.txt" # ipa 일때 .txt -> _ipa.txt 변경
-    THEME_INFO = { "1.방송" : [ "broadcast", 5 ],
-                   "2.취미" : [ "hobby", 1 ],
-                   "3.일상안부" : [ "dialog", 4 ],
-                   "4.생활" : [ "life", 10 ],
-                                   "5.날씨" : [ "weather", 3 ],
-                                   "6.경제" : [ "economy", 4 ],
-                                   "7.놀이" : [ "play", 2 ],
-                                   "8.쇼핑" : [ "shopping", 2] }
+    META_PATH = "/전시문_통합_스크립트/KsponSpeech_scripts/train.trn"
+        path = BASE_PATH + META_PATH
 
-    paths = []
+    if not os.path.isfile(path):
+        raise Exception("[error] the metadata file is not found.")
 
-    for key, value in THEME_INFO.items():
-            for i in range(1, value[1] + 1, 1):
-                    metafile = BASE_PATH + META_PATH.replace("{THEME_FOLDER}", key).replace("{THEME_LABEL}", value[0]).replace("{NUM}", "{0:0>2d}".format(i))
-                    paths.append(metafile)
-
-    for i, path in enumerate(paths, start=1):
-        if not os.path.isfile(path):
-            continue
-
-        with open(path, "r", encoding='utf8') as f:
-            for j, line in enumerate(f.readlines(), start=1):
-                datas = line.split('|')
-                audio_path = BASE_PATH + datas[0].strip()
-                sentence = str()
-                try:
-                    with open(audio_path.replace(".wav", ".txt"), "r", encoding="utf8") as sentence_f: # ipa 일때 .txt -> _ipa.txt 변경
-                        sentence = sentence_filter(sentence_f.read(), mode=mode) # ipa 일때 ipa 변환 함수 호출 추가
-                
-                    # 시간 대비 데이터 밀집도 기준 outlier 데이터들에 대하여 except 처리 진행 (audio_check_data.py 참고)
-                    audio_duration = librosa.get_duration(librosa.load(audio_path, sr)[0], sr=16000)
-                    transcript_length = len(sentence)
-                    ratio = audio_duration / transcript_length
-                    if ratio > 0.2316 or ratio < 0.1047:
-                        continue
-                        
-                    audio_paths.append(audio_path)
-                    transcripts.append(sentence)
-                    # transcripts.append(ipa_converter.applyRulesToHangulTotal(sentence)) # ipa_convert 이용 시 이것으로 변경.
-                except:
+    with open(path, "r", encoding='utf8') as f:
+        for j, line in enumerate(f.readlines(), start=1):
+            datas = line.split(' :: ')
+            audio_path = BASE_PATH + "/한국어_음성_분야/" + datas[0].strip()
+            sentence = str()
+            try:
+                with open(audio_path.replace(".pcm", ".txt"), "r", encoding="utf8") as sentence_f:
+                    sentence = sentence_filter(sentence_f.read(), mode=mode)
+                if sentence is None:
                     continue
+
+                # 라벨링 데이터 대비 음성 길이 비율을 바탕으로 필터링 진행
+                # 한 번 필터 없이 돌린 이후 audio_data_audio_length.py 바탕으로 판단 후 적용
+                #audio_duration = librosa.get_duration(librosa.load(audio_path, sr=16000)[0], sr=16000)
+                #transcript_length = len(sentence)
+                #ratio = audio_duration / transcript_length
+                #if ratio > 0.2316 or ratio < 0.1047:
+                #    continue
+
+                audio_paths.append(audio_path)
+                transcripts.append(sentence)
+                #transcripts.append(ipa_converter.applyRulesToHangulToTotal(sentence)) # ipa_convert 이용 시 위 코드 주석한 후 해당 코드 주석 해제
+
+            except:
+                print(audio_path)
+                continue
+
     return audio_paths, transcripts
