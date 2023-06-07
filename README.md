@@ -40,6 +40,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
     - ipa_converter.py 및 csv 폴더로 변환 완료
   - ipa_converter.py 및 preprocess.py 이용하여 전처리 진행
   - 우선, Mock-up test 를 위하여 `KsponSpeech_01.zip` 으로 학습 진행
+  - `Training : Validation : Test = 80000 : 20000 : 24000` 으로 설정
 
 - 하이퍼 파라미터 튜닝
   - num_epochs : **20**
