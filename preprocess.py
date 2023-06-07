@@ -82,7 +82,7 @@ def preprocess(dataset_path, mode='phonetic'):
 
     BASE_PATH = dataset_path
     META_PATH = "/전시문_통합_스크립트/KsponSpeech_scripts/train.trn"
-        path = BASE_PATH + META_PATH
+    path = BASE_PATH + META_PATH
 
     if not os.path.isfile(path):
         raise Exception("[error] the metadata file is not found.")
