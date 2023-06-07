@@ -1,0 +1,23 @@
+Feature,Korean
+syl,음절
+son,음성
+cons,자음
+cont,연속
+delrel,지연 방출
+lat,측설음
+nas,코음
+strid,성문 파동음
+voi,유성음
+sg,단일 구강
+cg,복합 구강
+ant,전설음
+cor,중설음
+distr,확산음
+lab,양순음
+hi,고음
+lo,저음
+back,후설음
+round,원순음
+velaric,속구개음
+tense,긴장음
+long,장음
