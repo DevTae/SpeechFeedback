@@ -93,7 +93,7 @@ def preprocess(dataset_path, mode='phonetic'):
             audio_path = BASE_PATH + "/한국어_음성_분야/" + datas[0].strip()
             sentence = str()
             try:
-                with open(audio_path.replace(".pcm", ".txt"), "r", encoding="utf8") as sentence_f:
+                with open(audio_path.replace(".pcm", ".txt"), "r", encoding="cp949") as sentence_f: # utf8 -> cp949 (한국어 음성 데이터셋)
                     sentence = sentence_filter(sentence_f.read(), mode=mode)
                 if sentence is None:
                     continue
@@ -108,7 +108,7 @@ def preprocess(dataset_path, mode='phonetic'):
 
                 audio_paths.append(audio_path)
                 #transcripts.append(sentence)
-                transcripts.append(ipa_converter.applyRulesToHangulToTotal(sentence)) # ipa_convert 이용 시 위 코드 주석한 후 해당 코드 주석 해제
+                transcripts.append(ipa_converter.applyRulesToHangulTotal(sentence)) # ipa_convert 이용 시 위 코드 주석한 후 해당 코드 주석 해제
 
             except:
                 print(audio_path)
