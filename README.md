@@ -34,16 +34,15 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - PyTorch version : 1.9.0+cu111
 
 - 음성 데이터 수집 및 전처리
-  - 데이터셋 : [AIHub 한국인 대화음성](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=130)
+  - 데이터셋 : [AIHub 한국어 음성](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=123)
   - IPA 변환기 : [표준발음 변환기](http://pronunciation.cs.pusan.ac.kr/)
   - IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa)
     - ipa_converter.py 및 csv 폴더로 변환 완료
   - ipa_converter.py 및 preprocess.py 이용하여 전처리 진행
-  - 우선, Mock-up test 를 위하여 `Train : Validation : Test = 9000 : 1000 : (32264)` 으로 진행
-  - 이후, 실제 모델 학습을 위하여 `Train : Validation : Test = 270000 : 30000 : 32264` 으로 진행
+  - 우선, Mock-up test 를 위하여 `KsponSpeech_01.zip` 으로 학습 진행
 
 - 하이퍼 파라미터 튜닝
-  - num_epochs : **70**
+  - num_epochs : **50**
   - batch_size : 32
   - optimizer : **adamp**
     - [clovaai/AdamP](https://github.com/clovaai/adamp)
@@ -55,7 +54,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - init_lr_scale : 0.01
   - final_lr_scale : 0.05
   - max_grad_norm : 400
-  - warmup_steps : **(1 epoch step size 만큼 (ex. 280, 8000, ..))**
+  - warmup_steps : 400
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴
     - 너무 빠르게 warming-up (Tri-Stage Learning Rate Scheduler 사용) 하게 된다면 local optima 에 갇힐 수 있음
     - 따라서, 현재 1 epoch step size 만큼 warming-up step 진행하도록 설정
@@ -76,12 +75,12 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
 
 KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
-1. `sudo docker run -it --gpus all --name devtae -v {하위 디렉토리}/한국인\ 대화\ 음성/Training/data/remote/PROJECT/AI학습데이터/KoreanSpeech/data:/workspace/data devtae/kospeech`
-    - 공유 디렉토리 기능을 사용하여, `{하위 디렉토리}/한국인\ 대화\ 음성/Training/data/remote/PROJECT/AI학습데이터/KoreanSpeech/data` 폴더에 있는 파일들이 `/workspace/data` 과 연동된다.
+1. `sudo docker run -it --gpus all --name devtae -v {하위 디렉토리}/한국어\ 음성:/workspace/data devtae/kospeech`
+    - 공유 디렉토리 기능을 사용하여, `{하위 디렉토리}/한국어\ 음성` 폴더에 있는 파일들이 `/workspace/data` 과 연동된다.
 
-2. `sudo docker attach devtae`
+2. `sudo docker attach devtae` 를 실행한 뒤, Docker 이미지 내에서 작업한다.
 
-또는 [sooftware/kospeech](https://github.com/sooftware/kospeech) 를 Clone 하여 사용할 것.
+또는 [sooftware/kospeech](https://github.com/sooftware/kospeech) 를 Clone 하여 로컬 환경에서 진행할 것.
 
 <br/>
 
@@ -135,7 +134,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 - 아래 코드를 바탕으로 해당 오디오 파일에 대하여 추론을 한다.
 
-- `python3 ./bin/inference.py --model_path /workspace/kospeech/outputs/{date}/{time}/model.pt --audio_path /workspace/data/1.Training/2.원천데이터/1.방송/broadcast_01/001/broadcast_00000001.wav --device "cpu"`
+- `python3 ./bin/inference.py --model_path /workspace/kospeech/outputs/{date}/{time}/model.pt --audio_path /workspace/data/{sub_path}/{audio_file}.wav --device "cpu"`
 
 <br/>
 
