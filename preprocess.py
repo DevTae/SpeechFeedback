@@ -107,8 +107,8 @@ def preprocess(dataset_path, mode='phonetic'):
                 #    continue
 
                 audio_paths.append(audio_path)
-                transcripts.append(sentence)
-                #transcripts.append(ipa_converter.applyRulesToHangulToTotal(sentence)) # ipa_convert 이용 시 위 코드 주석한 후 해당 코드 주석 해제
+                #transcripts.append(sentence)
+                transcripts.append(ipa_converter.applyRulesToHangulToTotal(sentence)) # ipa_convert 이용 시 위 코드 주석한 후 해당 코드 주석 해제
 
             except:
                 print(audio_path)
