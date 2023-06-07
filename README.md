@@ -43,23 +43,22 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
 
 - 하이퍼 파라미터 튜닝
   - num_epochs : **50**
-  - batch_size : **4 또는 32**
-  - optimizer : **adamp**
-    - [clovaai/AdamP](https://github.com/clovaai/adamp)
-  - init_lr : 1e-06
-  - final_lr : 1e-06
-  - peak_lr : 1e-04
+  - batch_size : **1 또는 32** (데이터셋에 맞게 설정)
+  - optimizer : **radam**
+    - adaptive learning rate 분산을 rectify 함
+  - init_lr : 1e-05
+  - final_lr : 1e-05
+  - peak_lr : 1e-03
     - learning rate 설정의 경우, 데이터와 상황에 따라 다르게 설정될 수 있음
-    - 낮은 batch_size (=32) 와 낮은 learning rate (=1e-04) 의 조합
   - init_lr_scale : 0.01
   - final_lr_scale : 0.05
   - max_grad_norm : 400
   - warmup_steps : 400
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴
     - 너무 빠르게 warming-up (Tri-Stage Learning Rate Scheduler 사용) 하게 된다면 local optima 에 갇힐 수 있음
-  - weight_decay : 1e-05
+  - weight_decay : 1e-04
   - hidden_dim : 1024
-  - dropout : **0.1**
+  - dropout : 0.3
   - num_encoder_layers : **3**
     - RNN 레이어 개수에 따라 학습 성능 차이가 많이 나는 것을 확인
   - rnn_type : **lstm**
