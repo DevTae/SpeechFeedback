@@ -39,8 +39,8 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa)
     - ipa_converter.py 및 csv 폴더로 변환 완료
   - ipa_converter.py 및 preprocess.py 이용하여 전처리 진행
-  - 우선, Mock-up test 를 위하여 `KsponSpeech_01.zip` 으로 학습 진행
-  - `Training : Validation : Test = 80000 : 20000 : 24000` 으로 설정
+  - 우선, Mock-up test 를 위하여 `KsponSpeech_01.zip, Training : Validation : Test = 80000 : 20000 : 24000` 으로 학습 진행
+  - 이후 전체 데이터에 대하여 학습 진행하였음
 
 - 하이퍼 파라미터 튜닝
   - num_epochs : **20**
@@ -97,7 +97,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 5. 그 결과, `main.py` 가 있던 디렉토리에 `transcripts.txt` 가 생기고, 단어 사전은 설정된 `VOCAB_DEST` *(/workspace/data/vocab)* 폴더에 저장된다.
 
-- 해당 레포에 있는 코드는 `1.Training` 에 대한 데이터를 모두 전처리하는 것이며, `2.Validation` 데이터를 이용하지 않는다. 따라서 별 다른 수정 없이 사용한다면, `1.Training` 에서 원하는 데이터들을 바탕으로 transcripts 를 형성시키고, 그 중에서도 일부를 떼어내 따로 evaluation 용 `transcripts_test.txt` 파일을 만들어 사용하면 된다.
+- 해당 레포에 있는 코드는 Training 데이터에 대해서만 전처리하는 것이며, Evaluation 데이터를 이용하지 않는다. 따라서 별 다른 수정 없이 사용한다면, Training 에서 원하는 데이터들을 바탕으로 transcripts 를 형성시키고, 그 중에서도 일부를 떼어내 따로 evaluation 용 `transcripts_test.txt` 파일을 만들어 사용하면 된다.
 
 <br/>
 
@@ -118,6 +118,12 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 - 다음 파일(supervised_trainer.py)에서 cp949 인코딩 방식 때문에 오류가 발생한다면 utf8 로 바꾸어야 한다.
 
 - 만약, CTC Loss 계산식에서 nan 이 뜨는 것을 방지하고 싶다면 **데이터 보정** 및 **하이퍼 파라미터 수정**을 하거나 `torch.nan_to_num(outputs)` 함수를 이용한다.
+
+- 수차례의 시행착오 후에 배운 점 (하이퍼파라미터 튜닝)
+  - 질 좋은 음성 데이터가 많으면 많을수록 성능이 비교적 향상됨 (약 50만 개 이상의 데이터)
+  - epoch 을 많이 진행해보아도 20 번 이상으로 넘어간 이후에는 대부분이 수렴함
+  - learning rate 는 너무 높지도 너무 낮지도 않으면 됨 (발산하거나 local minima 에 걸리지 않도록)
+  - 데이터가 적다면 오히려 batch_size 를 줄여 step 크기를 늘리는 방법이 있음
 
 <br/>
 
