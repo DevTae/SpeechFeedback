@@ -123,7 +123,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
   - 질 좋은 음성 데이터가 많으면 많을수록 성능이 비교적 향상됨 (약 50만 개 이상의 데이터)
   - epoch 을 많이 진행해보아도 20 번 이상으로 넘어간 이후에는 대부분이 수렴함
   - learning rate 는 너무 높지도 너무 낮지도 않으면 됨 (발산하거나 local minima 에 걸리지 않도록)
-  - 데이터가 적다면 오히려 batch_size 를 줄여 step 크기를 늘리는 방법이 있음
+  - 데이터가 적다면 오히려 batch_size 를 줄여 step 횟수를 늘리는 방법이 있음
 
 <br/>
 
