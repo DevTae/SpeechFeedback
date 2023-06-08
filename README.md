@@ -40,7 +40,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
     - ipa_converter.py 및 csv 폴더로 변환 완료
   - ipa_converter.py 및 preprocess.py 이용하여 전처리 진행
   - 우선, Mock-up test 를 위하여 `KsponSpeech_01.zip, Training : Validation : Test = 80000 : 20000 : 24000` 으로 학습 진행
-  - 이후 전체 데이터에 대하여 다음과 같이 학습을 진행하였음 (`Training : Validation : Test = 600000 : 10000 : 10000`)
+  - 이후 전체 데이터에 대하여 다음과 같이 학습을 진행하였음 (`Training : Validation : Test = 500000 : 10000 : 10000`)
     - Validation 과 Test 에는 10,000 개의 데이터로 충분하다고 생각하여 나머지는 Training 에 집중하였음
 
 - 하이퍼 파라미터 튜닝
@@ -64,8 +64,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
     - RNN 레이어 개수에 따라 학습 성능 차이가 많이 나는 것을 확인
   - rnn_type : gru
   - max_len : 400
-  - spec_augment : **false**
-    - 빠른 학습을 위하여 비활성화
+  - spec_augment : True
 
 <br/>
 
