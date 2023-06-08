@@ -64,7 +64,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - num_encoder_layers : **3**
     - RNN 레이어 개수에 따라 학습 성능 차이가 많이 나는 것을 확인
   - rnn_type : **lstm**
-  - max_len : **150**
+  - max_len : **200**
     - 데이터 출력층에 따라 다르게 설정 가능 (평균 길이 2배 가량)
   - spec_augment : **false**
     - 빠른 학습을 위하여 비활성화
