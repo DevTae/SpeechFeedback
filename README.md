@@ -16,6 +16,7 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
 4. [How to evaluate `Deep Speech 2` model](#how-to-evaluate-deep-speech-2-model)
 5. [How to inference the audio file using `Deep Speech 2` model](#how-to-inference-the-audio-file-using-deep-speech-2-model)
 6. [Performance After Using IPA](#performance-after-using-ipa)
+7. [ETC](#etc)
 
 <br/>
 
@@ -117,12 +118,6 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 - 만약, CTC Loss 계산식에서 nan 이 뜨는 것을 방지하고 싶다면 **데이터 보정** 및 **하이퍼 파라미터 수정**을 하거나 `torch.nan_to_num(outputs)` 함수를 이용한다.
 
-- 수차례의 시행착오 후에 배운 점 (하이퍼파라미터 튜닝)
-  - 질 좋은 음성 데이터가 많으면 많을수록 성능이 비교적 향상됨 (약 50만 개 이상의 데이터)
-  - epoch 을 많이 진행해보아도 20 번 이상으로 넘어간 이후에는 대부분이 수렴함
-  - learning rate 는 너무 높지도 너무 낮지도 않으면 됨 (발산하거나 local minima 에 걸리지 않도록)
-  - 데이터가 적다면 오히려 batch_size 를 줄여 step 횟수를 늘리는 방법이 있음
-
 <br/>
 
 ### How to evaluate `Deep Speech 2` model
@@ -146,4 +141,20 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 ![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/5fb8dd51-dbc6-44ee-aedd-43be06d51e28)
 
 - 단어사전 경우의 수를 **2000 → 34 개**로 축소할 수 있었다.
+
+<br/>
+
+### ETC
+
+- 수차례의 시행착오 후에 배운 점 (하이퍼파라미터 튜닝)
+  - 질 좋은 음성 데이터가 많으면 많을수록 성능이 비교적 향상됨 (약 50만 개 이상의 데이터)
+  - epoch 을 많이 진행해보아도 20 번 이상으로 넘어간 이후에는 대부분이 수렴함
+  - learning rate 는 너무 높지도 너무 낮지도 않으면 됨 (발산하거나 local minima 에 걸리지 않도록)
+  - 데이터가 적다면 오히려 batch_size 를 줄여 step 횟수를 늘리는 방법이 있음
+
+- 학습 중 무한 로딩이 걸리는 현상 해결
+  - 대용량 데이터를 바탕으로 학습 중 `kospeech/kospeech/trainer/supervised_trainer.py` 의 `queue.get()` 에서 무한 로딩이 걸리게 된다.
+  - 이런 경우에 대하여 데드락이 주요한 원인이라고 판단 중이다. 그 이유는 해당 epoch 내에 학습할 데이터 수는 남아있지만, queue 에 대한 get 함수에서 무한대기를 하기 때문이다.
+  - 따라서, 해당 문제를 해결하기 위해 queue 에 대하여 동기적으로 접근 후 기다리는 `get` 함수가 아닌 queue 의 원소가 없으면 바로 exception raise 하는 `get_nowait()` 함수를 사용하는 방식으로 해결하였다.
+  - 이에 대한 자세한 내용은 해당 [링크](https://github.com/DevTae/SpeechFeedback/blob/main/how_to_solve_the_infinity_loading.md)에서 확인할 수 있다.
 
