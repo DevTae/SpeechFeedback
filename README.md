@@ -59,12 +59,16 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴
     - 너무 빠르게 warming-up (Tri-Stage Learning Rate Scheduler 사용) 하게 된다면 local optima 에 갇힐 수 있음
   - weight_decay : 1e-05
-  - hidden_dim : 1024
-  - dropout : 0.3
-  - num_encoder_layers : 3
+  - bidirectional : True
+  - use_bidirectional : True
+  - hidden_dim : **1280**
+  - dropout : **0.1**
+  - num_encoder_layers : **7**
     - RNN 레이어 개수에 따라 학습 성능 차이가 많이 나는 것을 확인
+    - hidden_dim 이 높은 것보다는 num_encoder_layers 가 높은 것이 성능에 더 좋은 영향을 끼침
   - rnn_type : gru
-  - max_len : 400
+  - max_len : **150**
+    - 데이터셋에 따라 달라짐 (약 평균의 2배로 설정하였음)
   - spec_augment : True
 
 <br/>
