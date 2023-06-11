@@ -73,7 +73,7 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
   - warmup_steps : 400
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴
     - 너무 빠르게 warming-up (Tri-Stage Learning Rate Scheduler 사용) 하게 된다면 local optima 에 갇힐 수 있음
-  - weight_decay : **1e-04**
+  - weight_decay : **6e-05**
   - bidirectional : True
   - use_bidirectional : True
   - hidden_dim : **1280**
