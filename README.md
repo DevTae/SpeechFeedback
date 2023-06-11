@@ -46,7 +46,7 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
 
 - 모델 구조
   - **3-Layer CNN**
-    - 다음 [링크 (SpeechFeedback/3-Layer-CNN.md)](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
+    - [다음 링크](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
   - Bi-directional GRU Layer * 7
     - RNN 레이어 수는 하이퍼 파라미터 튜닝에서 설정 가능
   - Fully Connected Layer * 1
@@ -164,16 +164,29 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 ### ETC
 
-- 수차례의 시행착오 후에 배운 점 (하이퍼파라미터 튜닝)
-  - 질 좋은 음성 데이터가 많으면 많을수록 성능이 비교적 향상됨 (약 50만 개 이상의 데이터)
-  - epoch 을 많이 진행해보아도 20 번 이상으로 넘어간 이후에는 대부분이 수렴함
-  - learning rate 는 너무 높지도 너무 낮지도 않으면 됨 (발산하거나 local minima 에 걸리지 않도록)
-  - 데이터가 적다면 오히려 batch_size 를 줄여 step 횟수를 늘리는 방법이 있음
-  - Momentum 계수가 작다면 local optima 에 걸릴 가능성이 있음
+##### 데이터 종류에 따른 성능 개선
+  - 원본 데이터 들어본 결과, 강의의 오디오를 바탕으로 만든 데이터셋으로 잡음 및 오디오의 전체적인 톤이 높았다.
+  - 따라서, [한국인 대화음성](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=130)에서 [한국어 음성](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=123)으로 바꾼 결과, 오디오가 일반인 대화에 적용하기에 더욱 적합함을 확인할 수 있었다.
 
-- 학습 중 무한 로딩(in threading queue)이 걸리는 현상 해결
+#### 데이터 라벨링 개수 추가 확보에 따른 성능 개선
+  - 이전에는 표준발음 변환기 사이트에서 데이터 수집을 진행하였는데, 사이트 트래픽 문제로 약 1 만 개의 데이터 밖에 훈련에 적용할 수 없는 상태였다.
+  - 따라서, 1 epoch 에 대하여 학습되는 양(batch_size=32 기준으로 step size 가 `625 개`)이 적었다.
+  - GitHub 에 publish 된 R 코드([stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa))를 바탕으로 IPA 변환해주는 파이썬 스크립트로 변환하였고 데이터 수를 `1 만 개`에서 `60 만 개`까지 늘릴 수 있었다.
+  - 그 결과 1 epoch 에 대한 step size 가 `37500 개`로 약 60배 커졌고 동일 epoch 에 대하여 CER 이 향상될 수 있었다.
+
+#### CNN 및 RNN 레이어 수 상승을 통한 성능 개선
+  - Deep Speech 2 논문에 있는 내용을 바탕으로 모델 구조를 적용하고자 하였는데, KoSpeech 의 기본 구조는 `CNN * 2, RNN * 3` 으로 구성되어 있었다.
+  - Baidu 의 Deep Speech 2 논문에 따르면 `CNN * 3, RNN * 7` 가 성능이 좋다는 것을 찾을 수 있었다.
+  - 발음 피드백 시스템 적용을 위하여 심층적인 모델이 필요하다고 판단하였고, 이를 적용하기 위해 [코드를 수정](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)할 수 있었다.
+  - 그 결과, 성능에 긍정적인 영향을 끼치는 것을 확인하였고 `CER 이 수렴되는 시점` 또한 늦출 수 있었다.
+
+#### Momentum 계수 수정을 통한 성능 개선
+  - Deep Speech 2 논문 내용을 바탕으로 BatchNorm 에 대하여 momentum 계수를 0.99 으로 적용하는 것을 알 수 있었다.
+  - 하지만, KoSpeech 의 기본 설정은 0.1 이었고, 이에 따라, 모든 BatchNorm 에 대하여 momentum 계수에 0.99 를 적용할 수 있었다.
+  - 이러한 결과로 `local minima 현상을 억제`할 수 있었으며 `CER 감소 추세가 보다 linear 하게` 바뀐 것을 확인할 수 있었다.
+
+#### 학습 중 무한 로딩(in threading queue)이 걸리는 현상 해결
   - 대용량 데이터를 바탕으로 학습 중 `kospeech/kospeech/trainer/supervised_trainer.py` 의 `queue.get()` 에서 무한 로딩이 걸리게 된다.
   - 이런 경우에 대하여 데드락이 주요한 원인이라고 판단 중이다. 그 이유는 해당 epoch 내에 학습할 데이터 수는 남아있지만, queue 에 대한 get 함수에서 무한대기를 하기 때문이다.
   - 따라서, 해당 문제를 해결하기 위해 queue 에 대하여 동기적으로 접근 후 기다리는 `get` 함수가 아닌 queue 의 원소가 없으면 바로 exception raise 하는 `get_nowait()` 함수를 사용하는 방식으로 해결하였다.
-  - 이에 대한 자세한 내용은 해당 [링크 (SpeechFeedback/how_to_solve_the_infinity_loading.md)](https://github.com/DevTae/SpeechFeedback/blob/main/how_to_solve_the_infinity_loading.md)에서 확인할 수 있다.
-
+  - 이에 대한 자세한 해결 방법은 해당 [링크](https://github.com/DevTae/SpeechFeedback/blob/main/how_to_solve_the_infinity_loading.md)에서 확인할 수 있다.
