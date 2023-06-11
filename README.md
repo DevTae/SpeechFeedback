@@ -165,7 +165,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 ### ETC
 
 ##### 데이터 종류에 따른 성능 개선
-  - 원본 데이터 들어본 결과, 강의의 오디오를 바탕으로 만든 데이터셋으로 잡음 및 오디오의 전체적인 톤이 높았다.
+  - 원본 데이터를 직접 들어본 결과, 강의의 오디오를 바탕으로 만든 데이터셋으로 잡음 및 오디오의 전체적인 톤이 높았다.
   - 따라서, [한국인 대화음성](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=130)에서 [한국어 음성](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=123)으로 바꾼 결과, 오디오가 일반인 대화에 적용하기에 더욱 적합함을 확인할 수 있었다.
 
 #### 데이터 라벨링 개수 추가 확보에 따른 성능 개선
