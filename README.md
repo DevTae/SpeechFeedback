@@ -50,7 +50,7 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
     - 필요한 경우에만 진행할 것. *(2-Layer CNN 또한 가능함)*
   - Bi-directional GRU Layer x 7
     - RNN 레이어 수는 하이퍼 파라미터 튜닝에서 설정 가능
-    - *(2-Layer CNN + Bi-directional GRU Layer x 3 조합 또한 가능함)*
+    - (2-Layer CNN + Bi-directional GRU Layer x 3 조합 또한 가능함)
   - Fully Connected Layer x 1
   - Batch Normalization
     - 모든 레이어에 momentum=0.99 으로 설정
@@ -79,11 +79,12 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
   - reduction : **sum**
   - bidirectional : True
   - use_bidirectional : True
-  - hidden_dim : **1880** (when using RNN x 3) 또는 **1280** (when using RNN x 7)
+  - hidden_dim : **512** (when using RNN x 3 and you want speedy) 또는 **1880** (when using RNN x 3) 또는 **1280** (when using RNN x 7)
   - dropout : **0.1**
   - num_encoder_layers : **3** 또는 **7**
     - RNN 레이어 개수에 따라 학습 성능 차이가 많이 나는 것을 확인
     - hidden_dim 이 높은 것보다는 num_encoder_layers 가 높은 것이 성능에 더 좋은 영향을 끼침
+    - 빠른 학습 속도를 원한다면 hidden_dim 과 num_encoder_layers 둘다 낮은 수치로 사용할 수도 있음
   - rnn_type : **gru**
     - Baidu 의 Deep Speech 2 Paper 에서 제안한 RNN Layer Type 임
   - max_len : **400**
