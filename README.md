@@ -185,10 +185,22 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
   - 발음 피드백 시스템 적용을 위하여 심층적인 모델이 필요하다고 판단하였고, 이를 적용하기 위해 [코드를 수정](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)할 수 있었다.
   - 그 대신, 레이어가 겹쳐질수록 모델의 복잡성이 올라가 학습 속도가 현저히 느려지므로 해당 trade-off 관계에서 적당한 설정으로 접근하고자 하였다.
 
-#### Momentum 계수 수정을 통한 성능 개선
+#### momentum 계수 수정을 통한 학습 성능 개선
   - Deep Speech 2 논문 내용을 바탕으로 모든 BatchNorm 에 대하여 momentum 계수를 0.99 으로 적용하는 것을 알 수 있었다.
   - 하지만, KoSpeech 의 momentum 계수 기본 설정은 0.1 이었고, 이에 따라, 모든 BatchNorm 에 대하여 momentum 계수에 0.99 를 적용할 수 있었다.
-  - 이러한 결과로 `local minima 현상을 억제`할 수 있었으며 `CER 감소 추세가 보다 linear 하게` 바뀐 것을 확인할 수 있었다.
+  - 이러한 결과로 기울기에 이전 관성이 적용되어 `local minima 현상을 억제`할 수 있었으며 `CER 감소 추세가 보다 linear 하게` 바뀐 것을 확인할 수 있었다.
+
+#### warmup step 설정을 통한 local minima 현상 개선
+
+![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/7da12595-4393-495b-8c3e-e8d1487f9f63)
+
+(사진 출처 : [sooftware/pytorch-lr-scheduler](https://github.com/sooftware/pytorch-lr-scheduler))
+
+  - adam optimizer 를 바탕으로 한 학습 초반에는 local minima 가 발생할 확률이 높다.
+  - 이러한 이유로 KoSpeech 에서는 학습 초반의 learning rate 를 조절하는 warmup step 방식인 TriStageLRSchedule 를 적용하였다.
+  - TriStageLRSchedule 스케줄러 알고리즘의 코드를 바탕으로 전체 학습에 대하여 `처음부터 정해진 단계만큼 warmup` 을 하고 `절반까지 최댓값을 유지`했다가 `이후부터는 learning rate 가 감소`하는 방식임을 알 수 있었다.
+  - 해당 스케줄러의 warmup 설정 관점을 보아하니 적어도 전체 step size 의 `10%`(=75000)만큼은 warmup step 으로 설정해야겠음을 느꼈고 이를 적용해보았다.
+  - 그 결과, 이전(=400)에 대비하여 학습 초반부터 높은 loss와 CER 값에 수렴하는 local minima 를 개선할 수 있었다.
 
 #### 학습 중 무한 로딩(in threading queue)이 걸리는 현상 해결
   - 대용량 데이터를 바탕으로 학습 중 `kospeech/kospeech/trainer/supervised_trainer.py` 의 `queue.get()` 에서 무한 로딩이 걸리게 된다.
