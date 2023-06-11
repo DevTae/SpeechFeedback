@@ -24,8 +24,6 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
 
 -----
 
-<br/>
-
 ### Environment Setting
 
 - 실험 환경
@@ -51,7 +49,7 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
     - 다음 [링크(SpeechFeedback/3-Layer-CNN.md)](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
   - Bi-directional GRU Layer * 7
     - RNN 레이어 수는 하이퍼 파라미터 튜닝에서 설정 가능
-  - Fully Connected Layer
+  - Fully Connected Layer * 1
   - Batch Normalization
     - momentum=0.99 으로 설정
       - `kospeech/kospeech/models/deepspeech2/model.py` 에서 `self.batch_norm = nn.BatchNorm1d(input_size, momentum=0.99)` 으로 수정
@@ -158,9 +156,9 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 ### Performance After Using IPA
 
-![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/5fb8dd51-dbc6-44ee-aedd-43be06d51e28)
+![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/ab06eca9-988a-468b-bfa3-ef52a55f4a7a)
 
-- 단어사전 경우의 수(출력층)를 **2000 → 37 개**로 축소할 수 있었다.
+- 단어사전 경우의 수(출력층)를 **2000 → 36 개**로 축소할 수 있었다.
 
 <br/>
 
