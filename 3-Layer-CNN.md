@@ -27,7 +27,7 @@ self.conv = MaskCNN(
 
 - 코드를 확인해보면, `in_channels → out_channels → out_channels` 으로 `1 → 32 → 32` 방식이 적용된다는 것을 볼 수 있다.
 - 필자의 경우에는 IPA 인식을 하기 위하여 세밀한 인식이 필요하므로 3-Layer CNN 방식인 `1 → 32 → 32 → 96` 을 원했다.
-  - 해당 방식은 `Mozilla` 의 `Deep Speech 2` 논문을 바탕으로 최고 성능이 나오게 된 구조임.
+  - 해당 방식은 `Baidu` 의 `Deep Speech 2` 논문을 바탕으로 좋은 성능이 나오게 된 구조임.
 - 따라서, 다음 코드와 같이 변경해주면 된다.
 
 ```python
