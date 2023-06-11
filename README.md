@@ -46,7 +46,7 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
 
 - 모델 구조
   - **3-Layer CNN**
-    - 다음 [링크(SpeechFeedback/3-Layer-CNN.md)](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
+    - 다음 [링크 (SpeechFeedback/3-Layer-CNN.md)](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
   - Bi-directional GRU Layer * 7
     - RNN 레이어 수는 하이퍼 파라미터 튜닝에서 설정 가능
   - Fully Connected Layer * 1
@@ -175,5 +175,5 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
   - 대용량 데이터를 바탕으로 학습 중 `kospeech/kospeech/trainer/supervised_trainer.py` 의 `queue.get()` 에서 무한 로딩이 걸리게 된다.
   - 이런 경우에 대하여 데드락이 주요한 원인이라고 판단 중이다. 그 이유는 해당 epoch 내에 학습할 데이터 수는 남아있지만, queue 에 대한 get 함수에서 무한대기를 하기 때문이다.
   - 따라서, 해당 문제를 해결하기 위해 queue 에 대하여 동기적으로 접근 후 기다리는 `get` 함수가 아닌 queue 의 원소가 없으면 바로 exception raise 하는 `get_nowait()` 함수를 사용하는 방식으로 해결하였다.
-  - 이에 대한 자세한 내용은 해당 [링크(SpeechFeedback/how_to_solve_the_infinity_loading.md)](https://github.com/DevTae/SpeechFeedback/blob/main/how_to_solve_the_infinity_loading.md)에서 확인할 수 있다.
+  - 이에 대한 자세한 내용은 해당 [링크 (SpeechFeedback/how_to_solve_the_infinity_loading.md)](https://github.com/DevTae/SpeechFeedback/blob/main/how_to_solve_the_infinity_loading.md)에서 확인할 수 있다.
 
