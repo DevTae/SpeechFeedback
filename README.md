@@ -76,9 +76,9 @@ KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) �
   - num_encoder_layers : **7**
     - RNN 레이어 개수에 따라 학습 성능 차이가 많이 나는 것을 확인
     - hidden_dim 이 높은 것보다는 num_encoder_layers 가 높은 것이 성능에 더 좋은 영향을 끼침
-  - rnn_type : gru
-  - max_len : **150**
-    - 데이터셋에 따라 달라짐 (약 평균의 2배로 설정하였음)
+  - rnn_type : **lstm**
+  - max_len : **400**
+    - 데이터셋에 따라 달라짐
   - spec_augment : True
 
 <br/>
