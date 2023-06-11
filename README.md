@@ -169,6 +169,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
   - epoch 을 많이 진행해보아도 20 번 이상으로 넘어간 이후에는 대부분이 수렴함
   - learning rate 는 너무 높지도 너무 낮지도 않으면 됨 (발산하거나 local minima 에 걸리지 않도록)
   - 데이터가 적다면 오히려 batch_size 를 줄여 step 횟수를 늘리는 방법이 있음
+  - Momentum 계수가 작다면 local optima 에 걸릴 가능성이 있음
 
 - 학습 중 무한 로딩(in threading queue)이 걸리는 현상 해결
   - 대용량 데이터를 바탕으로 학습 중 `kospeech/kospeech/trainer/supervised_trainer.py` 의 `queue.get()` 에서 무한 로딩이 걸리게 된다.
