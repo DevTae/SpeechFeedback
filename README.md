@@ -61,24 +61,27 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
 - 하이퍼 파라미터 튜닝
   - num_epochs : 20
   - batch_size : 32
-  - optimizer : '**radam**'
-    - `multiplying the rectifier value` 를 통하여 local optima 현상 개선
-  - init_lr : **6e-04**
-  - final_lr : **1e-04**
+  - optimizer : '**adamp**'
+    - [clovaai/AdamP](https://github.com/clovaai/AdamP)
+  - init_lr : **1e-06**
+  - final_lr : **1e-06**
   - peak_lr : **6e-04**
     - learning rate 설정의 경우, 데이터와 상황에 따라 다르게 설정될 수 있음
-  - init_lr_scale : **0.06**
-  - final_lr_scale : **0.01**
+  - init_lr_scale : 0.01
+  - final_lr_scale : 0.05
   - max_grad_norm : 400
-  - warmup_steps : 400
+  - warmup_steps : **75000**
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴
     - 너무 빠르게 warming-up (Tri-Stage Learning Rate Scheduler 사용) 하게 된다면 local optima 에 갇힐 수 있음
-  - weight_decay : **6e-05**
+    - `(적정값) = (total_step) * (total_epoch) * 0.1 = ((train 데이터 수) / (batch_size) * (spec_augment ? 2 : 1)) * (total_epoch) * 0.1`
+      - ex) `(600000 datas / 32 * 2) * 20 epoches * 0.1 = 75000`
+  - weight_decay : **3e-05**
+  - reduction : **sum**
   - bidirectional : True
   - use_bidirectional : True
-  - hidden_dim : **1280**
+  - hidden_dim : **1880** (when using RNN*3) 또는 **1280** (when using RNN*7)
   - dropout : **0.1**
-  - num_encoder_layers : **7**
+  - num_encoder_layers : **3** 또는 **7**
     - RNN 레이어 개수에 따라 학습 성능 차이가 많이 나는 것을 확인
     - hidden_dim 이 높은 것보다는 num_encoder_layers 가 높은 것이 성능에 더 좋은 영향을 끼침
   - rnn_type : **gru**
