@@ -47,8 +47,10 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
 - 모델 구조
   - **3-Layer CNN**
     - [다음 링크](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
+    - 필요한 경우에만 진행할 것. *(2-Layer CNN 또한 가능함)*
   - Bi-directional GRU Layer * 7
     - RNN 레이어 수는 하이퍼 파라미터 튜닝에서 설정 가능
+    - *(2-Layer CNN + Bi-directional GRU Layer * 3 조합 또한 가능함)*
   - Fully Connected Layer * 1
   - Batch Normalization
     - 모든 레이어에 momentum=0.99 으로 설정
@@ -178,11 +180,11 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
   - Deep Speech 2 논문에 있는 내용을 바탕으로 모델 구조를 적용하고자 하였는데, KoSpeech 의 기본 구조는 `CNN * 2, RNN * 3` 으로 구성되어 있었다.
   - Baidu 의 Deep Speech 2 논문에 따르면 `CNN * 3, RNN * 7` 가 성능이 좋다는 것을 찾을 수 있었다.
   - 발음 피드백 시스템 적용을 위하여 심층적인 모델이 필요하다고 판단하였고, 이를 적용하기 위해 [코드를 수정](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)할 수 있었다.
-  - 그 결과, 성능에 긍정적인 영향을 끼치는 것을 확인하였고 `CER 이 수렴되는 시점` 또한 늦출 수 있었다.
+  - 그 대신, 레이어가 겹쳐질수록 모델의 복잡성이 올라가 학습 속도가 현저히 느려지므로 해당 trade-off 관계에서 적당한 설정으로 접근하고자 하였다.
 
 #### Momentum 계수 수정을 통한 성능 개선
-  - Deep Speech 2 논문 내용을 바탕으로 BatchNorm 에 대하여 momentum 계수를 0.99 으로 적용하는 것을 알 수 있었다.
-  - 하지만, KoSpeech 의 기본 설정은 0.1 이었고, 이에 따라, 모든 BatchNorm 에 대하여 momentum 계수에 0.99 를 적용할 수 있었다.
+  - Deep Speech 2 논문 내용을 바탕으로 모든 BatchNorm 에 대하여 momentum 계수를 0.99 으로 적용하는 것을 알 수 있었다.
+  - 하지만, KoSpeech 의 momentum 계수 기본 설정은 0.1 이었고, 이에 따라, 모든 BatchNorm 에 대하여 momentum 계수에 0.99 를 적용할 수 있었다.
   - 이러한 결과로 `local minima 현상을 억제`할 수 있었으며 `CER 감소 추세가 보다 linear 하게` 바뀐 것을 확인할 수 있었다.
 
 #### 학습 중 무한 로딩(in threading queue)이 걸리는 현상 해결
