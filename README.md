@@ -51,9 +51,10 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
     - RNN 레이어 수는 하이퍼 파라미터 튜닝에서 설정 가능
   - Fully Connected Layer * 1
   - Batch Normalization
-    - momentum=0.99 으로 설정
-      - `kospeech/kospeech/models/deepspeech2/model.py` 에서 `self.batch_norm = nn.BatchNorm1d(input_size, momentum=0.99)` 으로 수정
-    - 모든 레이어에 적용
+    - 모든 레이어에 momentum=0.99 으로 설정
+      - `kospeech/kospeech/models/convolution.py` 의 DeepSpeech2Extractor 에서 `nn.BatchNorm2d(-, momentum=0.99)`으로 수정 (CNN Layer)
+      - `kospeech/kospeech/models/deepspeech2/model.py` 에서 `self.batch_norm = nn.BatchNorm1d(input_size, momentum=0.99)` 으로 수정 (RNN Layer)
+      - `kospeech/kospeech/models/deepspeech2/model.py` 에서 `nn.LayerNorm(rnn_output_size)` 로부터 `nn.BatchNorm1d(rnn_output_size, momentum=0.99)` 으로 수정 (Fully Connected Layer)
   - CTC Loss
 
 - 하이퍼 파라미터 튜닝
