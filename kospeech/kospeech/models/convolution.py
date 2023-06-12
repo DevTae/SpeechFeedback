@@ -394,10 +394,10 @@ class DeepSpeech2Extractor(Conv2dExtractor):
         self.conv = MaskCNN(
             nn.Sequential(
                 nn.Conv2d(in_channels, out_channels, kernel_size=(41, 11), stride=(2, 2), padding=(20, 5), bias=False),
-                nn.BatchNorm2d(out_channels),
+                nn.BatchNorm2d(out_channels, momentum=0.99),
                 self.activation,
                 nn.Conv2d(out_channels, out_channels, kernel_size=(21, 11), stride=(2, 1), padding=(10, 5), bias=False),
-                nn.BatchNorm2d(out_channels),
+                nn.BatchNorm2d(out_channels, momentum=0.99),
                 self.activation,
             )
         )

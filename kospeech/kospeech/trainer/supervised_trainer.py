@@ -232,9 +232,23 @@ class SupervisedTrainer(object):
         num_workers = self.num_workers
 
         while True:
-            inputs, targets, input_lengths, target_lengths = queue.get()
+            infinity_loading = False
+            trial  = 10
 
-            if inputs.shape[0] == 0:
+            # try 10 times when infinity loading occured
+            for i in range(1, trial+1):
+                try:
+                    inputs, targets, input_lengths, target_lengths = queue.get_nowait()
+                    break # if queue.get_nowait returned successfully, escape from here
+                except:
+                    # after the 10 trial are done, escape from here if infinity loading is remaining
+                    if i == trial:
+                        infinity_loading = True
+                        print([Skip] Even though trying 10 times, it was unsuccessful to load datas. Skip it..")
+                    else:
+                        time.sleep(1)
+
+            if infinity_loading or inputs.shape[0] == 0:
                 # Empty feats means closing one loader
                 num_workers -= 1
                 logger.debug('left train_loader: %d' % num_workers)
@@ -335,9 +349,23 @@ class SupervisedTrainer(object):
         logger.info('validate() start')
 
         while True:
-            inputs, targets, input_lengths, target_lengths = queue.get()
+            infinity_loading = False
+            trial  = 10
 
-            if inputs.shape[0] == 0:
+            # try 10 times when infinity loading occured
+            for i in range(1, trial+1):
+                try:
+                    inputs, targets, input_lengths, target_lengths = queue.get_nowait()
+                    break # if queue.get_nowait returned successfully, escape from here
+                except:
+                    # after the 10 trial are done, escape from here if infinity loading is remaining
+                    if i == trial:
+                        infinity_loading = True
+                        print([Skip] Even though trying 10 times, it was unsuccessful to load datas. Skip it..")
+                    else:
+                        time.sleep(1)
+
+            if infinity_loading or inputs.shape[0] == 0:
                 break
 
             inputs = inputs.to(self.device)
@@ -451,7 +479,7 @@ class SupervisedTrainer(object):
         save_path = f"{date_time}-valid.csv"
         
         results = pd.DataFrame(results)
-        results.to_csv(save_path, index=False, encoding='cp949')
+        results.to_csv(save_path, index=False, encoding='utf8')
 
     def _save_epoch_result(self, train_result: list, valid_result: list) -> None:
         """ Save result of epoch """
@@ -467,8 +495,8 @@ class SupervisedTrainer(object):
         train_df = pd.DataFrame(train_dict)
         valid_df = pd.DataFrame(valid_dict)
 
-        train_df.to_csv(SupervisedTrainer.TRAIN_RESULT_PATH, encoding="cp949", index=False)
-        valid_df.to_csv(SupervisedTrainer.VALID_RESULT_PATH, encoding="cp949", index=False)
+        train_df.to_csv(SupervisedTrainer.TRAIN_RESULT_PATH, encoding="utf8", index=False)
+        valid_df.to_csv(SupervisedTrainer.VALID_RESULT_PATH, encoding="utf8", index=False)
 
     def _save_step_result(self, train_step_result: dict, loss: float, cer: float) -> None:
         """ Save result of --save_result_every step """
@@ -476,4 +504,4 @@ class SupervisedTrainer(object):
         train_step_result["cer"].append(cer)
 
         train_step_df = pd.DataFrame(train_step_result)
-        train_step_df.to_csv(SupervisedTrainer.TRAIN_STEP_RESULT_PATH, encoding="cp949", index=False)
+        train_step_df.to_csv(SupervisedTrainer.TRAIN_STEP_RESULT_PATH, encoding="utf8", index=False)

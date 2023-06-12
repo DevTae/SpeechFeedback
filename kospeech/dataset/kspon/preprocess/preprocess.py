@@ -14,7 +14,10 @@
 
 import os
 import re
+import librosa
 
+import sys
+#import ipa_converter # 만약 ipa_converter 이용 시, /workspace/kospeech/dataset/kspon 폴더에 csv/* 와 ipa_converter.py 를 옮겨야 한다.
 
 def bracket_filter(sentence, mode='phonetic'):
     new_sentence = str()
@@ -55,29 +58,14 @@ def bracket_filter(sentence, mode='phonetic'):
 
 
 def special_filter(sentence, mode='phonetic', replace=None):
-    SENTENCE_MARK = ['?', '!', '.']
-    NOISE = ['o', 'n', 'u', 'b', 'l']
-    EXCEPT = ['/', '+', '*', '-', '@', '$', '^', '&', '[', ']', '=', ':', ';', ',']
-
     new_sentence = str()
-    for idx, ch in enumerate(sentence):
-        if ch not in SENTENCE_MARK:
-            if idx + 1 < len(sentence) and ch in NOISE and sentence[idx + 1] == '/':
+    for idx, ch in enumerate(sentence.replace("\n", " ")):
+        if re.search(r"[ㄱ-ㅎ가-힣ㅏ-ㅣ]", ch) is None:
+            if not (ch == '!' or ch == '?' or ch == '.' or ch == ',' or ch == ' '):
                 continue
+        new_sentence += ch
 
-        if ch == '#':
-            new_sentence += '샾'
-
-        elif ch == '%':
-            if mode == 'phonetic':
-                new_sentence += replace
-            elif mode == 'spelling':
-                new_sentence += '%'
-
-        elif ch not in EXCEPT:
-            new_sentence += ch
-
-    pattern = re.compile(r'\s\s+')
+    pattern = re.compile(r'\s\s+') # 스페이스바 두 번 이상일 때
     new_sentence = re.sub(pattern, ' ', new_sentence.strip())
     return new_sentence
 
@@ -92,38 +80,38 @@ def preprocess(dataset_path, mode='phonetic'):
     audio_paths = list()
     transcripts = list()
 
-    percent_files = {
-        '087797': '퍼센트',
-        '215401': '퍼센트',
-        '284574': '퍼센트',
-        '397184': '퍼센트',
-        '501006': '프로',
-        '502173': '프로',
-        '542363': '프로',
-        '581483': '퍼센트'
-    }
+    BASE_PATH = dataset_path
+    META_PATH = "/전시문_통합_스크립트/KsponSpeech_scripts/train.trn"
+    path = BASE_PATH + META_PATH
 
-    for folder in os.listdir(dataset_path):
-        # folder : {KsponSpeech_01, ..., KsponSpeech_05}
-        if not folder.startswith('KsponSpeech'):
-            continue
-        path = os.path.join(dataset_path, folder)
-        for idx, subfolder in enumerate(os.listdir(path)):
-            path = os.path.join(dataset_path, folder, subfolder)
+    if not os.path.isfile(path):
+        raise Exception("[error] the metadata file is not found.")
 
-            for jdx, file in enumerate(os.listdir(path)):
-                if file.endswith('.txt'):
-                    with open(os.path.join(path, file), "r", encoding='cp949') as f:
-                        raw_sentence = f.read()
-                        if file[12:18] in percent_files.keys():
-                            new_sentence = sentence_filter(raw_sentence, mode, percent_files[file[12:18]])
-                        else:
-                            new_sentence = sentence_filter(raw_sentence, mode=mode)
-
-                    audio_paths.append(os.path.join(folder, subfolder, file))
-                    transcripts.append(new_sentence)
-
-                else:
+    with open(path, "r", encoding='utf8') as f:
+        for j, line in enumerate(f.readlines(), start=1):
+            datas = line.split(' :: ')
+            audio_path = BASE_PATH + "/한국어_음성_분야/" + datas[0].strip()
+            sentence = str()
+            try:
+                with open(audio_path.replace(".pcm", ".txt"), "r", encoding="cp949") as sentence_f: # utf8 -> cp949 (한국어 음성 데이터셋)
+                    sentence = sentence_filter(sentence_f.read(), mode=mode)
+                if sentence is None:
                     continue
+
+                # 라벨링 데이터 대비 음성 길이 비율을 바탕으로 필터링 진행
+                # 한 번 필터 없이 돌린 이후 audio_data_audio_length.py 바탕으로 판단 후 적용
+                #audio_duration = librosa.get_duration(librosa.load(audio_path, sr=16000)[0], sr=16000)
+                #transcript_length = len(sentence)
+                #ratio = audio_duration / transcript_length
+                #if ratio > 0.2316 or ratio < 0.1047:
+                #    continue
+
+                audio_paths.append(audio_path)
+                #transcripts.append(sentence)
+                transcripts.append(ipa_converter.applyRulesToHangulTotal(sentence)) # ipa_convert 이용 시 위 코드 주석한 후 해당 코드 주석 해제
+
+            except:
+                print(audio_path)
+                continue
 
     return audio_paths, transcripts

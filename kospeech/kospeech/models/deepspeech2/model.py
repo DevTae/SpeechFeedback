@@ -57,7 +57,7 @@ class BNReluRNN(nn.Module):
     ):
         super(BNReluRNN, self).__init__()
         self.hidden_state_dim = hidden_state_dim
-        self.batch_norm = nn.BatchNorm1d(input_size)
+        self.batch_norm = nn.BatchNorm1d(input_size, momentum=0.99)
         rnn_cell = self.supported_rnns[rnn_type]
         self.rnn = rnn_cell(
             input_size=input_size,
