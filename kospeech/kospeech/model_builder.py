@@ -352,15 +352,17 @@ def build_jasper(
 def load_test_model(config: DictConfig, device: torch.device):
     model = torch.load(config.model_path, map_location=lambda storage, loc: storage).to(device)
 
+    ''' deep speech 2 로 인하여 주석 처리
     if isinstance(model, nn.DataParallel):
         model.module.decoder.device = device
-        #model.module.encoder.device = device # Deep Speech 2 부모 클래스 : EncoderModel
+        model.module.encoder.device = device
 
     else:
         model.encoder.device = device
-        #model.decoder.device = device # Deep Speech 2 부모 클래스 : EncoderModel
+        model.decoder.device = device
 
     return model
+    '''
 
 
 def load_language_model(path: str, device: torch.device):
