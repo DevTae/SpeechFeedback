@@ -157,6 +157,9 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 - `python ./bin/eval.py eval.dataset_path=/workspace/data eval.transcripts_path=/workspace/kospeech/dataset/kspon/transcripts_test.txt eval.model_path=/workspace/kospeech/outputs/{date}/{time}/model.pt`
   - `Beam Search` 진행
+  - [parlance/ctcdecode](https://github.com/parlance/ctcdecode)
+  - `sudo apt install python-dev && sudo apt install python3-dev`
+  - `pip install git+https://github.com/parlance/ctcdecode.git`
 
 <br/>
 
