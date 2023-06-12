@@ -1,19 +1,31 @@
 import sounddevice as sd
+import requests
 from scipy.io.wavfile import write
 
 # the duration of the recording in seconds
-duration = 5.0
+duration = 3.0
 
 # the sample rate (in samples/sec), change this value if needed
-sample_rate = 44100
+sample_rate = 16000
 
+print("\"안녕하세요\" 라고 3초 내에 말씀해보세요.")
+      
 # use the sounddevice library to record audio
-print("Starting recording...")
-recording = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=2)
+print("녹음 시작...")
+recording = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype='int16')
 sd.wait()  # wait until the recording is done
-print("Recording finished.")
+print("녹음 완료.")
 
 # use the scipy library to save the numpy array into a .wav file
-write("output.wav", sample_rate, recording)
+write("output.pcm", sample_rate, recording)
 
-#### 이따가 확인
+# 서버에 음성 인식 결과에 대하여 요청하기
+url = "http://{your_ip}:8000/test" # link to fastAPI server
+files = {"file": open("output.pcm", "rb")} # read in binary format
+
+# 서버 요청 결과 출력하기
+response = requests.post(url, files=files)
+print(response.content.decode('utf8'))
+
+# 정답(ɑnnjʌŋɑsɛjo)과 입력 사이의 피드백
+# to be implemented
