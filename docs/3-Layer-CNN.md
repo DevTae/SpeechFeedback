@@ -1,5 +1,7 @@
 ### How to Change the architecture of CNN into the 3-Layer CNN
 
+#### by DevTae
+
 <br/>
 
 - 현재 KoSpeech 의 Deep Speech 2 에서 지원하는 CNN 은 2-Layer CNN 에 불과하다.
