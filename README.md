@@ -47,7 +47,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 2. `sudo docker attach devtae` 를 실행한 뒤, Docker 이미지 내에서 작업한다.
 
-또는 `현재 레포를 clone 하여 kospeech 폴더를 workspace 폴더 안에 넣고 작업을 진행`한다. **아래의 복잡한 과정이 모두 반영된 코드이며, 옮겨준 후에 단순히 preprocessing 만 진행해주면 됨.**
+- 또는 `현재 레포를 clone 하여 kospeech 폴더를 workspace 폴더 안에 넣고 작업을 진행`한다. 아래의 복잡한 과정이 모두 반영된 코드이며, 옮겨준 후에 단순히 preprocessing 만 진행해주면 된다.
 
 <br/>
 
@@ -172,6 +172,10 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 ![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/ab06eca9-988a-468b-bfa3-ef52a55f4a7a)
 
 - 단어사전 경우의 수(출력층)를 **2000 → 36 개**로 축소할 수 있었다.
+
+![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/01b6e492-6ed4-41a4-adce-0948069db9de)
+
+- **피드백 알고리즘**을 적용하여 발음에 대한 피드백을 제공할 수 있게 되었다.
 
 <br/>
 
