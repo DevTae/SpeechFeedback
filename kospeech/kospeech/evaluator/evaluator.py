@@ -61,7 +61,8 @@ class Evaluator(object):
         eval_loader.start()
 
         cer = self.search.search(model, eval_queue, self.device, self.print_every)
-        self.search.save_result('data/train_result/%s.csv' % type(self.decoder).__name__)
+        #self.search.save_result('data/train_result/%s.csv' % type(self.decoder).__name__)
+        self.search.save_result('data/train_result/eval.csv')
 
         logger.info('Evaluate CER: %s' % cer)
         logger.info('evaluate() completed')
