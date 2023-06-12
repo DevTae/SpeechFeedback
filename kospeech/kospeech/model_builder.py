@@ -352,6 +352,7 @@ def build_jasper(
 def load_test_model(config: DictConfig, device: torch.device):
     model = torch.load(config.model_path, map_location=lambda storage, loc: storage).to(device)
 
+    ''' deep speech 2 encoder, decoder 없으므로 제거
     if isinstance(model, nn.DataParallel):
         model.module.decoder.device = device
         model.module.encoder.device = device
@@ -359,6 +360,7 @@ def load_test_model(config: DictConfig, device: torch.device):
     else:
         model.encoder.device = device
         model.decoder.device = device
+    '''
 
     return model
 
