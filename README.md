@@ -46,7 +46,7 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
 
 - 모델 구조
   - **3-Layer CNN**
-    - [다음 링크](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
+    - [다음 링크](https://github.com/DevTae/SpeechFeedback/blob/main/docs/3-Layer-CNN.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
     - 필요한 경우에만 진행할 것. *(2-Layer CNN 또한 가능함)*
   - Bi-directional GRU Layer x 7
     - RNN 레이어 수는 하이퍼 파라미터 튜닝에서 설정 가능
@@ -183,7 +183,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 #### CNN 및 RNN 레이어 수 상승을 통한 성능 개선
   - Deep Speech 2 논문에 있는 내용을 바탕으로 모델 구조를 적용하고자 하였는데, KoSpeech 의 기본 구조는 `CNN * 2, RNN * 3` 으로 구성되어 있었다.
   - Baidu 의 Deep Speech 2 논문에 따르면 `CNN * 3, RNN * 7` 가 성능이 좋다는 것을 찾을 수 있었다.
-  - 발음 피드백 시스템 적용을 위하여 심층적인 모델이 필요하다고 판단하였고, 이를 적용하기 위해 [코드를 수정](https://github.com/DevTae/SpeechFeedback/blob/main/3-Layer-CNN.md)할 수 있었다.
+  - 발음 피드백 시스템 적용을 위하여 심층적인 모델이 필요하다고 판단하였고, 이를 적용하기 위해 [코드를 수정](https://github.com/DevTae/SpeechFeedback/blob/main/docs/3-Layer-CNN.md)할 수 있었다.
   - 그 대신, 레이어가 겹쳐질수록 모델의 복잡성이 올라가 학습 속도가 현저히 느려지므로 해당 trade-off 관계에서 적당한 설정으로 접근하고자 하였다.
 
 #### momentum 계수 수정을 통한 학습 성능 개선
@@ -207,4 +207,4 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
   - 대용량 데이터를 바탕으로 학습 중 `kospeech/kospeech/trainer/supervised_trainer.py` 의 `queue.get()` 에서 무한 로딩이 걸리게 된다.
   - 이런 경우에 대하여 데드락이 주요한 원인이라고 판단 중이다. 그 이유는 해당 epoch 내에 학습할 데이터 수는 남아있지만, queue 에 대한 get 함수에서 무한대기를 하기 때문이다.
   - 따라서, 해당 문제를 해결하기 위해 queue 에 대하여 동기적으로 접근 후 기다리는 `get` 함수가 아닌 queue 의 원소가 없으면 바로 exception raise 하는 `get_nowait()` 함수를 사용하는 방식으로 해결하였다.
-  - 이에 대한 자세한 해결 방법은 해당 [링크](https://github.com/DevTae/SpeechFeedback/blob/main/how_to_solve_the_infinity_loading.md)에서 확인할 수 있다.
+  - 이에 대한 자세한 해결 방법은 해당 [링크](https://github.com/DevTae/SpeechFeedback/blob/main/docs/how_to_solve_the_infinity_loading.md)에서 확인할 수 있다.
