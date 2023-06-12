@@ -360,9 +360,9 @@ def load_test_model(config: DictConfig, device: torch.device):
     else:
         model.encoder.device = device
         model.decoder.device = device
-
-    return model
     '''
+    return model
+    
 
 
 def load_language_model(path: str, device: torch.device):
