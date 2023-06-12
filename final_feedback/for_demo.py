@@ -97,3 +97,7 @@ else:
 
 user_ipa_korean = ipa_to_korean(user_ipa, ipa_dict)
 standard_ipa_korean = ipa_to_korean(standard_ipa, ipa_dict)
+
+##### 데모용 출력
+print(f'사용자 IPA : {user_ipa_korean}')
+print(f'표준 IPA: {standard_ipa_korean}')
