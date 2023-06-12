@@ -1,8 +1,8 @@
 use_cuda: True
 dataset: 'kspon'
-dataset_path: ''
-transcripts_path: 'data/eval_transcript.txt'
-model_path: ''
+dataset_path: '/workspace/data'
+transcripts_path: '/workspace/kospeech/dataset/kspon/transcripts_test.txt'
+model_path: '/workspace/data/model.pt'
 output_unit: 'character'
 batch_size: 32
 num_workers: 4
