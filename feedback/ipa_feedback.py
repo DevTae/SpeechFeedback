@@ -2,6 +2,23 @@
 
 from panphon.featuretable import FeatureTable
 
+#### Lev similarity 사용해서 사용자 IPA와 제일 유사한 표준 IPA 반환
+def most_similar_standard_ipa(user_ipa):
+    # 디렉토리 내에 'standard.csv' 경로로 변경
+    df = pd.read_csv('csv/standard.csv')
+    standard_ipa_list = df['IPA'].tolist()
+
+    # Define function to calculate similarity
+    def similarity(a, b):
+        return lev.ratio(a, b)
+    
+    # Find the most similar standard IPA
+    similarities = [similarity(user_ipa, standard_ipa) for standard_ipa in standard_ipa_list]
+    most_similar_index = similarities.index(max(similarities))
+    most_similar_standard_ipa = standard_ipa_list[most_similar_index]
+
+    return most_similar_standard_ipa
+
 def provide_feedback(standard_ipa, user_ipa):
     ft = FeatureTable()
     features = ['syl', 'son', 'cons', 'cont', 'delrel', 'lat', 'nas', 'strid', 'voi', 'sg', 'cg', 'ant', 'cor', 'distr', 'lab', 'hi', 'lo', 'back', 'round', 'velaric', 'tense', 'long']
@@ -27,6 +44,7 @@ def provide_feedback(standard_ipa, user_ipa):
     
     return feedback
 
+'''
 # 예제
 standard_ipa = 'kæt'
 user_ipa = 'kʌt'
@@ -37,6 +55,8 @@ if isinstance(feedback, str):
 else:
     for fb in feedback:
         print(fb)
+'''
+
 '''
 출력 결과
 ʌ 의 발음을 lo 를 사용해서 æ 로 바꿔보세요.
