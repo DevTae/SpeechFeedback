@@ -29,6 +29,11 @@ from kospeech.models import (
     Conformer,
 )
 
+from ipa_feedback import provide_feedback
+from ipa2ko import ipa_to_hanful
+
+from fastapi import FastAPI, UploadFile, File
+app = FastAPI()
 
 def parse_audio(audio_path: str, del_silence: bool = False, audio_extension: str = 'pcm') -> Tensor:
     signal = load_audio(audio_path, del_silence, extension=audio_extension)
@@ -45,32 +50,50 @@ def parse_audio(audio_path: str, del_silence: bool = False, audio_extension: str
 
     return torch.FloatTensor(feature).transpose(0, 1)
 
+@app.post("/test")
+async def ipa_feedback(file: UploadFile = File(...)):
+    filename = f"output.wav"
 
-parser = argparse.ArgumentParser(description='KoSpeech')
-parser.add_argument('--model_path', type=str, required=True)
-parser.add_argument('--audio_path', type=str, required=True)
-parser.add_argument('--device', type=str, require=False, default='cpu')
-opt = parser.parse_args()
+    contents = await file.read()
 
-feature = parse_audio(opt.audio_path, del_silence=True)
-input_length = torch.LongTensor([len(feature)])
-vocab = KsponSpeechVocabulary('/workspace/data/vocab/aihub_labels.csv')
+    with open(filename, "wb") as fp:
+        fp.write(contents)
 
-model = torch.load(opt.model_path, map_location=lambda storage, loc: storage).to(opt.device)
-if isinstance(model, nn.DataParallel):
-    model = model.module
-model.eval()
+    model_path = "/workspace/data/model.pt" # set here model path you want
+    audio_path = filename
+    device = "cpu"
 
-if isinstance(model, ListenAttendSpell):
-    model.encoder.device = opt.device
-    model.decoder.device = opt.device
+    feature = parse_audio(audio_path, del_silence=True)
+    input_length = torch.LongTensor([len(feature)])
+    vocab = KsponSpeechVocabulary('/workspace/data/vocab/aihub_labels.csv')
 
-    y_hats = model.recognize(feature.unsqueeze(0), input_length)
-elif isinstance(model, DeepSpeech2):
-    model.device = opt.device
-    y_hats = model.recognize(feature.unsqueeze(0), input_length)
-elif isinstance(model, SpeechTransformer) or isinstance(model, Jasper) or isinstance(model, Conformer):
-    y_hats = model.recognize(feature.unsqueeze(0), input_length)
+    model = torch.load(model_path, map_location=lambda storage, loc: storage).to(device)
 
-sentence = vocab.label_to_string(y_hats.cpu().detach().numpy())
-print(sentence)
+    if isinstance(model, nn.DataParallel):
+        model = model.module
+    model.eval()
+
+    if isinstance(model, DeepSpeech2):
+        model.device = device
+        y_hats = model.recognize(feature.unsqueeze(0), input_length)
+
+    user_ipa = vocab.label_to_string(y_hats.cpu().detach().numpy())
+
+    # Get the feedback of user_ipa data
+    feedback, standard_ipa = provide_feedback("ɑnnjʌŋɑsɛjo", user_ipa) # default: "안녕하세요"
+    feedbacks = []
+
+    if isinstance(feedback, str):
+        feedbacks.append(feedback)
+    else:
+        for fb in feedback:
+            feedbacks.append(fb)
+
+    # Get the string data of user_ipa and standard_ipa in hangul
+    user_ipa_hangul = ipa_to_hangul(user_ipa, ipa_dict)
+    standard_ipa_hangul = ipa_to_hangul(standard_ipa, ipa_dict)
+
+    # Return all of the data
+    return { "answer", standard_ipa_hangul,
+               "user" : user_ipa_hangul,
+               "feedbacks" : feedbacks }

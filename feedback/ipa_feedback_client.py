@@ -24,8 +24,6 @@ url = "http://{your_ip}:8000/test" # link to fastAPI server
 files = {"file": open("output.pcm", "rb")} # read in binary format
 
 # 서버 요청 결과 출력하기
+# 정답(ɑnnjʌŋɑsɛjo)과 입력 사이의 피드백
 response = requests.post(url, files=files)
 print(response.content.decode('utf8'))
-
-# 정답(ɑnnjʌŋɑsɛjo)과 입력 사이의 피드백
-# to be implemented
