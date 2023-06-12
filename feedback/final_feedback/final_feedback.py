@@ -48,9 +48,9 @@ def provide_feedback(user_ipa):
     return feedback, standard_ipa
 
 ###### IPA to Korean
-filepath_hangul_to_ipa = "C:/Users/user/git/SpeechFeedback/final_feedback/IPA2Ko.csv"
-filepath_standard = "C:/Users/user/git/SpeechFeedback/final_feedback/standard.csv"
-filepath_feature = "C:/Users/user/git/SpeechFeedback/final_feedback/feature.csv"
+filepath_hangul_to_ipa = "IPA2Ko.csv"
+filepath_standard = "standard.csv"
+filepath_feature = "feature.csv"
 
 ipa_col = "IPA"
 korean_col = "Korean"

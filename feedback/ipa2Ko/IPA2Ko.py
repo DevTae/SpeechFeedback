@@ -1,8 +1,8 @@
 import pandas as pd
 
-filepath_hangul_to_ipa = "C:/Users/user/git/speech_rec_proj/ipa2Ko/IPA2Ko.csv"
-filepath_standard = "C:/Users/user/git/speech_rec_proj/ipa2Ko/standard.csv"
-filepath_feature = "C:/Users/user/git/speech_rec_proj/ipa2Ko/feature.csv"
+filepath_hangul_to_ipa = "IPA2Ko.csv"
+filepath_standard = "standard.csv"
+filepath_feature = "feature.csv"
 
 def load_ipa_mapping(filepath, ipa_col, korean_col):
     df = pd.read_csv(filepath)
