@@ -20,7 +20,7 @@ print("녹음 완료.")
 write("output.pcm", sample_rate, recording)
 
 # 서버에 음성 인식 결과에 대하여 요청하기
-url = "http://{your_ip}:8000/test" # link to fastAPI server
+url = "http://127.0.0.1:8000/test" # link to fastAPI server (setting on your IP later)
 files = {"file": open("output.pcm", "rb")} # read in binary format
 
 # 서버 요청 결과 출력하기
