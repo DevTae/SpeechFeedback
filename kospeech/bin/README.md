@@ -11,7 +11,7 @@
   2. `pip install uvicorn`
 
 - 필요한 추가 라이브러리 설치 메뉴얼
-  1. `pip install panphone`
+  1. `pip install panphon`
 
 <br/>
 
