@@ -30,7 +30,7 @@ from kospeech.models import (
 )
 
 from ipa_feedback import provide_feedback
-from ipa2ko import ipa_to_hanful
+import ipa2ko
 
 from fastapi import FastAPI, UploadFile, File
 app = FastAPI()
@@ -77,10 +77,12 @@ async def ipa_feedback(file: UploadFile = File(...)):
         model.device = device
         y_hats = model.recognize(feature.unsqueeze(0), input_length)
 
-    user_ipa = vocab.label_to_string(y_hats.cpu().detach().numpy())
+    sentence = vocab.label_to_string(y_hats.cpu().detach().numpy())
 
     # Get the feedback of user_ipa data
-    feedback, standard_ipa = provide_feedback("ɑnnjʌŋɑsɛjo", user_ipa) # default: "안녕하세요"
+    user_ipa = sentence[0]
+    standard_ipa = "ɑnnjʌŋɑsɛjo" # default: "안녕하세요"
+    feedback = provide_feedback(standard_ipa, user_ipa)
     feedbacks = []
 
     if isinstance(feedback, str):
@@ -90,10 +92,10 @@ async def ipa_feedback(file: UploadFile = File(...)):
             feedbacks.append(fb)
 
     # Get the string data of user_ipa and standard_ipa in hangul
-    user_ipa_hangul = ipa_to_hangul(user_ipa, ipa_dict)
-    standard_ipa_hangul = ipa_to_hangul(standard_ipa, ipa_dict)
+    #user_ipa_hangul = ipa2ko.ipa_to_hangul(user_ipa, ipa2ko.ipa_dict)
+    #standard_ipa_hangul = ipa2ko.ipa_to_hangul(standard_ipa, ipa2ko.ipa_dict)
 
     # Return all of the data
-    return { "answer", standard_ipa_hangul,
-               "user" : user_ipa_hangul,
+    return { "answer" : standard_ipa, #standard_ipa_hangul,
+               "user" : user_ipa, #user_ipa_hangul,
                "feedbacks" : feedbacks }

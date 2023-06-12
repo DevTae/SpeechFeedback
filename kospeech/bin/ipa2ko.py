@@ -4,6 +4,10 @@ filepath_ipa_to_hangul = "csv/IPA2Ko.csv"
 filepath_standard = "csv/standard.csv"
 filepath_feature = "csv/feature.csv"
 
+feature_col = "Feature"
+ipa_col = "IPA"
+korean_col = "Korean"
+
 def load_ipa_mapping(filepath, ipa_col, korean_col):
     df = pd.read_csv(filepath)
     return dict(zip(df[ipa_col], df[korean_col]))
@@ -40,4 +44,9 @@ def get_info_of_ipa(ipa_char : str = "æ", feature : str = 'cont'):
     #print(hangul_translation)  # 한국어 연속
 
     return hangul_char, hangul_translation
+
+ipa_dict = load_ipa_mapping(filepath_ipa_to_hangul, ipa_col, korean_col)
+feature_dict = load_translation_mapping(filepath_feature, feature_col, korean_col)
+
+
 

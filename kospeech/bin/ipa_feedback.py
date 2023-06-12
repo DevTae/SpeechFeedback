@@ -9,8 +9,8 @@ def provide_feedback(standard_ipa, user_ipa):
     standard_ipa_list = list(standard_ipa)
     user_ipa_list = list(user_ipa)
     
-    if len(standard_ipa_list) != len(user_ipa_list):
-        return "다시 시도하세요."
+    #if len(standard_ipa_list) != len(user_ipa_list):
+    #    return "다시 시도하세요."
     
     standard_array = ft.word_array(features, standard_ipa)
     user_array = ft.word_array(features, user_ipa)
