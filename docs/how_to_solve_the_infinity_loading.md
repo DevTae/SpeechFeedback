@@ -14,7 +14,7 @@
 #### Before
 
 ```python
-inputs, targets, input_lengths, target_lengths = queue.get_nowait()
+inputs, targets, input_lengths, target_lengths = queue.get()
 
 if inputs.shape[0] == 0:
 ```
