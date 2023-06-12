@@ -43,6 +43,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 1. `sudo docker run -it --gpus all --name devtae -v {하위 디렉토리}/한국어\ 음성:/workspace/data devtae/kospeech`
     - 공유 디렉토리 기능을 사용하여, `{하위 디렉토리}/한국어\ 음성` 폴더에 있는 파일들이 `/workspace/data` 과 연동된다.
+    - 공유 디렉토리 설정을 위하여 데이터셋 다운로드 후에 수행하는 것을 추천한다.
 
 2. `sudo docker attach devtae` 를 실행한 뒤, Docker 이미지 내에서 작업한다.
 
@@ -81,7 +82,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 ### Model Architecture
 
-- 모델 구조
+- `Deep Speech 2` 모델 구조
   - **3-Layer CNN**
     - [다음 링크](https://github.com/DevTae/SpeechFeedback/blob/main/docs/3-Layer-CNN.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
     - 필요한 경우에만 진행할 것. *(2-Layer CNN 또한 가능함)*
