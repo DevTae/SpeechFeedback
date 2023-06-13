@@ -39,7 +39,7 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
  ┃ ┃ ┗ 📂kspon      // 데이터셋에 대한 전처리 작업공간
  ┃ ┣ 📂docs
  ┃ ┣ 📂kospeech
- ┃ ┣ 📂test
+ ┃ ┗ 📂test
  ┣ 📂preprocess     // 데이터 전처리를 위한 코드 꾸러미 (kospeech 폴더에는 이미 반영됨)
  ┗ 📂data           // 해당 디렉토리에 KsponSpeech 데이터셋 다운
 ```
