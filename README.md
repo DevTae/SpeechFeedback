@@ -18,7 +18,7 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
 4. [Model Architecture](#model-architecture)
 5. [How to train Deep Speech 2 model](#how-to-train-deep-speech-2-model)
 6. [How to evaluate Deep Speech 2 model](#how-to-evaluate-deep-speech-2-model)
-7. [How to inference the audio file using `Deep Speech 2` model](#how-to-inference-the-audio-file-using-deep-speech-2-model)
+7. [How to inference the audio file using Deep Speech 2 model](#how-to-inference-the-audio-file-using-deep-speech-2-model)
 8. [Performance After Using IPA](#performance-after-using-ipa)
 9. [ETC](#etc)
 
