@@ -1,0 +1,32 @@
+## 하이퍼 파라미터 튜닝
+  - num_epochs : 20
+  - batch_size : 32
+  - optimizer : '**adamp**'
+    - [clovaai/AdamP](https://github.com/clovaai/AdamP)
+  - init_lr : **1e-06**
+  - final_lr : **1e-06**
+  - peak_lr : **6e-04**
+    - learning rate 설정의 경우, 데이터와 상황에 따라 다르게 설정될 수 있음
+  - init_lr_scale : 0.01
+  - final_lr_scale : 0.05
+  - max_grad_norm : 400
+  - warmup_steps : **75000**
+    - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴
+    - 너무 빠르게 warming-up (Tri-Stage Learning Rate Scheduler 사용) 하게 된다면 local optima 에 갇힐 수 있음
+    - `(적정값) = (total_step) * (total_epoch) * 0.1 = ((train 데이터 수) / (batch_size) * (spec_augment ? 2 : 1)) * (total_epoch) * 0.1`
+      - ex) `(600000 datas / 32 * 2) * 20 epoches * 0.1 = 75000`
+  - weight_decay : **3e-05**
+  - reduction : **sum**
+  - bidirectional : True
+  - use_bidirectional : True
+  - hidden_dim : **512** (when using RNN x 3 and you want speedy) 또는 **1880** (when using RNN x 3) 또는 **1280** (when using RNN x 7)
+  - dropout : **0.1**
+  - num_encoder_layers : **3** 또는 **7**
+    - RNN 레이어 개수에 따라 학습 성능 차이가 많이 나는 것을 확인
+    - hidden_dim 이 높은 것보다는 num_encoder_layers 가 높은 것이 성능에 더 좋은 영향을 끼침
+    - 빠른 학습 속도를 원한다면 hidden_dim 과 num_encoder_layers 둘다 낮은 수치로 사용할 수도 있음
+  - rnn_type : **gru**
+    - Baidu 의 Deep Speech 2 Paper 에서 제안한 RNN Layer Type 임
+  - max_len : **400**
+    - 데이터셋에 따라 달라지긴 하지만 해당 수치로 사용하는 것을 추천
+  - spec_augment : True
