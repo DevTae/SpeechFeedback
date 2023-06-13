@@ -64,11 +64,11 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 1. `sudo docker run -it --gpus all --name devtae -v {하위 디렉토리}/한국어\ 음성:/workspace/data devtae/kospeech`
     - 공유 디렉토리 기능을 사용하여, `{하위 디렉토리}/한국어\ 음성` 폴더에 있는 파일들이 `/workspace/data` 과 연동된다.
-    - 공유 디렉토리 설정을 위하여 데이터셋 다운로드 후에 수행하는 것을 추천한다.
+    - 원활한 공유 디렉토리 설정을 위하여 데이터셋 다운로드 후에 수행하는 것을 추천한다.
 
 2. `sudo docker attach devtae` 를 실행한 뒤, Docker 이미지 내에서 작업한다.
 
-- 또는 `현재 레포를 clone 하여 kospeech 폴더를 workspace 폴더 안에 넣고 작업을 진행`한다. 아래의 복잡한 과정이 모두 반영된 코드이며, 옮겨준 후에 단순히 preprocessing 만 진행해주면 된다.
+3. 현재 레포를 `clone` 하여 kospeech 폴더를 workspace 폴더 안에 넣고 작업을 진행한다.
 
 <br/>
 
@@ -78,7 +78,8 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
   - 데이터셋 : [AIHub 한국어 음성](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=123)
   - IPA 변환기 : [표준발음 변환기](http://pronunciation.cs.pusan.ac.kr/)
   - IPA 변환기 : [stannam/hangul_to_ipa](https://github.com/stannam/hangul_to_ipa)
-  - 전체 데이터에 대하여 다음과 같이 학습을 진행하였음 (`Training : Validation : Test = 600000 : 10000 : 10000`)
+  - 전체 데이터에 대하여 다음과 같이 학습을 진행하였음
+    - `Training : Validation : Test = 600000 : 10000 : 10000`
 
 1. `cd SpeechFeedback/kospeech/dataset/kspon` 후에 `bash preprocess.sh` 를 실행하여 전처리를 진행한다.
 
