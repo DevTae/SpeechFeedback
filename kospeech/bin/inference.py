@@ -54,7 +54,7 @@ opt = parser.parse_args()
 
 feature = parse_audio(opt.audio_path, del_silence=True)
 input_length = torch.LongTensor([len(feature)])
-vocab = KsponSpeechVocabulary('/workspace/data/vocab/aihub_labels.csv')
+vocab = KsponSpeechVocabulary('/workspace/kospeech/dataset/kspon/aihub_labels.csv')
 
 model = torch.load(opt.model_path, map_location=lambda storage, loc: storage).to(opt.device)
 if isinstance(model, nn.DataParallel):

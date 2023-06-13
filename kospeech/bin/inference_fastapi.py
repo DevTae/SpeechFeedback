@@ -59,13 +59,13 @@ async def ipa_feedback(file: UploadFile = File(...)):
     with open(filename, "wb") as fp:
         fp.write(contents)
 
-    model_path = "/workspace/data/model.pt" # set here model path you want
+    model_path = "/workspace/kospeech/model.pt" # set here model path you want
     audio_path = filename
     device = "cpu"
 
     feature = parse_audio(audio_path, del_silence=True)
     input_length = torch.LongTensor([len(feature)])
-    vocab = KsponSpeechVocabulary('/workspace/data/vocab/aihub_labels.csv')
+    vocab = KsponSpeechVocabulary('/workspace/kospeech/dataset/kspon/aihub_labels.csv')
 
     model = torch.load(model_path, map_location=lambda storage, loc: storage).to(device)
 

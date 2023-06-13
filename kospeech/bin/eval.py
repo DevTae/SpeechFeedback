@@ -34,7 +34,7 @@ def inference(config: DictConfig):
 
     if config.eval.dataset == 'kspon':
         vocab = KsponSpeechVocabulary(
-            f'/workspace/data/vocab/aihub_labels.csv', output_unit=config.eval.output_unit
+            f'/workspace/kospeech/dataset/kspon/aihub_labels.csv', output_unit=config.eval.output_unit
         )
     elif config.eval.dataset == 'libri':
         vocab = LibriSpeechVocabulary('../../../data/vocab/tokenizer.vocab', 'data/vocab/tokenizer.model')

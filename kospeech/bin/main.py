@@ -81,7 +81,7 @@ def train(config: DictConfig) -> nn.DataParallel:
         torch.set_num_threads(config.train.num_threads)
   
     vocab = KsponSpeechVocabulary(
-        f'/workspace/data/vocab/aihub_labels.csv',
+        f'/workspace/kospeech/dataset/kspon/aihub_labels.csv',
         output_unit=config.train.output_unit,
     )
             

@@ -2,7 +2,7 @@
 # Soohwan Kim, Seyoung Bae, Cheolhwang Won, Soyoung Cho, Jeongwon Kwak
 
 DATASET_PATH="/workspace/data"
-VOCAB_DEST='/workspace/data/vocab/aihub_labels.csv'
+VOCAB_DEST='/workspace/kospeech/dataset/kspon/aihub_labels.csv'
 OUTPUT_UNIT='character'                                          # you can set character / subword / grapheme
 PREPROCESS_MODE='phonetic'                                       # phonetic : 칠 십 퍼센트,  spelling : 70%
 VOCAB_SIZE=5000                                                  # if you use subword output unit, set vocab size
