@@ -11,19 +11,40 @@ Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in Eng
 <br/>
 
 ### Contents
-0. [Environment Setting](#environment-setting)
-1. [Docker Image](#docker-image)
-2. [How to done Preprocessing (IPA and Character Dictionary)](#how-to-done-preprocessing-ipa-and-character-dictionary)
-3. [Model Architecture](#model-architecture)
-4. [How to train `Deep Speech 2` model](#how-to-train-deep-speech-2-model)
-5. [How to evaluate `Deep Speech 2` model](#how-to-evaluate-deep-speech-2-model)
-6. [How to inference the audio file using `Deep Speech 2` model](#how-to-inference-the-audio-file-using-deep-speech-2-model)
-7. [Performance After Using IPA](#performance-after-using-ipa)
-8. [ETC](#etc)
+0. [Folder Structure](#folder-structure)
+1. [Environment Setting](#environment-setting)
+2. [Docker Image](#docker-image)
+3. [How to done Preprocessing (IPA and Character Dictionary)](#how-to-done-preprocessing-ipa-and-character-dictionary)
+4. [Model Architecture](#model-architecture)
+5. [How to train `Deep Speech 2` model](#how-to-train-deep-speech-2-model)
+6. [How to evaluate `Deep Speech 2` model](#how-to-evaluate-deep-speech-2-model)
+7. [How to inference the audio file using `Deep Speech 2` model](#how-to-inference-the-audio-file-using-deep-speech-2-model)
+8. [Performance After Using IPA](#performance-after-using-ipa)
+9. [ETC](#etc)
 
 <br/>
 
 -----
+
+### Folder Structure
+
+```
+📦SpeechFeedback
+ ┣ 📂docs
+ ┣ 📂feedback       // 피드백 기능 시연을 위한 코드
+ ┣ 📂kospeech
+ ┃ ┣ 📂bin          // 모델 학습, 평가, 추론 함수가 있음. FastAPI 로 피드백 정보 제공.
+ ┃ ┣ 📂configs      // 모델 하이퍼파라미터 설정
+ ┃ ┣ 📂dataset      // 데이터셋에 대한 전처리 작업공간
+ ┃ ┣ 📂docs
+ ┃ ┣ 📂kospeech
+ ┃ ┣ 📂test
+ ┣ 📂preprocess     // 데이터 전처리를 위한 코드 꾸러미 (kospeech 폴더에는 이미 반영됨)
+ ┣ 📂data           // 해당 디렉토리에 KsponSpeech 데이터셋 다운
+ ┗ ┗ 📂vocab        // 데이터셋에 대한 단어사전 저장공간
+```
+
+<br/>
 
 ### Environment Setting
 
