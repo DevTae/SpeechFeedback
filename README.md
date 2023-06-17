@@ -6,7 +6,9 @@ End-to-End ASR (Automatic Speech Recognition) Feedback System
 
 KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) 을 활용하여 프로젝트를 진행하였다.
 
-Baidu Deep Speech 2 Paper : [Deep Speech 2: End-to-End Speech Recognition in English and Mandarin](https://arxiv.org/pdf/1512.02595v1.pdf)
+Baidu Research – Silicon Valley AI Lab, [*Deep Speech 2: End-to-End Speech Recognition in English and Mandarin*](https://arxiv.org/pdf/1512.02595v1.pdf), Computation and Language, Dec 2015
+
+장민정, 정선진, 노준용, [*한국어 동시조음 모델에 기반한 스피치 애니메이션 생성*](http://journal.cg-korea.org/archive/view_article?pid=jkcgs-26-3-49), 컴퓨터그래픽스학회, Jun 2020
 
 <br/>
 
