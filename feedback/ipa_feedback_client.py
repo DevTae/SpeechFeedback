@@ -39,20 +39,19 @@ feedback_data = response.content.decode('utf8')
 # json 내용을 배열에 저장
 parsed_data = json.loads(feedback_data)
 
-# 피드백 결과에 대한 before 문자열을 배열에 저장
-before = parsed_data["feedback"]["before"]
-# 피드백 결과에 대한 after 문자열을 배열에 저장
-after = parsed_data["feedback"]["after"]
-
 # 만약 틀린 것이 없으면
 if parsed_data["feedback"]["success"] == True:
     print("잘하셨습니다!")
     sys.exit(0) # 프로그램 종료
 
 else:
-    print(before) 
-    print(after)  
+    # 피드백 결과에 대한 before 문자열을 배열에 저장
+    before = parsed_data["feedback"]["before"]
+    # 피드백 결과에 대한 after 문자열을 배열에 저장
+    after = parsed_data["feedback"]["after"]
 
+    print(before)
+    print(after)
 
 
 # 한국어 ipa에 맞게 매핑하는 파트

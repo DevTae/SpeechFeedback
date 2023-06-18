@@ -10,3 +10,11 @@ by DevTae
 
 - 프로그램에서 안내하는 내용대로 마이크에 `안녕하세요` 라고 말한 뒤에 그에 대한 피드백을 확인할 수 있습니다.
 
+- 서버에서 반환하는 json 타입 포맷은 다음과 같습니다.
+
+``` python
+parsed_data =
+ { "answer" : "정답 IPA",
+   "user" : "유저 IPA",
+   "feedback" : { "success" : "성공 여부", "before" : "교정 전", "after" : "교정 흐" } }
+```
