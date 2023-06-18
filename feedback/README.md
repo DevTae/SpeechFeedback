@@ -16,5 +16,5 @@ by DevTae
 parsed_data =
  { "answer" : "정답 IPA",
    "user" : "유저 IPA",
-   "feedback" : { "success" : "성공 여부", "before" : "교정 전", "after" : "교정 흐" } }
+   "feedback" : { "success" : "성공 여부", "before" : "교정 전", "after" : "교정 후" } }
 ```
