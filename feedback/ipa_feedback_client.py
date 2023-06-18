@@ -32,20 +32,20 @@ files = {"file": open("output.pcm", "rb")} # read in binary format
 # 서버 요청 결과 출력하기
 # 정답(ɑnnjʌŋɑsɛjo)과 입력 사이의 피드백
 response = requests.post(url, files=files)
-print(response.content.decode('utf8'))
+print(response.content.decode('utf8')) # standard_ipa, user_ipa, feedback 출력
 
 feedback_data = response.content.decode('utf8')
 
-
-# 짤라서 배열에 저장
+# json 내용을 배열에 저장
 parsed_data = json.loads(feedback_data)
-split_text = parsed_data["feedbacks"][0].split("의 발음을")
-# "의 발음을" 이전의 문자열들을 배열에 저장
-before = [text.strip() for text in split_text[0].split(",") if text.strip() != ""]
-# "를 사용해서"와 "로 바꿔보세요" 사이의 문자열들을 배열에 저장
-after = [text.strip() for text in split_text[1].split("를 사용해서")[1].split("로 바꿔보세요")[0].split(",") if text.strip() != ""]
-#만약 없으면?
-if len(before) == 0 or len(after) == 0:
+
+# 피드백 결과에 대한 before 문자열을 배열에 저장
+before = parsed_data["feedback"]["before"]
+# 피드백 결과에 대한 after 문자열을 배열에 저장
+after = parsed_data["feedback"]["after"]
+
+# 만약 틀린 것이 없으면
+if parsed_data["feedback"]["success"] == True:
     print("잘하셨습니다!")
     sys.exit(0) # 프로그램 종료
 

@@ -1,21 +1,47 @@
 #pip install panphon
 
-from panphon.featuretable import FeatureTable
+#from panphon.featuretable import FeatureTable
+import pandas as pd
+
+# make the user_ipa string object into sanitized list object that consists of ipa characters
+def sanitize(user_ipa):
+    characters = pd.read_csv("csv/ipa2ko.csv")["IPA"].values
+    characters = sorted(characters, key=lambda c: len(c), reverse=True)
+
+    sanitized = []
+    i = 0
+
+    while i < len(user_ipa):
+        skip = True
+        for ch in characters:
+            if ch == user_ipa[i:i+len(ch)]:
+                skip = False
+                sanitized.append(ch)
+                i += len(ch)
+        if skip == True:
+            i += 1
+
+    return sanitized
+
 
 def provide_feedback(standard_ipa, user_ipa):
-    ft = FeatureTable()
-    features = ['syl', 'son', 'cons', 'cont', 'delrel', 'lat', 'nas', 'strid', 'voi', 'sg', 'cg', 'ant', 'cor', 'distr', 'lab', 'hi', 'lo', 'back', 'round', 'velaric', 'tense', 'long']
-    
+    #ft = FeatureTable()
+    #features = ['syl', 'son', 'cons', 'cont', 'delrel', 'lat', 'nas', 'strid', 'voi', 'sg', 'cg', 'ant', 'cor', 'distr', 'lab', 'hi', 'lo', 'back', 'round', 'velaric', 'tense', 'long']
+   
+    # 여기서 리스트화 진행
+    standard_ipa = sanitize(standard_ipa)
+    user_ipa = sanitize(user_ipa)
+
     standard_ipa_list = list(standard_ipa)
     user_ipa_list = list(user_ipa)
     
     #if len(standard_ipa_list) != len(user_ipa_list):
     #    return "다시 시도하세요."
     
-    standard_array = ft.word_array(features, standard_ipa)
-    user_array = ft.word_array(features, user_ipa)
+    #standard_array = ft.word_array(features, standard_ipa)
+    #user_array = ft.word_array(features, user_ipa)
     
-    feedback = []
+    feedback = { "success": None, "before": None, "after": None }
     
     # Developed by DevTae@2023
     # 정답 labeling index 를 기준으로 삼고 한 개씩 오른쪽으로 포인터를 옮기면서 조건을 확인합니다.
@@ -44,17 +70,24 @@ def provide_feedback(standard_ipa, user_ipa):
             else:
                 # feedback (standard[i] <-> user[j])
                 # standard_array[i] 를 활용하여 standard[i] 로 교정
-                arr = []
-                for index, feature in enumerate(features):
-                    if standard_array[i][index] != user_array[j][index]:
-                        arr.append(feature)
-                correction = ','.join(arr)
-                feedback.append(f"{user_ipa_list[j]} 의 발음을 {correction} 를 사용해서 {standard_ipa_list[i]} 로 바꿔보세요.")
+                #arr = []
+                #for index, feature in enumerate(features):
+                #    if standard_array[i][index] != user_array[j][index]:
+                #        arr.append(feature)
+                #correction = ','.join(arr)
+                #feedback.append(f"{user_ipa_list[j]} 의 발음을 {correction} 를 사용해서 {standard_ipa_list[i]} 로 바꿔보세요.")
+                #feedback.append(f"{user_ipa_list[j]} 의 발음을 {standard_ipa_list[i]} 로 바꿔보세요.")
+                feedback["success"] = False
+                feedback["before"] = user_ipa_list[j]
+                feedback["after"] = standard_ipa_list[i]
                 break
     
-    if not feedback:
-        feedback.append("잘 하셨습니다.")
-    
+    #if not feedback:
+    #    feedback.append("잘 하셨습니다.")
+
+    if feedback["success"] == None:
+        feedback["success"] = True
+
     return feedback
 
 '''

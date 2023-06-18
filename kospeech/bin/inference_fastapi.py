@@ -50,6 +50,7 @@ def parse_audio(audio_path: str, del_silence: bool = False, audio_extension: str
 
     return torch.FloatTensor(feature).transpose(0, 1)
 
+# Modified by DevTae@2023
 @app.post("/test")
 async def ipa_feedback(file: UploadFile = File(...)):
     filename = f"output.wav"
@@ -82,20 +83,22 @@ async def ipa_feedback(file: UploadFile = File(...)):
     # Get the feedback of user_ipa data
     user_ipa = sentence[0]
     standard_ipa = "ɑnnjʌŋɑsɛjo" # default: "안녕하세요"
-    feedback = provide_feedback(standard_ipa, user_ipa)
-    feedbacks = []
+    feedback = provide_feedback(standard_ipa, user_ipa) # searching the incorrect part in linear method
 
-    if isinstance(feedback, str):
-        feedbacks.append(feedback)
-    else:
-        for fb in feedback:
-            feedbacks.append(fb)
+    # to be implemented to return multiple feedbacks later
+    #feedbacks = []
+
+    #if isinstance(feedback, str):
+    #    feedbacks.append(feedback)
+    #else:
+    #    for fb in feedback:
+    #        feedbacks.append(fb)
 
     # Get the string data of user_ipa and standard_ipa in hangul
     #user_ipa_hangul = ipa2ko.ipa_to_hangul(user_ipa, ipa2ko.ipa_dict)
     #standard_ipa_hangul = ipa2ko.ipa_to_hangul(standard_ipa, ipa2ko.ipa_dict)
 
     # Return all of the data
-    return { "answer" : standard_ipa, #standard_ipa_hangul,
-               "user" : user_ipa, #user_ipa_hangul,
-               "feedbacks" : feedbacks }
+    return { "answer" : standard_ipa,
+               "user" : user_ipa,
+               "feedback" : feedback }
