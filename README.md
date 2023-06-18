@@ -149,7 +149,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 ![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/01b6e492-6ed4-41a4-adce-0948069db9de)
 
-- **피드백 알고리즘**을 적용하여 발음에 대한 피드백을 제공할 수 있게 되었다.
+- **피드백 알고리즘**을 적용하여 [발음에 대한 피드백](https://github.com/DevTae/SpeechFeedback/tree/main/feedback)을 제공할 수 있게 되었다.
 
 <br/>
 
