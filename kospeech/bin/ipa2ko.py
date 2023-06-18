@@ -1,6 +1,6 @@
 import pandas as pd
 
-filepath_ipa_to_hangul = "csv/IPA2Ko.csv"
+filepath_ipa_to_hangul = "csv/ipa2ko.csv"
 filepath_standard = "csv/standard.csv"
 filepath_feature = "csv/feature.csv"
 
