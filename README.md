@@ -97,7 +97,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 - `Deep Speech 2` 모델 구조
   - **3-Layer CNN**
-    - [다음 링크](https://github.com/DevTae/SpeechFeedback/blob/main/docs/3-Layer-CNN.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
+    - [다음 링크](https://github.com/DevTae/SpeechFeedback/blob/main/docs/how-to-change-into-3-layer-cnn.md)의 메뉴얼을 바탕으로 2-Layer CNN 에서 3-Layer CNN 으로 수정할 수 있음
   - Bi-directional GRU Layer x 7
     - RNN 레이어 수는 하이퍼 파라미터 튜닝에서 설정 가능
   - Fully Connected Layer x 1
