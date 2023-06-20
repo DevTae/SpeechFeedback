@@ -3,7 +3,7 @@
 
 DATASET_PATH="/workspace/data"
 VOCAB_DEST='/workspace/kospeech/dataset/kspon/aihub_labels.csv'
-OUTPUT_UNIT='character'                                          # you can set character / subword / grapheme
+OUTPUT_UNIT='ipa'                                          # you can set character / ipa / subword / grapheme
 PREPROCESS_MODE='phonetic'                                       # phonetic : 칠 십 퍼센트,  spelling : 70%
 VOCAB_SIZE=5000                                                  # if you use subword output unit, set vocab size
 

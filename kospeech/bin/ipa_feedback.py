@@ -5,19 +5,20 @@ import pandas as pd
 
 # make the user_ipa string object into sanitized list object that consists of ipa characters
 def sanitize(user_ipa):
-    characters = pd.read_csv("csv/ipa2ko.csv")["IPA"].values
-    characters = sorted(characters, key=lambda c: len(c), reverse=True)
+    ipas = pd.read_csv("csv/ipa2ko.csv")["IPA"].values
+    ipas = sorted(ipas, key=lambda c: len(c), reverse=True)
 
     sanitized = []
     i = 0
 
     while i < len(user_ipa):
         skip = True
-        for ch in characters:
-            if ch == user_ipa[i:i+len(ch)]:
+        for ipa in ipas:
+            if ipa == user_ipa[i:i+len(ch)]:
                 skip = False
-                sanitized.append(ch)
-                i += len(ch)
+                sanitized.append(ipa)
+                i += len(ipa)
+                break
         if skip == True:
             i += 1
 

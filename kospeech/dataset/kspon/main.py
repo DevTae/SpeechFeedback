@@ -16,8 +16,8 @@ import argparse
 from preprocess.grapheme import sentence_to_grapheme
 from preprocess.preprocess import preprocess
 from preprocess.character import generate_character_labels, generate_character_script
+from preprocess.ipa import generate_ipa_labels, generate_ipa_script
 from preprocess.subword import train_sentencepiece, sentence_to_subwords
-
 
 def _get_parser():
     """ Get arguments parser """
@@ -64,6 +64,10 @@ def main():
     if opt.output_unit == 'character':
         generate_character_labels(transcripts, opt.vocab_dest)
         generate_character_script(audio_paths, transcripts, opt.vocab_dest)
+
+    elif opt.output_unit == 'ipa':
+        generate_ipa_labels(transcripts, opt.vocab_dest)
+        generate_ipa_script(audio_paths, transcripts, opt.vocab_dest)
 
     elif opt.output_unit == 'subword':
         train_sentencepiece(transcripts, opt.savepath, opt.vocab_size)
