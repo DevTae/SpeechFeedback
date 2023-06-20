@@ -60,9 +60,8 @@ def bracket_filter(sentence, mode='phonetic'):
 def special_filter(sentence, mode='phonetic', replace=None):
     new_sentence = str()
     for idx, ch in enumerate(sentence.replace("\n", " ")):
-        if re.search(r"[ㄱ-ㅎ가-힣ㅏ-ㅣ]", ch) is None:
-            if not (ch == '!' or ch == '?' or ch == '.' or ch == ',' or ch == ' '):
-                continue
+        if re.search(r"[ㄱ-ㅎ가-힣ㅏ-ㅣ ]", ch) is None:
+            continue
         new_sentence += ch
 
     pattern = re.compile(r'\s\s+') # 스페이스바 두 번 이상일 때
