@@ -7,8 +7,10 @@ End-to-End ASR (Automatic Speech Recognition) Feedback System
 KoSpeech 툴킷 : [sooftware/kospeech](https://github.com/sooftware/kospeech) 을 활용하여 프로젝트를 진행하였다.
 
 Baidu Research – Silicon Valley AI Lab, [*Deep Speech 2: End-to-End Speech Recognition in English and Mandarin*](https://arxiv.org/pdf/1512.02595v1.pdf), Computation and Language, Dec 2015
+  - 다음 논문에서의 모델 구조를 참고하였습니다.
 
 장민정, 정선진, 노준용, [*한국어 동시조음 모델에 기반한 스피치 애니메이션 생성*](http://journal.cg-korea.org/archive/view_article?pid=jkcgs-26-3-49), 컴퓨터그래픽스학회, Jun 2020
+  - 다음 논문에서의 혀 모델 시각 자료를 활용하였습니다.
 
 <br/>
 
@@ -148,6 +150,8 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 - 단어사전 경우의 수(출력층)를 **2000 → 36 개**로 축소할 수 있었다.
 
 ![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/01b6e492-6ed4-41a4-adce-0948069db9de)
+
+![23 6 20 Feedback GUI System](https://github.com/DevTae/SpeechFeedback/assets/55177359/70ec3eba-7337-4143-9a94-0700fc92fd61)
 
 - **피드백 알고리즘**을 적용하여 [발음에 대한 피드백](https://github.com/DevTae/SpeechFeedback/tree/main/feedback)을 제공할 수 있게 되었다.
 
