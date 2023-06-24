@@ -48,7 +48,7 @@ def sentence_to_target(sentence, ipa2id):
 def generate_ipa_labels(transcripts, labels_dest):
     print('create_ipa_labels started..')
 
-    ipas = pd.read_csv("csv/ipa2ko.csv")["IPA"].values
+    ipas = pd.read_csv("../../bin/csv/ipa2ko.csv")["IPA"].values
     ipas = sorted(ipas, key=lambda c: len(c), reverse=True)
 
     label_list = list()
