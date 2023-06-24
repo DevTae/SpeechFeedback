@@ -244,7 +244,7 @@ class SupervisedTrainer(object):
                     # after the 10 trial are done, escape from here if infinity loading is remaining
                     if i == trial:
                         infinity_loading = True
-                        print([Skip] Even though trying 10 times, it was unsuccessful to load datas. Skip it..")
+                        print("[Skip] Even though trying 10 times, it was unsuccessful to load datas. Skip it..")
                     else:
                         time.sleep(1)
 
@@ -361,7 +361,7 @@ class SupervisedTrainer(object):
                     # after the 10 trial are done, escape from here if infinity loading is remaining
                     if i == trial:
                         infinity_loading = True
-                        print([Skip] Even though trying 10 times, it was unsuccessful to load datas. Skip it..")
+                        print("[Skip] Even though trying 10 times, it was unsuccessful to load datas. Skip it..")
                     else:
                         time.sleep(1)
 
