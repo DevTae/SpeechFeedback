@@ -59,15 +59,19 @@ def generate_ipa_labels(transcripts, labels_dest):
         while idx < len(transcript):
             skip = True
             ch = transcript[idx]
-            for ipa in ipas:
-                if ipa == transcript[idx:idx+len(ipa)]:
-                    skip = False
-                    ch = ipa
-                    idx += len(ipa)
-                    break
-            if skip == True:
+            if ch != ' ':
+                for ipa in ipas:
+                    if ipa == transcript[idx:idx+len(ipa)]:
+                        skip = False
+                        ch = ipa
+                        idx += len(ipa)
+                        break
+                if skip == True:
+                    idx += 1
+                    continue
+            else:
                 idx += 1
-                continue
+
             if ch not in label_list:
                 label_list.append(ch)
                 label_freq.append(1)
