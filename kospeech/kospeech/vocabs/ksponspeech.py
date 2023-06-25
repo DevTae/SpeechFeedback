@@ -78,6 +78,9 @@ class KsponSpeechVocabulary(Vocabulary):
                     break
                 elif label.item() == self.blank_id:
                   continue
+                # pass when y_hats goes divergence value
+                elif label.item() >= len(self.id_dict) or label.item() < 0:
+                    break
                 sentence += self.id_dict[label.item()]
             return sentence
 
@@ -89,6 +92,9 @@ class KsponSpeechVocabulary(Vocabulary):
                     break
                 elif label.item() == self.blank_id:
                   continue
+                # pass handling when y_hats goes divergence value
+                elif label.item() >= len(self.id_dict) or label.item() < 0:
+                    break
                 sentence += self.id_dict[label.item()]
             sentences.append(sentence)
         return sentences

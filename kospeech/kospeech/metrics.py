@@ -53,6 +53,16 @@ class ErrorRate(object):
         for (target, y_hat) in zip(targets, y_hats):
             s1 = self.vocab.label_to_string(target)
             s2 = self.vocab.label_to_string(y_hat)
+            
+            # exception handling
+            if isinstance(s2, list):
+                s2 = s2[len(s2)-1] # pick the last array
+
+            # to solve the irregular CER result, the special things is removed
+            s2 = s2.replace("<pad>", "")
+            s2 = s2.replace("<sos>", "")
+            s2 = s2.replace("<eos>", "")
+            s2 = s2.replace("<blank>", "")
 
             dist, length = self.metric(s1, s2)
 

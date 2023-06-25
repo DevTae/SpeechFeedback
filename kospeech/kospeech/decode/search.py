@@ -111,7 +111,7 @@ class BeamSearch(GreedySearch):
                 else:
                     raise ValueError("This model unsupport beam search.")
             elif isinstance(model.module, EncoderModel):
-                topk_decoder = BeamCTCDecoder(labels=self.vocab.labels)
+                topk_decoder = BeamCTCDecoder(labels=list(self.vocab.labels))
 
             else:
                 raise ValueError("This model unsupport beam search.")
@@ -134,7 +134,7 @@ class BeamSearch(GreedySearch):
                 else:
                     raise ValueError("This model unsupport beam search.")
             elif isinstance(model, EncoderModel):
-                topk_decoder = BeamCTCDecoder(labels=self.vocab.labels)
+                topk_decoder = BeamCTCDecoder(labels=list(self.vocab.labels))
             else:
                 raise ValueError("This model unsupport beam search.")
 
