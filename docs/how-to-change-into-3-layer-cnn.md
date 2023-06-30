@@ -13,14 +13,15 @@
 
 *(in DeepSpeech2Extractor Class ..)*
 ```python
+# 'DeepSpeech2Extractor Constructor' in convolution.py
 ...
 self.conv = MaskCNN(
     nn.Sequential(
         nn.Conv2d(in_channels, out_channels, kernel_size=(41, 11), stride=(2, 2), padding=(20, 5), bias=False),
-        nn.BatchNorm2d(out_channels),
+        nn.BatchNorm2d(out_channels, momentum=0.99),
         self.activation,
         nn.Conv2d(out_channels, out_channels, kernel_size=(21, 11), stride=(2, 1), padding=(10, 5), bias=False),
-        nn.BatchNorm2d(out_channels),
+        nn.BatchNorm2d(out_channels, momentum=0.99),
         self.activation,
     )
 )
@@ -37,24 +38,25 @@ self.conv = MaskCNN(
 self.conv = MaskCNN(
     nn.Sequential(
         nn.Conv2d(in_channels, out_channels, kernel_size=(41, 11), stride=(2, 2), padding=(20, 5), bias=False),
-        nn.BatchNorm2d(out_channels),
+        nn.BatchNorm2d(out_channels, momentum=0.99),
         self.activation,
         nn.Conv2d(out_channels, out_channels, kernel_size=(21, 11), stride=(2, 1), padding=(10, 5), bias=False),
-        nn.BatchNorm2d(out_channels),
+        nn.BatchNorm2d(out_channels, momentum=0.99),
         self.activation,
         nn.Conv2d(out_channels, 96, kernel_size=(21, 11), stride=(2, 1), padding=(10, 5), bias=False),
-        nn.BatchNorm2d(96),
+        nn.BatchNorm2d(96, momentum=0.99),
         self.activation,
     )
 )
 ...
 ```
 
-- 또한, 이것만 바꾸면 이후 RNN Layer 에서 dimension 계산 차질이 생기기 때문에 `Conv2dExtractor` Class 에서의 `get_output_lengths` 함수를 수정해주어야 한다.
+- 또한, 이것만 바꾸면 이후 RNN Layer 에서 dimension 계산 차질이 생기기 때문에 같은 파일에서 `Conv2dExtractor` Class 에서의 `get_output_dim` 함수를 수정해주어야 한다.
 - 코드는 다음과 같다.
 
 #### Before
 ```python
+# 'get_output_dim' function in Conv2dExtractor
 ...
 elif isinstance(self, DeepSpeech2Extractor):
     output_dim = int(math.floor(self.input_dim + 2 * 20 - 41) / 2 + 1)
@@ -65,6 +67,7 @@ elif isinstance(self, DeepSpeech2Extractor):
 
 #### After
 ```python
+# 'get_output_dim' function in Conv2dExtractor
 ...
 elif isinstance(self, DeepSpeech2Extractor):
     output_dim = int(math.floor(self.input_dim + 2 * 20 - 41) / 2 + 1)
