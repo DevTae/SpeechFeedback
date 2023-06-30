@@ -104,6 +104,4 @@ def preprocess(dataset_path, mode='phonetic'):
             print(audio_path)
             continue
 
-        break
-
     return audio_paths, transcripts
