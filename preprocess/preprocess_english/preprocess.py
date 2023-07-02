@@ -95,6 +95,10 @@ def preprocess(dataset_path, mode='phonetic'):
 
             audio_path = os.path.join(BASE_PATH, TYPE_PATH, "audio", sub_folder1, sub_folder2, audio_name) + ".flac"
             
+            # if the empty file is found, pass through
+            if not os.path.isfile(audio_path):
+                continue
+            
             sentence = line.split('\t')[1]
             sentence = sentence_filter(sentence, mode)
             translated = ipa.convert(sentence)
