@@ -122,7 +122,7 @@ class AudioDataLoader(threading.Thread):
         batch_size (int): size of batch
         thread_id (int): identification of thread
     """
-    def __init__(self, dataset, queue, batch_size, thread_id, pad_id, is_stop):
+    def __init__(self, dataset, queue, batch_size, thread_id, pad_id):
         threading.Thread.__init__(self)
         self.collate_fn = _collate_fn
         self.dataset = dataset
@@ -132,7 +132,6 @@ class AudioDataLoader(threading.Thread):
         self.dataset_count = dataset.count()
         self.thread_id = thread_id
         self.pad_id = pad_id
-        self.is_stop = is_stop # check whether threads are shutted down or not
 
     def _create_empty_batch(self):
         seqs = torch.zeros(0, 0, 0)
@@ -168,10 +167,6 @@ class AudioDataLoader(threading.Thread):
 
             batch = self.collate_fn(items, self.pad_id)
             self.queue.put(batch)
-
-            # if loader must be shutted down, break it
-            if self.is_stop():
-                break
 
         logger.debug('loader %d stop' % self.thread_id)
 
@@ -236,20 +231,17 @@ class MultiDataLoader(object):
         self.batch_size = batch_size
         self.num_workers = num_workers
         self.loader = list()
-        self.stop_threads = False
 
         for idx in range(self.num_workers):
-            self.loader.append(AudioDataLoader(self.dataset_list[idx], self.queue, self.batch_size, idx, pad_id, lambda : self.stop_threads))
+            self.loader.append(AudioDataLoader(self.dataset_list[idx], self.queue, self.batch_size, idx, pad_id))
 
     def start(self):
         """ Run threads """
-        self.stop_threads = False
         for idx in range(self.num_workers):
             self.loader[idx].start()
 
     def join(self):
         """ Wait for the other threads """
-        self.stop_threads = True
         for idx in range(self.num_workers):
             self.loader[idx].join()
 
