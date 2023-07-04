@@ -18,7 +18,7 @@ for idx, target_wav_file in enumerate(target_wav_files, start=1):
     bak_file = old_file.replace(".wav", "_bak.wav")
     if not os.path.isfile(bak_file):
         os.rename(old_file, bak_file)
-    print("renaming process :", idx / num_of_target_wav_files * 100, "% done.")
+    print("renaming process :", idx / num_of_target_wav_files, "% done.")
 
 print("[done] renaming process is done.")
 
@@ -37,6 +37,6 @@ for idx, target_wav_file in enumerate(target_wav_files, start=1):
         y, _ = librosa.load(bak_file, sr=orig_sr)
         y_resample = librosa.resample(y, orig_sr=orig_sr, target_sr=target_sr)
         soundfile.write(new_file, y_resample, target_sr, format='wav')
-    print("downsampling process :", idx / num_of_target_wav_files * 100, "% done.")
+    print("downsampling process :", idx / num_of_target_wav_files, "% done.")
 
 print("[done] downsampling process is done.")
