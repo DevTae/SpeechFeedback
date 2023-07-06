@@ -120,6 +120,18 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 2. `python ./bin/main.py model=ds2 train=ds2_train train.dataset_path=/workspace/data` 를 실행한다.
 
 - (optional) CTC Loss 계산식에서 nan 이 뜨는 것을 방지하고 싶다면 **데이터 보정** 및 **하이퍼 파라미터 수정**을 하거나 `torch.nan_to_num(outputs)` 함수를 이용한다.
+  - `torch.nan_to_num(outputs)` 의 경우, 다음 코드와 같이 바꾸면 된다.
+  ```Python
+  # in kospeech/kospeech/trainer/supervised_learning.py:454L
+  ...
+  elif architecture in ('deepspeech2', 'jasper'):
+      outputs, output_lengths = model(inputs, input_lengths)
+      outputs = torch.nan_to_num(outputs)
+      loss = self.criterion(
+          outputs, targets[:, 1:], contiguous().int(), input_lengths.int(), target_lengths.int()
+      )
+  ...
+  ```
 
 <br/>
 
