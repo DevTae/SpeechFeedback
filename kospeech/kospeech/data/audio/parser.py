@@ -73,17 +73,17 @@ class SpectrogramParser(AudioParser):
 
     def __init__(
             self,
-            feature_extract_by: str = 'librosa',      # which library to use for feature extraction
+            feature_extract_by: str = 'kaldi',      # which library to use for feature extraction
             sample_rate: int = 16000,                 # sample rate of audio signal.
             n_mels: int = 80,                         # Number of mfc coefficients to retain.
             frame_length: int = 20,                   # frame length for spectrogram
             frame_shift: int = 10,                    # Length of hop between STFT windows.
-            del_silence: bool = False,                # flag indication whether to delete silence or not
-            input_reverse: bool = True,               # flag indication whether to reverse input or not
-            normalize: bool = False,                  # flag indication whether to normalize spectrum or not
-            transform_method: str = 'mel',            # which feature to use [mel, fbank, spect, mfcc]
-            freq_mask_para: int = 12,                 # hyper Parameter for Freq Masking to limit freq masking length
-            time_mask_num: int = 2,                   # how many time-masked area to make
+            del_silence: bool = True,                # flag indication whether to delete silence or not
+            input_reverse: bool = False,               # flag indication whether to reverse input or not
+            normalize: bool = True,                  # flag indication whether to normalize spectrum or not
+            transform_method: str = 'fbank',            # which feature to use [mel, fbank, spect, mfcc]
+            freq_mask_para: int = 18,                 # hyper Parameter for Freq Masking to limit freq masking length
+            time_mask_num: int = 4,                   # how many time-masked area to make
             freq_mask_num: int = 2,                   # how many freq-masked area to make
             sos_id: int = 1,                          # start of sentence token`s identification
             eos_id: int = 2,                          # end of sentence token`s identification
