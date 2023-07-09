@@ -18,6 +18,7 @@ import torch
 import torch.nn as nn
 import queue
 import pandas as pd
+import random
 from torch import Tensor
 from typing import Tuple
 
@@ -147,6 +148,9 @@ class SupervisedTrainer(object):
         for epoch in range(start_epoch, num_epochs):
             logger.info('Epoch %d start' % epoch)
             train_queue = queue.Queue(self.num_workers << 1)
+            
+            # shuffle trainset_list in randomly to train all around data
+            random.shuffle(self.trainset_list)
 
             for trainset in self.trainset_list:
                 trainset.shuffle()
