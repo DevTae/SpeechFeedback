@@ -152,8 +152,11 @@ class AudioDataLoader(threading.Thread):
             for _ in range(self.batch_size):
                 if self.index >= self.dataset_count:
                     break
-
-                feature_vector, transcript = self.dataset.get_item(self.index)
+                
+                try:
+                    feature_vector, transcript = self.dataset.get_item(self.index)
+                except:
+                    continue
 
                 if feature_vector is not None:
                     items.append((feature_vector, transcript))
