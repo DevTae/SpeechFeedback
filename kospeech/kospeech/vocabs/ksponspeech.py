@@ -14,6 +14,7 @@
 
 import csv
 from kospeech.vocabs import Vocabulary
+from kospeech.vocabs.postprocess import PostProcess
 
 
 class KsponSpeechVocabulary(Vocabulary):
@@ -38,6 +39,7 @@ class KsponSpeechVocabulary(Vocabulary):
 
         self.vocab_path = vocab_path
         self.output_unit = output_unit
+        self.post_process = PostProcess()
 
     def __len__(self):
         if self.output_unit == 'subword':
@@ -82,7 +84,7 @@ class KsponSpeechVocabulary(Vocabulary):
                 elif label.item() >= len(self.id_dict) or label.item() < 0:
                     break
                 sentence += self.id_dict[label.item()]
-            return sentence
+            return self.post_process.sanitize(sentence)
 
         sentences = list()
         for batch in labels:
@@ -96,7 +98,7 @@ class KsponSpeechVocabulary(Vocabulary):
                 elif label.item() >= len(self.id_dict) or label.item() < 0:
                     break
                 sentence += self.id_dict[label.item()]
-            sentences.append(sentence)
+            sentences.append(self.post_process.sanitize(sentence))
         return sentences
 
     def load_vocab(self, label_path, encoding='utf-8'):
