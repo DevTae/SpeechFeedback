@@ -48,7 +48,8 @@ def sentence_to_target(sentence, ipa2id):
 def generate_ipa_labels(transcripts, labels_dest):
     print('create_ipa_labels started..')
 
-    ipas = pd.read_csv("../../bin/csv/ipa2ko.csv")["IPA"].values
+    #ipas = pd.read_csv("../../bin/csv/ipa2ko.csv")["IPA"].values
+    ipas = [ "k*", "t*", "p*", "s*", "tɕ", "tɕ*", "tɕʰ", "kʰ", "tʰ", "pʰ", "ja", "jɛ", "jʌ", "wa", "wɛ", "jo", "wʌ", "wɛ", "wi", "ju", "ɰi" ] # 묶음 처리해야 하는 IPA 문자 리스트 (ex. 이중모음)
     ipas = sorted(ipas, key=lambda c: len(c), reverse=True)
 
     label_list = list()
