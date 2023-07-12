@@ -26,14 +26,20 @@ class ErrorRate(object):
     def __init__(self, vocab) -> None:
         self.total_dist = 0.0
         self.total_length = 0.0
+        self.total_ratio = 0.0
+        self.total_count = 0
         self.vocab = vocab
 
     def __call__(self, targets, y_hats):
         """ Calculating character error rate """
-        dist, length = self._get_distance(targets, y_hats)
+        dist, length, ratio, count = self._get_distance(targets, y_hats)
         self.total_dist += dist
         self.total_length += length
+        self.total_ratio += ratio
+        self.total_count += count
+        
         return self.total_dist / self.total_length
+        #return total_ratio / total_count
 
     def _get_distance(self, targets, y_hats):
         """
@@ -49,6 +55,8 @@ class ErrorRate(object):
         """
         total_dist = 0
         total_length = 0
+        total_ratio = 0
+        total_count = 0
 
         for (target, y_hat) in zip(targets, y_hats):
             s1 = self.vocab.label_to_string(target)
@@ -58,18 +66,14 @@ class ErrorRate(object):
             if isinstance(s2, list):
                 s2 = s2[len(s2)-1] # pick the last array
 
-            # to solve the irregular CER result, the special things is removed
-            s2 = s2.replace("<pad>", "")
-            s2 = s2.replace("<sos>", "")
-            s2 = s2.replace("<eos>", "")
-            s2 = s2.replace("<blank>", "")
-
             dist, length = self.metric(s1, s2)
 
             total_dist += dist
             total_length += length
+            total_ratio += dist / length
+            total_count += 1
 
-        return total_dist, total_length
+        return total_dist, total_length, total_ratio, total_count
 
     def metric(self, *args, **kwargs):
         raise NotImplementedError

@@ -7,5 +7,5 @@ output_unit: 'character'
 batch_size: 32
 num_workers: 4
 print_every: 20
-decode: 'beam'
+decode: 'greedy'
 k: 3
