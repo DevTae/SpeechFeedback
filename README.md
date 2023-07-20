@@ -154,9 +154,9 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 ### Performance After Using IPA
 
-![23 6 25 aihub_labels csv](https://github.com/DevTae/SpeechFeedback/assets/55177359/b93e5eaa-7af4-44b2-a7df-50eef182b9ab)
+![23 7 20 aihub_labels csv](https://github.com/DevTae/SpeechFeedback/assets/55177359/de975b8a-d646-406c-92f1-e8446b665dff)
 
-- 단어사전 경우의 수(출력층)를 **2000 → 41 개**로 축소할 수 있었다.
+- 단어사전 경우의 수(출력층)를 **2000 → 44 개**로 축소할 수 있었다.
 - IPA 문자 형태에 맞게 최소 단위로 나뉠 수 있도록 전처리 진행하였다.
 
 ![image](https://github.com/DevTae/SpeechFeedback/assets/55177359/01b6e492-6ed4-41a4-adce-0948069db9de)
