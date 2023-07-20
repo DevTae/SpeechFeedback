@@ -156,6 +156,7 @@ class AudioDataLoader(threading.Thread):
                 try:
                     feature_vector, transcript = self.dataset.get_item(self.index)
                 except:
+                    self.index += 1
                     continue
 
                 if feature_vector is not None:
