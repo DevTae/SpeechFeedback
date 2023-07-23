@@ -38,7 +38,10 @@ class ErrorRate(object):
         self.total_ratio += ratio
         self.total_count += count
         
-        return self.total_dist / self.total_length
+        if self.total_length != 0:
+            return self.total_dist / self.total_length
+        else:
+            return 1
         #return total_ratio / total_count
 
     def _get_distance(self, targets, y_hats):
@@ -70,7 +73,10 @@ class ErrorRate(object):
 
             total_dist += dist
             total_length += length
-            total_ratio += dist / length
+            if length != 0:
+                total_ratio += dist / length
+            else:
+                total_ratio += 1
             total_count += 1
 
         return total_dist, total_length, total_ratio, total_count
