@@ -123,6 +123,13 @@ class Checkpoint(object):
         returns the path to the last saved checkpoint's subdirectory.
         Precondition: at least one checkpoint has been made (i.e., latest checkpoint subdirectory exists).
         """
-        checkpoints_path = sorted(os.listdir(self.LOAD_PATH), reverse=True)[0]
-        sorted_listdir = sorted(os.listdir(os.path.join(self.LOAD_PATH, checkpoints_path)), reverse=True)
-        return os.path.join(checkpoints_path, sorted_listdir[1])
+        #checkpoints_path = sorted(os.listdir(self.LOAD_PATH), reverse=True)[0]
+        #sorted_listdir = sorted(os.listdir(os.path.join(self.LOAD_PATH, checkpoints_path)), reverse=True)
+        #return os.path.join(checkpoints_path, sorted_listdir[1])
+        sorted_listdir = []
+        for (path, dir, files) in os.walk(self.LOAD_PATH):
+            if 'model.pt' in files and 'trainer_states.pt' in files:
+                sorted_listdir.append(path)
+
+        return sorted(sorted_listdir)[-1]
+
