@@ -203,7 +203,7 @@ def _collate_fn(batch, pad_id):
 
     seqs = torch.zeros(batch_size, max_seq_size, feat_size)
 
-    targets = torch.zeros(batch_size, max_target_size).to(torch.long)
+    targets = torch.zeros(batch_size, max_target_size).to(torch.float) # long -> float
     targets.fill_(pad_id)
 
     for x in range(batch_size):
@@ -213,7 +213,7 @@ def _collate_fn(batch, pad_id):
         seq_length = tensor.size(0)
 
         seqs[x].narrow(0, 0, seq_length).copy_(tensor)
-        targets[x].narrow(0, 0, len(target)).copy_(torch.LongTensor(target))
+        targets[x].narrow(0, 0, len(target)).copy_(torch.FloatTensor(target)) # LongTensor -> FloatTensor
 
     seq_lengths = torch.IntTensor(seq_lengths)
     return seqs, targets, seq_lengths, target_lengths
@@ -276,6 +276,10 @@ def split_dataset(config: DictConfig, transcripts_path: str, vocab: Vocabulary):
         raise NotImplementedError("Unsupported Dataset : {0}".format(config.train.dataset))
 
     audio_paths, transcripts = load_dataset(transcripts_path)
+
+    tmp = list(zip(audio_paths, transcripts))
+    random.shuffle(tmp)
+    audio_paths, transcripts = zip(*tmp)
 
     total_time_step = math.ceil(len(audio_paths) / config.train.batch_size)
     valid_time_step = math.ceil(valid_num / config.train.batch_size)
