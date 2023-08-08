@@ -161,3 +161,24 @@ class NoiseInjector(object):
         except ValueError:
             logger.info("RuntimeError in {0}".format(audio_path))
             return None
+
+
+class PhaseAugment(object):
+    # Invert the phase value before applying fbank and so on
+    def __init__(self) -> None:
+        pass
+
+    def __call__(self, signal: np.ndarray) -> np.ndarray:
+        return -1 * signal
+
+
+class NoiseAugment(object):
+    # Noise Injection with standardized noise
+    def __init__(self, noise_level: float = 0.1) -> None:
+        self.noise_level = noise_level
+
+    def __call__(self, signal: np.ndarray) -> np.ndarray:
+        noise = np.random.normal(0, self.noise_level * np.std(signal), len(signal))
+
+        return signal + noise
+

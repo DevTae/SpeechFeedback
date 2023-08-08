@@ -99,6 +99,22 @@ class SpectrogramDataset(Dataset, SpectrogramParser):
                 self.audio_paths.append(self.audio_paths[idx])
                 self.transcripts.append(self.transcripts[idx])
 
+        # noise injection
+        logger.info("Applying Noise Injection Augmentation...")
+
+        for idx in range(self.dataset_size):
+            self.augment_methods.append(self.NOISE_AUGMENT)
+            self.audio_paths.append(self.audio_paths[idx])
+            self.transcripts.append(self.transcripts[idx])
+
+        # phase reversing
+        logger.info("Applying Phase Reversing Augmentation...")
+
+        for idx in range(self.dataset_size):
+            self.augment_methods.append(self.PHASE_AUGMENT)
+            self.audio_paths.append(self.audio_paths[idx])
+            self.transcripts.append(self.transcripts[idx])
+
     def shuffle(self):
         """ Shuffle dataset """
         tmp = list(zip(self.audio_paths, self.transcripts, self.augment_methods))
