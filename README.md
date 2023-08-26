@@ -201,4 +201,4 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
   - TriStageLRSchedule 스케줄러 알고리즘의 코드를 바탕으로 전체 학습에 대하여 `처음부터 정해진 단계만큼 warmup` 을 하고 `절반까지 최댓값을 유지`했다가 `이후부터는 learning rate 가 감소`하는 방식임을 알 수 있었다.
   - 해당 스케줄러의 warmup 설정 관점을 보아하니 적어도 전체 step size 의 `10%`만큼은 warmup step 으로 설정해야겠음을 느꼈고 이를 적용해보았다.
   - 그 결과, 이전에 대비하여 학습 초반부터 높은 loss와 CER 값에 수렴하는 local minima 를 개선할 수 있었다.
-  - (23.8.26) 추가적으로, warmup step 을 너무 높게 설정하는 것도 오히려 local minima 가 발생할 확률을 높일 수 있다. 적당한 수치를 찾는 것이 중요함. 따라서, `10%` 가 아닌 constant 하게 `1000` 등의 수치를 적용하는 방법으로 접근할 수 있음.
+  - (23.8.26) 추가적으로, warmup step 을 너무 높게 설정하는 것이 오히려 학습 저하를 일어킬 수 있다. 적당한 수치를 찾는 것이 중요하다. 따라서, `10%` 가 아닌 constant 하게 `1000` 등의 수치를 적용하는 방법으로 접근할 수 있다.
