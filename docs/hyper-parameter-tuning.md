@@ -10,11 +10,12 @@
   - init_lr_scale : 0.01
   - final_lr_scale : 0.05
   - max_grad_norm : 400
-  - warmup_steps : **75000**
+  - warmup_steps : **1000**
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴
     - 너무 빠르게 warming-up (Tri-Stage Learning Rate Scheduler 사용) 하게 된다면 local optima 에 갇힐 수 있음
     - `(적정값) = (total_step) * (total_epoch) * 0.1 = ((train 데이터 수) / (batch_size) * (spec_augment ? 2 : 1)) * (total_epoch) * 0.1`
       - ex) `(600000 datas / 32 * 2) * 20 epoches * 0.1 = 75000`
+    - (23.8.26) warmup step 수가 너무 크면 학습 속도가 저하되는 경우가 생겨 학습 성능이 떨어질 수 있어 적당한 상수 값을 적용하는 방식으로 변경하였음.
   - weight_decay : **3e-05**
   - reduction : **sum**
   - bidirectional : True
