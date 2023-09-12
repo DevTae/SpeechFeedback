@@ -99,6 +99,7 @@ class SpectrogramDataset(Dataset, SpectrogramParser):
                 self.audio_paths.append(self.audio_paths[idx])
                 self.transcripts.append(self.transcripts[idx])
 
+        """
         # noise injection
         logger.info("Applying Noise Injection Augmentation...")
 
@@ -106,12 +107,21 @@ class SpectrogramDataset(Dataset, SpectrogramParser):
             self.augment_methods.append(self.NOISE_AUGMENT)
             self.audio_paths.append(self.audio_paths[idx])
             self.transcripts.append(self.transcripts[idx])
+        """
 
         # phase reversing
         logger.info("Applying Phase Reversing Augmentation...")
 
         for idx in range(self.dataset_size):
             self.augment_methods.append(self.PHASE_AUGMENT)
+            self.audio_paths.append(self.audio_paths[idx])
+            self.transcripts.append(self.transcripts[idx])
+
+        # applying weighted prediction error
+        logger.info("Applying Weighted Prediction Error Augmentation...")
+
+        for idx in range(self.dataset_size):
+            self.augment_methods.append(self.WPE_AUGMENT)
             self.audio_paths.append(self.audio_paths[idx])
             self.transcripts.append(self.transcripts[idx])
 
@@ -292,6 +302,9 @@ def split_dataset(config: DictConfig, transcripts_path: str, vocab: Vocabulary):
         raise NotImplementedError("Unsupported Dataset : {0}".format(config.train.dataset))
 
     audio_paths, transcripts = load_dataset(transcripts_path)
+
+    if len(audio_paths) != train_num + valid_num:
+        raise Exception("[error] 데이터 개수 설정에 문제가 있습니다. (개수 설정)")
 
     tmp = list(zip(audio_paths, transcripts))
     random.shuffle(tmp)
