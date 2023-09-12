@@ -19,6 +19,12 @@ from torch import Tensor
 from kospeech.utils import logger
 from kospeech.data.audio.core import split
 
+# for applying WPE
+from nara_wpe.wpe import wpe
+from nara_wpe.wpe import get_power
+from nara_wpe.utils import stft, istft, get_stft_center_frequencies
+from nara_wpe import project_root
+
 
 class SpecAugment(object):
     """
@@ -182,3 +188,27 @@ class NoiseAugment(object):
 
         return signal + noise
 
+
+class WPEAugment(object):
+    def __init__(self) -> None:
+        pass
+
+    def __call__(self, signal: np.ndarray) -> np.ndarray:
+        size = 512
+        shift = 128
+
+        signals = [ signal ]
+        y = np.stack(signals, axis=0)
+        Y = stft(y, size=size, shift=shift).transpose(2, 0, 1) # (a, b, c) -> (c, a, b)
+
+        Z = wpe(
+            Y,
+            taps=10,
+            delay=3,
+            iterations=5,
+            statistics_mode='full'
+        ).transpose(1, 2, 0) # (c, a, b) -> (a, b, c)
+
+        z = istft(Z, size=size, shift=shift)
+
+        return z[0]

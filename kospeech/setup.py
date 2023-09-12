@@ -32,6 +32,7 @@ setup(
         'astropy',
         'sentencepiece',
         'hydra-core',
+        'nara-wpe'
     ],
     keywords=['asr', 'speech_recognition', 'korean'],
     python_requires='>=3',

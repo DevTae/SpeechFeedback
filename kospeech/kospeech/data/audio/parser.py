@@ -17,7 +17,7 @@ import numpy as np
 from kospeech.utils import logger
 from kospeech.data.audio.core import load_audio
 from torch import Tensor, FloatTensor
-from kospeech.data.audio.augment import SpecAugment, PhaseAugment, NoiseAugment
+from kospeech.data.audio.augment import SpecAugment, PhaseAugment, NoiseAugment, WPEAugment
 from kospeech.data.audio.feature import (
     MelSpectrogram,
     MFCC,
@@ -72,6 +72,7 @@ class SpectrogramParser(AudioParser):
     SPEC_AUGMENT = 1      # SpecAugment
     NOISE_AUGMENT = 2
     PHASE_AUGMENT = 3
+    WPE_AUGMENT = 4
 
     def __init__(
             self,
@@ -101,6 +102,7 @@ class SpectrogramParser(AudioParser):
         self.spec_augment = SpecAugment(freq_mask_para, time_mask_num, freq_mask_num)
         self.phase_augment = PhaseAugment()
         self.noise_augment = NoiseAugment(0.1)
+        self.wpe_augment = WPEAugment()
         self.audio_extension = audio_extension
 
         if transform_method.lower() == 'mel':
@@ -136,6 +138,9 @@ class SpectrogramParser(AudioParser):
 
         if augment_method == SpectrogramParser.NOISE_AUGMENT:
             signal = self.noise_augment(signal)
+
+        if augment_method == SpectrogramParser.WPE_AUGMENT:
+            signal = self.wpe_augment(signal)
 
         feature = self.transforms(signal)
 
