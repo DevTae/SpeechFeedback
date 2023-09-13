@@ -109,6 +109,7 @@ class SpectrogramDataset(Dataset, SpectrogramParser):
             self.transcripts.append(self.transcripts[idx])
         """
 
+        """
         # phase reversing
         logger.info("Applying Phase Reversing Augmentation...")
 
@@ -116,12 +117,29 @@ class SpectrogramDataset(Dataset, SpectrogramParser):
             self.augment_methods.append(self.PHASE_AUGMENT)
             self.audio_paths.append(self.audio_paths[idx])
             self.transcripts.append(self.transcripts[idx])
+        """
 
         # applying weighted prediction error
         logger.info("Applying Weighted Prediction Error Augmentation...")
 
         for idx in range(self.dataset_size):
             self.augment_methods.append(self.WPE_AUGMENT)
+            self.audio_paths.append(self.audio_paths[idx])
+            self.transcripts.append(self.transcripts[idx])
+
+        # applying denoise
+        logger.info("Applying Denoise Augmentation...")
+
+        for idx in range(self.dataset_size):
+            self.augment_methods.append(self.DENOISE_AUGMENT)
+            self.audio_paths.append(self.audio_paths[idx])
+            self.transcripts.append(self.transcripts[idx])
+
+        # applying WPE and denoise
+        logger.info("Applying WPE and Denoise Augmentation...")
+
+        for idx in range(self.dataset_size):
+            self.augment_methods.append(self.WPE_AND_DENOISE_AUGMENT)
             self.audio_paths.append(self.audio_paths[idx])
             self.transcripts.append(self.transcripts[idx])
 

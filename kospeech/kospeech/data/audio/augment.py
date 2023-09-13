@@ -25,6 +25,9 @@ from nara_wpe.wpe import get_power
 from nara_wpe.utils import stft, istft, get_stft_center_frequencies
 from nara_wpe import project_root
 
+# for applying denoise
+import noisereduce as nr
+
 
 class SpecAugment(object):
     """
@@ -210,5 +213,42 @@ class WPEAugment(object):
         ).transpose(1, 2, 0) # (c, a, b) -> (a, b, c)
 
         z = istft(Z, size=size, shift=shift)
+
+        return z[0]
+
+
+class DenoiseAugment(object):
+    def __init__(self, sample_rate: int) -> None:
+        self.sample_rate = sample_rate
+
+    def __call__(self, signal: np.ndarray) -> np.ndarray:
+        signal = nr.reduce_noise(y=signal, sr=self.sample_rate)
+        
+        return signal
+
+
+class WPEAndDenoiseAugment(object):
+    def __init__(self, sample_rate: int) -> None:
+        self.sample_rate = sample_rate
+
+    def __call__(self, signal: np.ndarray) -> np.ndarray:
+        size = 512
+        shift = 128
+
+        signals = [ signal ]
+        y = np.stack(signals, axis=0)
+        Y = stft(y, size=size, shift=shift).transpose(2, 0, 1) # (a, b, c) -> (c, a, b)
+
+        Z = wpe(
+            Y,
+            taps=10,
+            delay=3,
+            iterations=5,
+            statistics_mode='full'
+        ).transpose(1, 2, 0) # (c, a, b) -> (a, b, c)
+
+        z = istft(Z, size=size, shift=shift)
+
+        z[0] = nr.reduce_noise(y=z[0], sr=self.sample_rate)
 
         return z[0]

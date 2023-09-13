@@ -28,10 +28,16 @@ from kospeech.models import (
     ListenAttendSpell,
     Conformer,
 )
+from kospeech.data.audio.augment import WPEAndDenoiseAugment
+
+
+# 전처리 함수
+preprocess = WPEAndDenoiseAugment(sample_rate=16000)
 
 
 def parse_audio(audio_path: str, del_silence: bool = False, audio_extension: str = 'pcm') -> Tensor:
     signal = load_audio(audio_path, del_silence, extension=audio_extension)
+    signal = preprocess(signal)
     feature = torchaudio.compliance.kaldi.fbank(
         waveform=Tensor(signal).unsqueeze(0),
         num_mel_bins=80,
