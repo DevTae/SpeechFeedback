@@ -32,7 +32,8 @@ setup(
         'astropy',
         'sentencepiece',
         'hydra-core',
-        'nara-wpe'
+        'nara-wpe',
+        'noisereduce'
     ],
     keywords=['asr', 'speech_recognition', 'korean'],
     python_requires='>=3',
