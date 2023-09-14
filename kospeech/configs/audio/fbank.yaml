@@ -10,5 +10,5 @@ feature_extract_by: kaldi
 freq_mask_para: 18
 time_mask_num: 4
 freq_mask_num: 2
-spec_augment: True
+spec_augment: false
 input_reverse: false

@@ -22,6 +22,7 @@ from kospeech.data.audio.augment import (
     PhaseAugment,
     NoiseAugment,
     WPEAugment,
+    DenoiseAugment,
     WPEAndDenoiseAugment,
 )
 from kospeech.data.audio.feature import (
