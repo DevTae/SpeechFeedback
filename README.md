@@ -93,9 +93,10 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
   - 전체 데이터에 대하여 다음과 같이 학습을 진행하였음
     - `Training : Validation : Test = 600000 : 10000 : 10000`
 
-1. `cd SpeechFeedback/kospeech/dataset/kspon` 후에 `bash preprocess.sh` 를 실행하여 전처리를 진행한다.
-
-2. 그 결과, `SpeechFeedback/kospeech/dataset/kspon` 디렉토리에 `transcripts.txt` 와 단어 사전인 `aihub_labels.csv` 가 저장된다.
+- AIHub 데이터셋 전처리에 대한 툴을 바탕으로 전처리 과정을 쉽게 진행할 수 있다.
+  - [DevTae/AIHubSpeechPreprocessingTool](https://github.com/DevTae/AIHubSpeechPreprocessingTool)
+  - `git clone https://github.com/DevTae/AIHubSpeechPreprocessingTool.git` 를 진행하고 `README.md` 의 메뉴얼을 바탕으로 전처리를 진행한다.
+  - `/workspace/data` 디렉토리의 `aihub_labels.csv` 와 `transcripts.txt` 파일을 바탕으로 학습을 진행한다.
 
 - 해당 레포에 있는 코드는 Training 데이터에 대해서만 전처리하는 것이며, Evaluation 데이터를 이용하지 않는다. 따라서 별 다른 수정 없이 사용한다면, Training 에서 원하는 데이터들을 바탕으로 transcripts 를 형성시키고, 그 중에서도 일부를 떼어내 따로 evaluation 용 `transcripts_test.txt` 파일을 만들어 사용하면 된다.
 
@@ -123,7 +124,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 1. `KoSpeech/kospeech/data/data_loader.py` 에서 train, validation 데이터 수를 설정한다. (transcripts.txt 파일에서의 데이터 수)
     - 만약 train : validation : test 비율을 설정하고자 할 때는, train+validation 만큼 transcripts.txt 에 있도록 하고, 나머지 test 만큼 transcripts_test.txt 에 있도록 한다.
-    - train 과 validation 데이터 개수는 data_loader.py 에서 설정한다.
+    - train 과 validation 데이터 개수는 data_loader.py (kspon) 에서 설정한다.
 
 2. `python ./bin/main.py model=ds2 train=ds2_train train.dataset_path=/workspace/data` 를 실행한다.
 
