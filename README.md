@@ -70,9 +70,17 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
     - 공유 디렉토리 기능을 사용하여, `{하위 디렉토리}/한국어\ 음성` 폴더에 있는 파일들이 `/workspace/data` 과 연동된다.
     - 원활한 공유 디렉토리 설정을 위하여 데이터셋 다운로드 후에 수행하는 것을 추천한다.
 
-2. `sudo docker attach devtae` 를 실행한 뒤, Docker 이미지 내에서 작업한다.
+2. Docker 이미지 내에서 작업하기 위해 다음 명령어를 입력한다.
+    - `sudo docker attach devtae`
+    - `exit`
+    - `sudo docker restart devtae && sudo docker attach devtae`
+    - **(선택)** 한글 지원을 위하여 다음 명령어를 입력
+      - `apt-get update && apt-get install language-pack-ko`
+      - `vi ~/.bashrc` 의 맨 아래에 `export LANG="ko_KR.UTF-8"` 추가
+      - `vi ~/.vimrc` 아래에 `set encoding=utf-8` 추가
+      - `bash` 를 통하여 터미널 재접속
 
-3. 현재 레포를 `clone` 하여 kospeech 폴더를 workspace 폴더 안에 넣고 작업을 진행한다.
+4. 현재 레포를 `clone` 하여 kospeech 폴더를 workspace 폴더 안에 넣고 작업을 진행한다.
 
 <br/>
 
