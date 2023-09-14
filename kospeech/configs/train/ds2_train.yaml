@@ -1,7 +1,7 @@
 # data
 dataset: 'kspon'
 dataset_path: ''
-transcripts_path: '/workspace/kospeech/dataset/kspon/transcripts.txt'
+transcripts_path: '/workspace/data/transcripts.txt'
 output_unit: 'character'
 
 # trainer

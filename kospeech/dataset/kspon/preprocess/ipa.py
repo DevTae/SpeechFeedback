@@ -96,7 +96,7 @@ def generate_ipa_script(audio_paths, transcripts, labels_dest):
     print('create_script started..')
     ipa2id, id2ipa = load_label(os.path.join(labels_dest, "aihub_labels.csv"))
 
-    with open(os.path.join("transcripts.txt"), "w") as f:
+    with open(os.path.join(labels_dest, "transcripts.txt"), "w") as f:
         for audio_path, transcript in zip(audio_paths, transcripts):
             ipa_id_transcript = sentence_to_target(transcript, ipa2id)
             audio_path = audio_path.replace('txt', 'pcm')
