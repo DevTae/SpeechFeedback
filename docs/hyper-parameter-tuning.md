@@ -3,25 +3,25 @@
   - batch_size : 32
   - optimizer : '**adamp**'
     - [clovaai/AdamP](https://github.com/clovaai/AdamP)
-  - init_lr : **1e-06**
-  - final_lr : **1e-06**
-  - peak_lr : **6e-04**
+  - init_lr : **1e-07**
+  - final_lr : **1e-07**
+  - peak_lr : **1e-04**
     - learning rate 설정의 경우, 데이터와 상황에 따라 다르게 설정될 수 있음
   - init_lr_scale : 0.01
   - final_lr_scale : 0.05
   - max_grad_norm : 400
-  - warmup_steps : **1000**
+  - warmup_steps : **75000**
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴
     - 너무 빠르게 warming-up (Tri-Stage Learning Rate Scheduler 사용) 하게 된다면 local optima 에 갇힐 수 있음
-    - `(적정값) = (total_step) * (total_epoch) * 0.1 = ((train 데이터 수) / (batch_size) * (spec_augment ? 2 : 1)) * (total_epoch) * 0.1`
-      - ex) `(600000 datas / 32 * 2) * 20 epoches * 0.1 = 75000`
-    - (23.8.26) warmup step 수가 너무 크면 학습 속도가 저하되는 경우가 생겨 학습 성능이 떨어질 수 있어 적당한 상수 값을 적용하는 방식으로 변경하였음.
-  - weight_decay : **3e-05**
+    - `(적정값) = (total_step) * (total_epoch) * 0.05 = ((train 데이터 수) / (batch_size) * (spec_augment ? 5 : 4)) * (total_epoch) * 0.05`
+      - ex) `(600000 datas / 32 * 4) * 20 epoches * 0.05 = 75000`
+      - 현재, 기본적으로 적용되는 Augmentation 전략이 총 3 가지가 있기 때문에 기본값은 4 로 적용됨
+  - weight_decay : **5e-06**
   - reduction : **sum**
   - bidirectional : True
   - use_bidirectional : True
   - hidden_dim : **512** (when using RNN x 3 and you want speedy) 또는 **1880** (when using RNN x 3) 또는 **1280** (when using RNN x 7)
-  - dropout : **0.1**
+  - dropout : **0.3**
   - num_encoder_layers : **3** 또는 **7**
     - RNN 레이어 개수에 따라 학습 성능 차이가 많이 나는 것을 확인
     - hidden_dim 이 높은 것보다는 num_encoder_layers 가 높은 것이 성능에 더 좋은 영향을 끼침
@@ -30,4 +30,4 @@
     - Baidu 의 Deep Speech 2 Paper 에서 제안한 RNN Layer Type 임
   - max_len : **400**
     - 데이터셋에 따라 달라지긴 하지만 해당 수치로 사용하는 것을 추천
-  - spec_augment : True
+  - spec_augment : False
