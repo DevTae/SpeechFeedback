@@ -3,13 +3,13 @@
   - batch_size : 32
   - optimizer : '**adamp**'
     - [clovaai/AdamP](https://github.com/clovaai/AdamP)
-  - init_lr : **1e-07**
-  - final_lr : **1e-07**
+  - init_lr : **1e-06**
+  - final_lr : **1e-06**
   - peak_lr : **1e-04**
     - learning rate 설정의 경우, 데이터와 상황에 따라 다르게 설정될 수 있음
   - init_lr_scale : 0.01
   - final_lr_scale : 0.05
-  - max_grad_norm : 400
+  - max_grad_norm : **4**
   - warmup_steps : **75000**
     - adam optimizer 특성 상, 초반 adaptive learning rate 분산이 매우 커져 local optima 에 도달 가능하므로 초반 lr 비교적 축소시킴
     - 너무 빠르게 warming-up (Tri-Stage Learning Rate Scheduler 사용) 하게 된다면 local optima 에 갇힐 수 있음
@@ -17,7 +17,7 @@
       - ex) `(600000 datas / 32 * 4) * 20 epoches * 0.05 = 75000`
       - 현재, 기본적으로 적용되는 Augmentation 전략이 총 3 가지가 있기 때문에 기본값은 4 로 적용됨
   - weight_decay : **5e-06**
-  - reduction : **sum**
+  - reduction : **mean**
   - bidirectional : True
   - use_bidirectional : True
   - hidden_dim : **512** (when using RNN x 3 and you want speedy) 또는 **1880** (when using RNN x 3) 또는 **1280** (when using RNN x 7)
