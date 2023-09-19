@@ -136,9 +136,7 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
   elif architecture in ('deepspeech2', 'jasper'):
       outputs, output_lengths = model(inputs, input_lengths)
       outputs = torch.nan_to_num(outputs)
-      loss = self.criterion(
-          outputs, targets[:, 1:], contiguous().int(), input_lengths.int(), target_lengths.int()
-      )
+      loss = self.criterion(outputs.transpose(0, 1), targets[:, 1:], output_lengths, target_lengths)
   ...
   ```
 

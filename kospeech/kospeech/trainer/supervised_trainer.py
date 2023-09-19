@@ -457,6 +457,7 @@ class SupervisedTrainer(object):
 
         elif architecture in ('deepspeech2', 'jasper'):
             outputs, output_lengths = model(inputs, input_lengths)
+            outputs = torch.nan_to_num(outputs)
             loss = self.criterion(outputs.transpose(0, 1), targets[:, 1:], output_lengths, target_lengths)
 
         elif architecture in ('rnnt', 'conformer_t'):
