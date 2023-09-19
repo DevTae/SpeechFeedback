@@ -399,7 +399,7 @@ class DeepSpeech2Extractor(Conv2dExtractor):
                 self.activation,
                 nn.Conv2d(out_channels, out_channels, kernel_size=(21, 11), stride=(2, 1), padding=(10, 5), bias=True),
                 nn.BatchNorm2d(out_channels, momentum=0.99),
-                self.activation,
+                #self.activation, # RNN Layer 에서 처리하도록 하여 주석 처리 진행
             )
         )
 

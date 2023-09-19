@@ -21,6 +21,7 @@ from typing import Tuple
 from kospeech.models.convolution import DeepSpeech2Extractor
 from kospeech.models.model import EncoderModel
 from kospeech.models.modules import Linear
+from kospeech.models.activation import ClippedReLU
 
 
 class BNReluRNN(nn.Module):
@@ -58,6 +59,7 @@ class BNReluRNN(nn.Module):
         super(BNReluRNN, self).__init__()
         self.hidden_state_dim = hidden_state_dim
         self.batch_norm = nn.BatchNorm1d(input_size, momentum=0.99)
+        self.clipped_relu = ClippedReLU(inplace=True)
         rnn_cell = self.supported_rnns[rnn_type]
         self.rnn = rnn_cell(
             input_size=input_size,
@@ -72,7 +74,8 @@ class BNReluRNN(nn.Module):
     def forward(self, inputs: Tensor, input_lengths: Tensor):
         total_length = inputs.size(0)
 
-        inputs = self.batch_norm(torch.clamp(F.relu(inputs), min=0, max=20).transpose(1, 2)))
+        inputs = self.batch_norm(inputs.transpose(1, 2))
+        inputs = self.clipped_relu(inputs)
         inputs = inputs.transpose(1, 2)
 
         outputs = nn.utils.rnn.pack_padded_sequence(inputs, input_lengths.cpu())
@@ -136,6 +139,7 @@ class DeepSpeech2(EncoderModel):
 
         self.fc = nn.Sequential(
             nn.LayerNorm(rnn_output_size),
+            ClippedReLU(inplace=True),
             Linear(rnn_output_size, num_classes, bias=True),
         )
 
