@@ -25,7 +25,7 @@ final_lr: 1e-06
 peak_lr: 1e-04
 init_lr_scale: 0.01
 final_lr_scale: 0.05
-max_grad_norm: 4
+max_grad_norm: 400
 warmup_steps: 75000
 weight_decay: 1e-05
 reduction: 'mean'

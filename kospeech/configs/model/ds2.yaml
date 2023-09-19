@@ -6,7 +6,7 @@ dropout: 0.3
 num_encoder_layers: 3
 rnn_type: gru
 max_len: 400
-activation: hardtanh
+activation: clipped_relu # cnn activation function / rnn 의 경우, relu -> tanh 변경하였음.
 teacher_forcing_ratio: 1.0
 teacher_forcing_step: 0.0
 min_teacher_forcing_ratio: 1.0

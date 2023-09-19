@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import torch
 import torch.nn as nn
 from torch import Tensor
 
@@ -42,3 +43,13 @@ class GLU(nn.Module):
     def forward(self, inputs: Tensor) -> Tensor:
         outputs, gate = inputs.chunk(2, dim=self.dim)
         return outputs * gate.sigmoid()
+
+
+class ClippedReLU(nn.Module):
+
+    def __init__(self, inplace: bool = True) -> None:
+        super(ClippedReLU, self).__init__()
+        self.relu = nn.ReLU(inplace=inplace)
+
+    def forward(self, inputs: Tensor) -> Tensor:
+        return torch.clamp(self.relu(inputs), min=0, max=20)

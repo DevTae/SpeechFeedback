@@ -18,7 +18,7 @@ import torch.nn as nn
 from torch import Tensor
 from typing import Tuple
 
-from kospeech.models.activation import Swish
+from kospeech.models.activation import Swish, ClippedReLU
 
 
 class DepthwiseConv1d(nn.Module):
@@ -263,6 +263,7 @@ class Conv2dExtractor(nn.Module):
         'leaky_relu': nn.LeakyReLU(inplace=True),
         'gelu': nn.GELU(),
         'swish': Swish(),
+        'clipped_relu': ClippedReLU(inplace=True),
     }
 
     def __init__(self, input_dim: int, activation: str = 'hardtanh') -> None:
@@ -393,10 +394,10 @@ class DeepSpeech2Extractor(Conv2dExtractor):
         self.out_channels = out_channels
         self.conv = MaskCNN(
             nn.Sequential(
-                nn.Conv2d(in_channels, out_channels, kernel_size=(41, 11), stride=(2, 2), padding=(20, 5), bias=False),
+                nn.Conv2d(in_channels, out_channels, kernel_size=(41, 11), stride=(2, 2), padding=(20, 5), bias=True),
                 nn.BatchNorm2d(out_channels, momentum=0.99),
                 self.activation,
-                nn.Conv2d(out_channels, out_channels, kernel_size=(21, 11), stride=(2, 1), padding=(10, 5), bias=False),
+                nn.Conv2d(out_channels, out_channels, kernel_size=(21, 11), stride=(2, 1), padding=(10, 5), bias=True),
                 nn.BatchNorm2d(out_channels, momentum=0.99),
                 self.activation,
             )

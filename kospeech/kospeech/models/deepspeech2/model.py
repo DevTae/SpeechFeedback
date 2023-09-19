@@ -72,7 +72,7 @@ class BNReluRNN(nn.Module):
     def forward(self, inputs: Tensor, input_lengths: Tensor):
         total_length = inputs.size(0)
 
-        inputs = F.relu(self.batch_norm(inputs.transpose(1, 2)))
+        inputs = self.batch_norm(torch.clamp(F.relu(inputs), min=0, max=20).transpose(1, 2)))
         inputs = inputs.transpose(1, 2)
 
         outputs = nn.utils.rnn.pack_padded_sequence(inputs, input_lengths.cpu())
@@ -136,7 +136,7 @@ class DeepSpeech2(EncoderModel):
 
         self.fc = nn.Sequential(
             nn.LayerNorm(rnn_output_size),
-            Linear(rnn_output_size, num_classes, bias=False),
+            Linear(rnn_output_size, num_classes, bias=True),
         )
 
     def forward(self, inputs: Tensor, input_lengths: Tensor) -> Tuple[Tensor, Tensor]:
