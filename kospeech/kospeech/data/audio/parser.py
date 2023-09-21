@@ -175,6 +175,11 @@ class SpectrogramParser(AudioParser):
         if augment_method == SpectrogramParser.SPEC_AUGMENT:
             feature = self.spec_augment(feature)
 
+        # For handling exception (inf or nan)
+        if torch.isnan(feature).any().item() or torch.isinf(feature).any().item():
+            logger.info("Audio is Anomaly : {0}".format(audio_path))
+            return None
+
         return feature
 
     def parse_transcript(self, *args, **kwargs):
