@@ -6,7 +6,7 @@ output_unit: 'character'
 
 # trainer
 num_epochs: 20
-batch_size: 32
+batch_size: 128
 save_result_every: 1000
 checkpoint_every: 5000
 print_every: 10
@@ -20,12 +20,12 @@ use_cuda: True
 
 # optim
 optimizer: 'adamp'
-init_lr: 1e-06
-final_lr: 1e-06
-peak_lr: 1e-04
+init_lr: 1e-05
+final_lr: 1e-05
+peak_lr: 1e-03
 init_lr_scale: 0.01
 final_lr_scale: 0.05
 max_grad_norm: 400
 warmup_steps: 75000
-weight_decay: 1e-05
+weight_decay: 1e-04
 reduction: 'mean'
