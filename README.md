@@ -100,6 +100,8 @@ KoSpeech (Using CUDA 12.0) : https://hub.docker.com/r/devtae/kospeech
 
 - 해당 레포에 있는 코드는 Training 데이터에 대해서만 전처리하는 것이며, Evaluation 데이터를 이용하지 않는다. 따라서 별 다른 수정 없이 사용한다면, Training 에서 원하는 데이터들을 바탕으로 transcripts 를 형성시키고, 그 중에서도 일부를 떼어내 따로 evaluation 용 `transcripts_test.txt` 파일을 만들어 사용하면 된다.
 
+- 현재 적용된 한국어 IPA 변환 결과에 맞는 후처리 스크립트를 적용한 상태이니, 한국어가 아닌 외국어를 학습하거나 다른 IPA 변환 툴을 사용한다면 `SpeechFeedback/kospeech/kospeech/vocabs/ksponspeech.py` 에서 `self.sanitize` 함수를 제거해서 사용하면 된다.
+
 <br/>
 
 ### Model Architecture
