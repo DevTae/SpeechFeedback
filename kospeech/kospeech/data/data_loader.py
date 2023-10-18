@@ -125,8 +125,7 @@ class SpectrogramDataset(Dataset, SpectrogramParser):
             self.augment_methods.append(self.WPE_AUGMENT)
             self.audio_paths.append(self.audio_paths[idx])
             self.transcripts.append(self.transcripts[idx])
-        """
-
+        
         # applying denoise
         logger.info("Applying Denoise Augmentation...")
 
@@ -142,6 +141,7 @@ class SpectrogramDataset(Dataset, SpectrogramParser):
             self.augment_methods.append(self.WPE_AND_DENOISE_AUGMENT)
             self.audio_paths.append(self.audio_paths[idx])
             self.transcripts.append(self.transcripts[idx])
+        """
 
     def shuffle(self):
         """ Shuffle dataset """

@@ -437,3 +437,4 @@ def applyRulesToHangulTotal(text):
 #print(applyRulesToHangulTotal("빗도")) # pitt*o
 
 #print(applyRulesToHangulTotal("안녕 나는 태현이야.")) # ɑnnjʌŋ nɑnɯn tʰɛjʌnija.
+
