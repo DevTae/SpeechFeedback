@@ -8,7 +8,7 @@ normalize: True
 del_silence: false
 feature_extract_by: kaldi
 freq_mask_para: 18
-time_mask_num: 4
+time_mask_num: 10
 freq_mask_num: 2
 spec_augment: True
 input_reverse: True
