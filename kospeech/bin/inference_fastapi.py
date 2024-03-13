@@ -17,6 +17,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 import torchaudio
+import shutil
 from torch import Tensor
 
 from kospeech.vocabs.ksponspeech import KsponSpeechVocabulary
@@ -59,6 +60,11 @@ async def ipa_feedback(file: UploadFile = File(...)):
 
     with open(filename, "wb") as fp:
         fp.write(contents)
+
+    # 날짜 및 시간 별로 음성 녹음본을 저장할 수 있도록 함. (추후 사용자 별로 통계 자료 및 개인화된 서비스 제공할 수 있도록 함.)
+    new_filename, extension = os.path.splitext(filename)
+    new_filename = f"{new_filename}_{now.year}_{now.month:02d}_{now.day:02d}_{now.hour:02d}_{now.minute:02d}_{now.second:02d}{extension}"
+    shutil.copy(filename, new_filename)
 
     model_path = "/workspace/kospeech/model.pt" # set here model path you want
     audio_path = filename
