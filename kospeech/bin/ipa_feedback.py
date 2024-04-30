@@ -14,7 +14,7 @@ def sanitize(user_ipa):
     while i < len(user_ipa):
         skip = True
         for ipa in ipas:
-            if ipa == user_ipa[i:i+len(ch)]:
+            if ipa == user_ipa[i:i+len(ipa)]:
                 skip = False
                 sanitized.append(ipa)
                 i += len(ipa)
